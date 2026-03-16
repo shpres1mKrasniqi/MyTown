@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+    <Folder Include="InboundPorts\" />
+    <Folder Include="Settings\" />
+    <Folder Include="OutboundPorts\" />
+    <Folder Include="Ports\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyTown.Domain\MyTown.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
