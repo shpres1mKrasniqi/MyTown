@@ -7,12 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="InboundPorts\" />
-    <Folder Include="Settings\" />
-    <Folder Include="OutboundPorts\" />
-    <Folder Include="Ports\" />
-    <Folder Include="Services\" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.5" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0" />
   </ItemGroup>
 
   <ItemGroup>
