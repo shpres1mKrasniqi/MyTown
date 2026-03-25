@@ -6,6 +6,7 @@ using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Application.Services;
 using MyTown.Application.Settings;
 using MyTown.Infrastructure.Persistence.Data;
+using MyTown.Infrastructure.Persistence.Repositories;
 using MyTown.Infrastructure.Repositories;
 using MyTown.Infrastructure.SeedData;
 using System.Security.Claims;
@@ -97,6 +98,10 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
+builder.Services.AddScoped<IPermissionService, PermissionService>();
 
 // Servicet
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -110,6 +115,7 @@ if (app.Environment.IsDevelopment())
     var dbContext = scope.ServiceProvider.GetRequiredService<MyTownDbContext>();
 
     await RoleSeed.SeedRoleAsync(dbContext);
+    await PermissionSeed.SeedPermissionsAsync(dbContext);
     await AdminSeed.SeedAdminAsync(dbContext);
 }
 

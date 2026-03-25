@@ -5,9 +5,9 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 const Login = lazy(() => import("./components/Login"));
-const AdminDashboard = lazy(() => import("./dashboards/AdminDashboard"));
-const StaffDashboard = lazy(() => import("./dashboards/StaffDashboard"));
-const CitizenDashboard = lazy(() => import("./dashboards/CitizenDashboard"));
+const AdminDashboard = lazy(() => import("./dashboards/adminDashboard"));
+const StaffDashboard = lazy(() => import("./dashboards/staffDashboard"));
+const CitizenDashboard = lazy(() => import("./dashboards/citizenDashboard"));
 
 function App() {
   return (
