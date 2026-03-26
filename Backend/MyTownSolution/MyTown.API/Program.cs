@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -5,6 +7,7 @@ using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Application.Services;
 using MyTown.Application.Settings;
+using MyTown.Application.Validators;
 using MyTown.Infrastructure.Persistence.Data;
 using MyTown.Infrastructure.Persistence.Repositories;
 using MyTown.Infrastructure.Repositories;
@@ -19,6 +22,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateDepartmentValidator>();
 builder.Services.AddOpenApi();
 
 // Databaza

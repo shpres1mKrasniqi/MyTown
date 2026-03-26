@@ -15,7 +15,7 @@ namespace MyTown.Application.Services
         {
             _departmentRepository = departmentRepository;
         }
-        public async Task CreateAsync(CreateDepartment dto)
+        public async Task CreateAsync(CreateDepartment dto, int userId)
         {
             if(await _departmentRepository.ExistsByNameAsync(dto.Name, dto.KomunaId))
             {
@@ -23,10 +23,12 @@ namespace MyTown.Application.Services
             }
             var dep = new Department(dto.Name, dto.Description, dto.KomunaId);
 
+            dep.SetCreated(userId);
+
             await _departmentRepository.AddAsync(dep);
             await _departmentRepository.SaveChangesAsync();
         }
-        public async Task UpdateAsync(int id, UpdateDepartment dto)
+        public async Task UpdateAsync(int id, UpdateDepartment dto, int userId)
         {
             var dep = await _departmentRepository.GetByIdAsync(id);
             if(dep == null)
@@ -38,6 +40,9 @@ namespace MyTown.Application.Services
                 throw new Exception($"Department me kete emer '{dto.Name}' tashme ekziston ne kete komune.");
             }
             dep.Update(dto.Name, dto.Description);
+
+            dep.SetUpdated(userId);
+
             await _departmentRepository.UpdateAsync(dep);
             await _departmentRepository.SaveChangesAsync();
         }

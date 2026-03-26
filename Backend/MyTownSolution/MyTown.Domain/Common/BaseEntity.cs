@@ -9,17 +9,17 @@ namespace MyTown.Domain.Common
         public int Id { get; protected set; }
         public DateTime CreatedAt { get; protected set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; protected set; }
-        public string? CreatedBy { get; protected set; }
-        public string? UpdatedBy { get; protected set; }
+        public int? CreatedBy { get; protected set; }
+        public int? UpdatedBy { get; protected set; }
 
         
 
-        public void SetCreated (string userId)
+        public void SetCreated (int userId)
         {
             CreatedAt = DateTime.UtcNow;
             CreatedBy = userId;
         }
-        public void setUpdated (string userId)
+        public void SetUpdated (int userId)
         {
             UpdatedAt = DateTime.UtcNow;
             UpdatedBy = userId;

@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyTown.Application.DTOs.Department;
 using MyTown.Application.Ports.InboundPorts;
+using System.Security.Claims;
 
 
 namespace MyTown.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
@@ -56,15 +58,28 @@ namespace MyTown.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateDepartment dto)
         {
+
             
+
             if (!await _permissionService.UserHasPermission(User, "CanCreateDepartment"))
             {
                 return Forbid();
             }
+            var userIdClaim = User.Claims.FirstOrDefault(c =>
+            c.Type == ClaimTypes.NameIdentifier ||
+            c.Type == "id" ||
+            c.Type == "sub"
+            )?.Value;
+
+            if (!int.TryParse(userIdClaim, out int userId))
+            {
+                return Unauthorized("User ID not found");
+            }
 
             try
             {
-                await _departmentService.CreateAsync(dto);
+                
+                await _departmentService.CreateAsync(dto, userId);
                 return StatusCode(201, new { message = "Departmenti u krijua me sukses" });
             }
             catch (Exception ex)
@@ -81,10 +96,20 @@ namespace MyTown.API.Controllers
             {
                 return Forbid();
             }
+            var userIdClaim = User.Claims.FirstOrDefault(c =>
+           c.Type == ClaimTypes.NameIdentifier ||
+           c.Type == "id" ||
+           c.Type == "sub"
+           )?.Value;
+
+            if (!int.TryParse(userIdClaim, out int userId))
+            {
+                return Unauthorized("User ID not found");
+            }
 
             try
             {
-                await _departmentService.UpdateAsync(id, dto);
+                await _departmentService.UpdateAsync(id, dto, userId);
                 return Ok(new { message = "Departmenti u perditesua me sukses" });
             }
             catch (Exception ex)
