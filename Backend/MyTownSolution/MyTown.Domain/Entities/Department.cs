@@ -1,4 +1,4 @@
-﻿using MyTown.Domain.Common;
+using MyTown.Domain.Common;
 
 
 namespace MyTown.Domain.Entities
@@ -12,7 +12,7 @@ namespace MyTown.Domain.Entities
 
         // public ICollection<Staff> Staff { get; private set; } = new List<Staff>(); --------- lenti ti qitu e lidh me staff kur ta krijon crud per staffin
         public int KomunaId { get; private set; }
-       // public Komuna Komuna { get; private set; }  ------ qitu arlind e lidh tani me komun kur ta krijon crud per komunen ti
+        public Komuna Komuna { get; private set; } = null!;
 
 
         protected Department() { }

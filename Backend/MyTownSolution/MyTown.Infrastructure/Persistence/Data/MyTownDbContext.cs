@@ -1,4 +1,4 @@
-﻿
+
 
 using Microsoft.EntityFrameworkCore;
 using MyTown.Domain.Entities;
@@ -18,6 +18,7 @@ namespace MyTown.Infrastructure.Persistence.Data
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Komuna> Komunas { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Permission> Permissions { get; set; }  
         public DbSet<RolePermission> RolePermissions { get; set; }
