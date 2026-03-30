@@ -1,17 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { departmentService } from "../services/departmentService";
+import { komunaService } from "../services/komunaService";
 import { toast } from "react-toastify";
-import { ArrowLeft, Save, Building2, AlignLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Save, Building2, AlignLeft, Loader2, MapPin } from "lucide-react";
 
 export default function AddDepartment() {
   const [form, setForm] = useState({
     name: "",
     description: "",
+    komunaId: "",
   });
 
+  const [komunas, setKomunas] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchKomunas = async () => {
+      try {
+        const res = await komunaService.getAll();
+        setKomunas(res.data);
+      } catch (err) {
+        toast.error("Gabim gjatë marrjes së komunave");
+      }
+    };
+    fetchKomunas();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,9 +42,18 @@ export default function AddDepartment() {
       return;
     }
 
+    if (!form.komunaId) {
+      toast.error("Zgjidhni një komunë");
+      return;
+    }
+
     setLoading(true);
     try {
-      await departmentService.create(form);
+      const payload = {
+        ...form,
+        komunaId: parseInt(form.komunaId, 10)
+      };
+      await departmentService.create(payload);
       toast.success("Departamenti u krijua me sukses");
       navigate("/menaxhoDepartments");
     } catch (err) {
@@ -61,6 +85,24 @@ export default function AddDepartment() {
         <form onSubmit={handleSubmit} className="p-8 space-y-6">
           
     
+          <div className="space-y-2">
+            <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <MapPin size={16} className="text-[#010694]" /> 
+              Zgjedh Komunën
+            </label>
+            <select
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#010694]/5 focus:border-[#010694] transition-all text-sm"
+              value={form.komunaId}
+              onChange={(e) => setForm({ ...form, komunaId: e.target.value })}
+              required
+            >
+              <option value="" disabled>Selektoni një komunë</option>
+              {komunas.map((k) => (
+                <option key={k.id} value={k.id}>{k.name}</option>
+              ))}
+            </select>
+          </div>
+
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
               <Building2 size={16} className="text-[#010694]" /> 

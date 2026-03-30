@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MyTown.Domain.Entities;
 using MyTown.Infrastructure.Persistence.Data;
 
@@ -15,7 +15,12 @@ namespace MyTown.Infrastructure.SeedData
                 new Permission { Name = "CanCreateDepartment", Description = "Lejon shtimin e departamenteve" },
                 new Permission { Name = "CanViewDepartments", Description = "Lejon shikimin e listës së departamenteve" },
                 new Permission { Name = "CanUpdateDepartment", Description = "Lejon editimin e departamenteve" },
-                new Permission { Name = "CanDeleteDepartment", Description = "Lejon fshirjen e departamenteve" }
+                new Permission { Name = "CanDeleteDepartment", Description = "Lejon fshirjen e departamenteve" },
+                // Komuna
+                new Permission { Name = "CanCreateKomuna", Description = "Lejon krijimin e komunave" },
+                new Permission { Name = "CanViewKomunas", Description = "Lejon shikimin e komunave" },
+                new Permission { Name = "CanUpdateKomuna", Description = "Lejon perditesimin e komunave" },
+                new Permission { Name = "CanDeleteKomuna", Description = "Lejon fshirjen e komunave" }
             };
 
             foreach (var p in permissions)

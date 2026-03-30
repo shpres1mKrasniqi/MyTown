@@ -1,0 +1,139 @@
+import { useNavigate, useLocation, Outlet } from "react-router-dom";
+import Cookies from "js-cookie";
+import {
+  LayoutDashboard,
+  Building2,
+  PlusCircle,
+  Settings,
+  MapPin
+} from "lucide-react";
+
+export default function AdminLayout() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLogout = () => {
+    Cookies.remove("accessToken");
+    navigate("/login");
+  };
+
+  // Determine active view based on path to highlight sidebar
+  const getActiveView = () => {
+    const path = location.pathname.toLowerCase();
+    if (path.includes("komuna")) return "komunat";
+    if (path.includes("department")) return "manage";
+    return "overview";
+  };
+
+  const activeView = getActiveView();
+
+  return (
+    <div className="flex h-screen overflow-hidden bg-gray-50 text-slate-800">
+      {/* SIDEBAR */}
+      <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between">
+        {/* LOGO */}
+        <div>
+          <div className="flex h-16 items-center px-6 border-b border-slate-100 cursor-pointer" onClick={() => navigate("/admin-dashboard")}>
+            <div className="flex items-center gap-2">
+              <div className="h-6 w-6 bg-[#010694] text-white flex items-center justify-center rounded">
+                ∞
+              </div>
+              <span className="text-lg font-extrabold text-slate-900">
+                MYTOWN
+              </span>
+            </div>
+          </div>
+
+          {/* NAV */}
+          <nav className="space-y-1 px-3 py-6">
+            <SidebarItem
+              icon={<LayoutDashboard size={20} />}
+              label="Dashboard"
+              active={activeView === "overview"}
+              onClick={() => navigate("/admin-dashboard")}
+            />
+
+            <SidebarItem
+              icon={<Building2 size={20} />}
+              label="Drejtoritë"
+              active={activeView === "manage"}
+              onClick={() => navigate("/MenaxhoDepartments")}
+            />
+
+            <SidebarItem
+              icon={<MapPin size={20} />}
+              label="Komunat"
+              active={activeView === "komunat"}
+              onClick={() => navigate("/MenaxhoKomunat")}
+            />
+
+            <SidebarItem
+              icon={<PlusCircle size={20} />}
+              label="Shto Departament"
+              onClick={() => navigate("/AddDepartment")}
+            />
+
+            <SidebarItem
+              icon={<Settings size={20} />}
+              label="Settings"
+              active={activeView === "settings"}
+              onClick={() => {}}
+            />
+          </nav>
+        </div>
+
+        {/* USER */}
+        <div className="border-t border-slate-100 p-4 flex items-center gap-3">
+          <div className="h-8 w-8 rounded-full bg-[#010694] text-white flex items-center justify-center text-xs font-bold">
+            AD
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-slate-900">
+              Admin
+            </p>
+            <p className="text-[10px] text-slate-500">Workspace</p>
+          </div>
+        </div>
+      </aside>
+
+      {/* MAIN */}
+      <main className="flex-1 flex flex-col overflow-hidden">
+        {/* HEADER */}
+        <header className="h-16 flex items-center justify-between px-6 border-b border-slate-200 bg-white/80 backdrop-blur">
+          <div className="text-sm font-medium text-slate-500 capitalize">
+            {activeView === "overview" ? "Dashboard Overview" : activeView}
+          </div>
+
+          <button
+            onClick={handleLogout}
+            className="text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+          >
+            Logout
+          </button>
+        </header>
+
+        {/* CONTENT - OUTLET WILL INJECT SUBPAGES HERE (AddKomuna, MenaxhoKomunat, Dashboard etc) */}
+        <div className="flex-1 overflow-y-auto p-6 bg-slate-50/50">
+          <Outlet />
+        </div>
+      </main>
+    </div>
+  );
+}
+
+// SideBar item generic component
+function SidebarItem({ icon, label, active, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+        active
+          ? "bg-[#eff0ff] text-[#010694]"
+          : "text-slate-600 hover:bg-slate-50"
+      }`}
+    >
+      {icon}
+      {label}
+    </button>
+  );
+}
