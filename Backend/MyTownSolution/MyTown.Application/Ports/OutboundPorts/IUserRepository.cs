@@ -12,6 +12,6 @@ namespace MyTown.Application.Ports.OutboundPorts
 
         Task<bool> ExistsByEmailAsync(string email);
 
-        Task AssignRoleAsync(int userId, int roleId);
+        Task AssignRoleAsync(User user, int roleId);
     }
 }

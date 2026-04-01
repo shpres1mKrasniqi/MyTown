@@ -10,7 +10,7 @@ namespace MyTown.Domain.Entities
         public string Description { get; private set; }
         public bool IsActive { get; private set; }
 
-        // public ICollection<Staff> Staff { get; private set; } = new List<Staff>(); --------- lenti ti qitu e lidh me staff kur ta krijon crud per staffin
+        public ICollection<StaffProfile> StaffProfiles { get; private set; } = new List<StaffProfile>();
         public int KomunaId { get; private set; }
         public Komuna Komuna { get; private set; } = null!;
 

@@ -1,6 +1,7 @@
 
 
 using Microsoft.EntityFrameworkCore;
+using MyTown.Domain.Common;
 using MyTown.Domain.Entities;
 
 namespace MyTown.Infrastructure.Persistence.Data
@@ -22,7 +23,9 @@ namespace MyTown.Infrastructure.Persistence.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<Permission> Permissions { get; set; }  
         public DbSet<RolePermission> RolePermissions { get; set; }
-
+        public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<StaffProfile> StaffProfiles { get; set; }
+     
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -74,6 +77,17 @@ namespace MyTown.Infrastructure.Persistence.Data
             modelBuilder.Entity<RolePermission>()
                 .HasIndex(rp => new { rp.RoleId, rp.PermissionId })
                 .IsUnique();
+
+            modelBuilder.Entity<StaffProfile>()
+    .HasOne(s => s.User)
+    .WithOne()
+    .HasForeignKey<StaffProfile>(s => s.UserId);
+
+            modelBuilder.Entity<StaffProfile>()
+    .HasOne(sp => sp.Department)
+    .WithMany(d => d.StaffProfiles)
+    .HasForeignKey(rp => rp.DepartmentId)
+    .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

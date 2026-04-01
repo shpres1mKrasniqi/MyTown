@@ -8,7 +8,7 @@ namespace MyTown.Infrastructure.SeedData
     {
         public static async Task SeedPermissionsAsync(MyTownDbContext context)
         {
-            
+
             var permissions = new List<Permission>
             {
                 //Departmente
@@ -20,7 +20,13 @@ namespace MyTown.Infrastructure.SeedData
                 new Permission { Name = "CanCreateKomuna", Description = "Lejon krijimin e komunave" },
                 new Permission { Name = "CanViewKomunas", Description = "Lejon shikimin e komunave" },
                 new Permission { Name = "CanUpdateKomuna", Description = "Lejon perditesimin e komunave" },
-                new Permission { Name = "CanDeleteKomuna", Description = "Lejon fshirjen e komunave" }
+                new Permission { Name = "CanDeleteKomuna", Description = "Lejon fshirjen e komunave" },
+
+                // Stafi
+                new Permission { Name = "CanCreateStaff", Description = "Lejon krijimin e staff" },
+                new Permission { Name = "CanViewStaff", Description = "Lejon shikimin e staff" },
+                new Permission { Name = "CanUpdateStaff", Description = "Lejon updaten e staff" },
+                new Permission { Name = "CanDeleteStaff", Description = "Lejon fshirjen e staff" },
             };
 
             foreach (var p in permissions)
@@ -32,7 +38,7 @@ namespace MyTown.Infrastructure.SeedData
             }
             await context.SaveChangesAsync();
 
-            
+
             var adminRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == "Admin");
             if (adminRole != null)
             {

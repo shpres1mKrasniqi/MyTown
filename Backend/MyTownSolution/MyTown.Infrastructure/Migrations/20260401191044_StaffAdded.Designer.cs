@@ -12,8 +12,8 @@ using MyTown.Infrastructure.Persistence.Data;
 namespace MyTown.Infrastructure.Migrations
 {
     [DbContext(typeof(MyTownDbContext))]
-    [Migration("20260326102534_ndryshimenetabelendepartments")]
-    partial class ndryshimenetabelendepartments
+    [Migration("20260401191044_StaffAdded")]
+    partial class StaffAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,46 @@ namespace MyTown.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("MyTown.Domain.Common.AuditLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Entity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuditLogs");
+                });
 
             modelBuilder.Entity("MyTown.Domain.Entities.Department", b =>
                 {
@@ -61,7 +101,53 @@ namespace MyTown.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("KomunaId");
+
                     b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.Komuna", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[IsDeleted] = 0");
+
+                    b.ToTable("Komunas");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.Permission", b =>
@@ -164,6 +250,46 @@ namespace MyTown.Infrastructure.Migrations
                     b.ToTable("RolePermissions");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.Entities.StaffProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateHired")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("StaffProfiles");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -229,6 +355,17 @@ namespace MyTown.Infrastructure.Migrations
                     b.ToTable("UserRoles");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.Entities.Department", b =>
+                {
+                    b.HasOne("MyTown.Domain.Entities.Komuna", "Komuna")
+                        .WithMany("Departments")
+                        .HasForeignKey("KomunaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Komuna");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.RefreshToken", b =>
                 {
                     b.HasOne("MyTown.Domain.Entities.User", "User")
@@ -259,6 +396,25 @@ namespace MyTown.Infrastructure.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.Entities.StaffProfile", b =>
+                {
+                    b.HasOne("MyTown.Domain.Entities.Department", "Department")
+                        .WithMany("StaffProfiles")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyTown.Domain.Entities.User", "User")
+                        .WithOne()
+                        .HasForeignKey("MyTown.Domain.Entities.StaffProfile", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.UserRole", b =>
                 {
                     b.HasOne("MyTown.Domain.Entities.Role", "Role")
@@ -276,6 +432,16 @@ namespace MyTown.Infrastructure.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.Department", b =>
+                {
+                    b.Navigation("StaffProfiles");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.Komuna", b =>
+                {
+                    b.Navigation("Departments");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.Permission", b =>

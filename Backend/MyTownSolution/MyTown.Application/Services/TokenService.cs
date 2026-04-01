@@ -1,11 +1,10 @@
-﻿
-
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MyTown.Application.DTOs.Authentication;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Settings;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.InteropServices.JavaScript;
 using System.Security.Claims;
 using System.Text;
 
@@ -22,13 +21,19 @@ namespace MyTown.Application.Services
 
         public string GenerateAccessToken(TokenUserDto user)
         {
-            var claims = new[]
+            var claims = new List<Claim>
             {
               new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
               new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
               new Claim(JwtRegisteredClaimNames.Email, user.Email),
               new Claim(ClaimTypes.Role, user.RoleName),
-          };
+
+            };
+
+            foreach (var permission in user.Permissions)
+            {
+                claims.Add(new Claim("Permission", permission));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -55,7 +60,7 @@ namespace MyTown.Application.Services
             };
         }
 
-        }
+    }
 
-    
+
 }

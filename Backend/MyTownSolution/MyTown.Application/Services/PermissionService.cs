@@ -1,21 +1,20 @@
 ﻿using MyTown.Application.Ports.InboundPorts;
-using MyTown.Application.Ports.OutboundPorts;
+
 using System.Security.Claims;
 
-public class PermissionService : IPermissionService
+
+namespace MyTown.Application.Services
 {
-    private readonly IPermissionRepository _permissionRepository;
-
-    public PermissionService(IPermissionRepository permissionRepository)
+    public class PermissionService : IPermissionService
     {
-        _permissionRepository = permissionRepository;
-    }
 
-    public async Task<bool> UserHasPermission(ClaimsPrincipal user, string permissionName)
-    {
-        var userRole = user.FindFirst(ClaimTypes.Role)?.Value;
+        public Task<bool> UserHasPermission(ClaimsPrincipal user, string permissionName)
+        {
 
-        if (string.IsNullOrEmpty(userRole)) return false;
-        return await _permissionRepository.RoleHasPermissionAsync(userRole, permissionName);
+            var hasPermission = user.Claims
+                .Any(c => c.Type == "Permission" && c.Value == permissionName);
+
+            return Task.FromResult(hasPermission);
+        }
     }
 }

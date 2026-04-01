@@ -119,7 +119,7 @@ export default function MenaxhoKomunat() {
                       </p>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <div className="flex justify-end items-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                      <div className="flex justify-end items-center gap-2 opacity-100 sm:opacity-100 sm:group-hover:opacity-100 transition-opacity">
                         <button 
                           onClick={() => navigate(`/edit-komuna/${k.id}`)}
                           className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"

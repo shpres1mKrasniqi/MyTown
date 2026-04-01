@@ -1,6 +1,4 @@
-﻿
-
-using MyTown.Application.DTOs.Authentication;
+﻿using MyTown.Application.DTOs.Authentication;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Domain.Entities;
@@ -54,7 +52,7 @@ namespace MyTown.Application.Services
                 throw new Exception("Roli nuk u gjet!");
             }
 
-            await _userRepository.AssignRoleAsync(user.Id, role.Id);
+            await _userRepository.AssignRoleAsync(user, role.Id);
 
             var tokenUser = new TokenUserDto
             {
@@ -95,7 +93,7 @@ namespace MyTown.Application.Services
         public async Task<AuthResponse> LoginAsync(LoginRequest request)
         {
             var user = await _userRepository.GetByEmailAsync(request.Email);
-            if (user ==null)
+            if (user == null)
             {
                 throw new Exception("Kredenciale te pavlefshme");
             }
@@ -108,13 +106,20 @@ namespace MyTown.Application.Services
 
             var roles = user.UserRoles.Select(ur => ur.Role.Name).ToList();
 
+            var permissions = user.UserRoles
+             .SelectMany(ur => ur.Role.RolePermissions)
+               .Select(rp => rp.Permission.Name)
+               .Distinct()
+               .ToList();
+
             var tokenUser = new TokenUserDto
             {
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                RoleName = roles.First()
+                RoleName = roles.FirstOrDefault() ?? "Citizen",
+                Permissions = permissions
             };
 
             var accessToken = _tokenService.GenerateAccessToken(tokenUser);
@@ -146,24 +151,24 @@ namespace MyTown.Application.Services
 
         public async Task<AuthResponse> RefreshTokenAsync(string refreshToken)
         {
-            
+
             var tokenHash = Convert.ToBase64String(
                 SHA256.HashData(Encoding.UTF8.GetBytes(refreshToken))
             );
 
-            
+
             var existingToken = await _refreshTokenRepository.GetByTokenHashAsync(tokenHash);
 
             if (existingToken == null || !existingToken.IsActive)
                 throw new Exception("Invalid or expired refresh token");
 
-            
+
             var user = existingToken.User;
 
-           
+
             var roles = user.UserRoles.Select(ur => ur.Role.Name).ToList();
 
-           
+
             var tokenUser = new TokenUserDto
             {
                 Id = user.Id,
@@ -173,20 +178,20 @@ namespace MyTown.Application.Services
                 RoleName = roles.First()
             };
 
-          
+
             var newAccessToken = _tokenService.GenerateAccessToken(tokenUser);
             var newRefreshTokenDto = _tokenService.GenerateRefreshToken();
 
-           
+
             existingToken.RevokedAt = DateTime.UtcNow;
             await _refreshTokenRepository.UpdateAsync(existingToken);
 
-            
+
             var newTokenHash = Convert.ToBase64String(
                 SHA256.HashData(Encoding.UTF8.GetBytes(newRefreshTokenDto.Token))
             );
 
-          
+
             var newRefreshToken = new RefreshToken
             {
                 UserId = user.Id,
@@ -196,7 +201,7 @@ namespace MyTown.Application.Services
 
             await _refreshTokenRepository.AddAsync(newRefreshToken);
 
-        
+
             return new AuthResponse
             {
                 UserId = user.Id,

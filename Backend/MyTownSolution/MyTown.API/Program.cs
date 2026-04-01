@@ -108,11 +108,20 @@ builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IKomunaRepository, KomunaRepository>();
 builder.Services.AddScoped<IKomunaService, KomunaService>();
 builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
-builder.Services.AddScoped<IPermissionService, PermissionService>();
-
+builder.Services.AddScoped<IStaffRepository, StaffRepository>();
+builder.Services.AddScoped<IAuditRepository, AuditRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 // Servicet
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IPermissionService, PermissionService>();
+builder.Services.AddScoped<IStaffServices, StaffService>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CanCreateStaff", policy =>
+        policy.RequireClaim("Permission", "CanCreateStaff"));
+});
 
 var app = builder.Build();
 //Pjesa e Seed Data
