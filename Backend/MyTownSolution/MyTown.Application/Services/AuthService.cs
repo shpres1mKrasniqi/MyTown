@@ -1,5 +1,4 @@
-﻿using MyTown.Application.Authorization;
-using MyTown.Application.DTOs.Authentication;
+﻿using MyTown.Application.DTOs.Authentication;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Domain.Entities;
@@ -61,8 +60,7 @@ namespace MyTown.Application.Services
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                Roles = new List<string> { role.Name },
-                Permissions = new List<string>()
+                RoleName = role.Name
             };
 
             var accessToken = _tokenService.GenerateAccessToken(tokenUser);
@@ -114,17 +112,15 @@ namespace MyTown.Application.Services
                .Distinct()
                .ToList();
 
-
             var tokenUser = new TokenUserDto
             {
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                Roles = roles,
+                RoleName = roles.FirstOrDefault() ?? "Citizen",
                 Permissions = permissions
             };
-
 
             var accessToken = _tokenService.GenerateAccessToken(tokenUser);
             var refreshTokenDto = _tokenService.GenerateRefreshToken();
@@ -172,11 +168,6 @@ namespace MyTown.Application.Services
 
             var roles = user.UserRoles.Select(ur => ur.Role.Name).ToList();
 
-            var permissions = user.UserRoles
-             .SelectMany(ur => ur.Role.RolePermissions)
-               .Select(rp => rp.Permission.Name)
-               .Distinct()
-               .ToList();
 
             var tokenUser = new TokenUserDto
             {
@@ -184,8 +175,7 @@ namespace MyTown.Application.Services
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                Roles = roles,
-                Permissions = permissions
+                RoleName = roles.First()
             };
 
 

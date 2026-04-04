@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MyTown.Application.Authorization;
 using MyTown.Application.DTOs.Department;
 using MyTown.Application.Ports.InboundPorts;
 using System.Security.Claims;
@@ -15,16 +14,15 @@ namespace MyTown.API.Controllers
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
-      
+        private readonly IPermissionService _permissionService;
 
-        public DepartmentController(IDepartmentService departmentService)
+        public DepartmentController(IDepartmentService departmentService, IPermissionService permissionService)
         {
             _departmentService = departmentService;
-         
+            _permissionService = permissionService;
         }
         [HttpGet]
-        [Authorize(Roles ="Admin")]
-        [Authorize(Policy = Permissions.CanViewDepartments)]
+        [AllowAnonymous] 
         public async Task<IActionResult> GetAll()
         {
             try
@@ -39,11 +37,14 @@ namespace MyTown.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetById(int id)
         {
             
-        
+            if (!await _permissionService.UserHasPermission(User, "CanViewDepartments"))
+            {
+                return Forbid(); 
+            }
+
             try
             {
                 var dep = await _departmentService.GetByIdAsync(id);
@@ -55,10 +56,15 @@ namespace MyTown.API.Controllers
             }
         }
         [HttpPost]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Policy = Permissions.CanCreateDepartment)]
         public async Task<IActionResult> Create(CreateDepartment dto)
-        { 
+        {
+
+            
+
+            if (!await _permissionService.UserHasPermission(User, "CanCreateDepartment"))
+            {
+                return Forbid();
+            }
             var userIdClaim = User.Claims.FirstOrDefault(c =>
             c.Type == ClaimTypes.NameIdentifier ||
             c.Type == "id" ||
@@ -83,11 +89,13 @@ namespace MyTown.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Policy = Permissions.CanUpdateDepartment)]
         public async Task<IActionResult> Update(int id, UpdateDepartment dto)
         {
-
+            
+            if (!await _permissionService.UserHasPermission(User, "CanUpdateDepartment"))
+            {
+                return Forbid();
+            }
             var userIdClaim = User.Claims.FirstOrDefault(c =>
            c.Type == ClaimTypes.NameIdentifier ||
            c.Type == "id" ||
@@ -111,10 +119,14 @@ namespace MyTown.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Policy = Permissions.CanDeleteDepartment)]
         public async Task<IActionResult> Delete(int id)
         {
+            
+            if (!await _permissionService.UserHasPermission(User, "CanDeleteDepartment"))
+            {
+                return Forbid();
+            }
+
             try
             {
                 await _departmentService.DeleteAsync(id);
