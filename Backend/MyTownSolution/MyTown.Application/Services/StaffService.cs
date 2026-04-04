@@ -101,9 +101,6 @@ namespace MyTown.Application.Services
         {
             var staffs = await _staffRepository.GetAllStaff();
 
-            if (staffs == null || !staffs.Any())
-                throw new Exception("Nuk ka staf!");
-
             var result = staffs.Select(s => new StaffListDto
             {
                 Id = s.Id,

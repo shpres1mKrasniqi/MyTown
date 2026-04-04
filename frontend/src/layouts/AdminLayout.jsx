@@ -5,7 +5,9 @@ import {
   Building2,
   PlusCircle,
   Settings,
-  MapPin
+  MapPin,
+  Users,
+  PlusSquare,
 } from "lucide-react";
 
 export default function AdminLayout() {
@@ -33,7 +35,10 @@ export default function AdminLayout() {
       <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between">
         {/* LOGO */}
         <div>
-          <div className="flex h-16 items-center px-6 border-b border-slate-100 cursor-pointer" onClick={() => navigate("/admin-dashboard")}>
+          <div
+            className="flex h-16 items-center px-6 border-b border-slate-100 cursor-pointer"
+            onClick={() => navigate("/admin-dashboard")}
+          >
             <div className="flex items-center gap-2">
               <div className="h-6 w-6 bg-[#010694] text-white flex items-center justify-center rounded">
                 ∞
@@ -74,6 +79,27 @@ export default function AdminLayout() {
             />
 
             <SidebarItem
+              icon={
+                <Users
+                  size={20}
+                  className="text-blue-400 group-hover:text-white transition-colors"
+                />
+              }
+              label="Menaxho Stafin"
+              onClick={() => navigate("/manage-staff")}
+            />
+
+            <SidebarItem
+              icon={
+                <PlusSquare
+                  size={20}
+                  className="text-blue-400 group-hover:text-white transition-colors"
+                />
+              }
+              label="Shto Staf"
+              onClick={() => navigate("/add-staff")}
+            />
+            <SidebarItem
               icon={<Settings size={20} />}
               label="Settings"
               active={activeView === "settings"}
@@ -88,9 +114,7 @@ export default function AdminLayout() {
             AD
           </div>
           <div>
-            <p className="text-xs font-semibold text-slate-900">
-              Admin
-            </p>
+            <p className="text-xs font-semibold text-slate-900">Admin</p>
             <p className="text-[10px] text-slate-500">Workspace</p>
           </div>
         </div>
