@@ -11,6 +11,8 @@ namespace MyTown.Domain.Entities
 
         public ICollection<Department> Departments { get; private set; } = new List<Department>();
 
+        public ICollection<CitizenProfile> CitizenProfiles { get; private set; } = new List<CitizenProfile>();
+
         protected Komuna() { }
 
         public Komuna(string name, string? description)

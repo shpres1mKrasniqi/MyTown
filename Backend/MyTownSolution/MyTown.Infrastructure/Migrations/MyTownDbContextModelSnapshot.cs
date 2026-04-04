@@ -62,6 +62,47 @@ namespace MyTown.Infrastructure.Migrations
                     b.ToTable("AuditLogs");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.Entities.CitizenProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("KomunaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KomunaId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("CitizenProfiles");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.Department", b =>
                 {
                     b.Property<int>("Id")
@@ -352,6 +393,25 @@ namespace MyTown.Infrastructure.Migrations
                     b.ToTable("UserRoles");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.Entities.CitizenProfile", b =>
+                {
+                    b.HasOne("MyTown.Domain.Entities.Komuna", "Komuna")
+                        .WithMany("CitizenProfiles")
+                        .HasForeignKey("KomunaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyTown.Domain.Entities.User", "User")
+                        .WithOne()
+                        .HasForeignKey("MyTown.Domain.Entities.CitizenProfile", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Komuna");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.Department", b =>
                 {
                     b.HasOne("MyTown.Domain.Entities.Komuna", "Komuna")
@@ -438,6 +498,8 @@ namespace MyTown.Infrastructure.Migrations
 
             modelBuilder.Entity("MyTown.Domain.Entities.Komuna", b =>
                 {
+                    b.Navigation("CitizenProfiles");
+
                     b.Navigation("Departments");
                 });
 

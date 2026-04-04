@@ -25,7 +25,9 @@ namespace MyTown.Infrastructure.Persistence.Data
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<StaffProfile> StaffProfiles { get; set; }
-     
+
+        public DbSet<CitizenProfile> CitizenProfiles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -87,6 +89,17 @@ namespace MyTown.Infrastructure.Persistence.Data
     .HasOne(sp => sp.Department)
     .WithMany(d => d.StaffProfiles)
     .HasForeignKey(rp => rp.DepartmentId)
+    .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CitizenProfile>()
+    .HasOne(s => s.User)
+    .WithOne()
+    .HasForeignKey<CitizenProfile>(s => s.UserId);
+
+            modelBuilder.Entity<CitizenProfile>()
+    .HasOne(sp => sp.Komuna)
+    .WithMany(d => d.CitizenProfiles)
+    .HasForeignKey(rp => rp.KomunaId)
     .OnDelete(DeleteBehavior.Cascade);
         }
     }

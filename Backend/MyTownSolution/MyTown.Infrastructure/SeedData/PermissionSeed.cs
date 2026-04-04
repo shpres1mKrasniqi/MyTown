@@ -27,6 +27,11 @@ namespace MyTown.Infrastructure.SeedData
                 new Permission { Name = "CanViewStaff", Description = "Lejon shikimin e staff" },
                 new Permission { Name = "CanUpdateStaff", Description = "Lejon updaten e staff" },
                 new Permission { Name = "CanDeleteStaff", Description = "Lejon fshirjen e staff" },
+
+                //Qytetart
+                new Permission { Name = "CanCreateCitizen", Description = "Lejon shikimin e Qytetarve" },
+                new Permission { Name = "CanUpdateCitizen", Description = "Lejon updaten e Qytetarve" },
+                new Permission { Name = "CanDeleteCitizen", Description = "Lejon fshirjen e Qytetarve" },
             };
 
             foreach (var p in permissions)
