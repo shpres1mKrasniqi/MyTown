@@ -93,6 +93,129 @@ namespace MyTown.Application.Services
             return response;
         }
 
-       
+        public async Task<IEnumerable<StaffListDto>> GetAllStaffAsync()
+        {
+            var staffs = await _staffRepository.GetAllStaff();
+
+            var result = staffs.Select(s => new StaffListDto
+            {
+                Id = s.Id,
+                FirstName = s.User.FirstName,     
+                LastName = s.User.LastName,
+                Email = s.User.Email,             
+                Position = s.Position,
+                DepartmentName = s.Department?.Name ?? "Nuk ka te dhena"
+            }).ToList();
+
+            return result;
+        }
+
+        public async Task<StaffResponseDto> UpdateStaffProfileAsync(UpdateStaffDto dto, int id, int adminId, string ipAddress)
+        {
+          
+            var stafi = await _staffRepository.GetStaffProfileByIdAsync(id);
+
+            if (stafi == null)
+                throw new Exception("Stafi nuk u gjet!");
+
+     
+            var oldValue = $"FirstName: {stafi.User.FirstName}, LastName: {stafi.User.LastName}, Email: {stafi.User.Email}, " +
+                           $"Position: {stafi.Position}, DateHired: {stafi.DateHired}, DepartmentId: {stafi.DepartmentId}";
+
+    
+            stafi.User.FirstName = dto.FirstName;
+            stafi.User.LastName = dto.LastName;
+            stafi.User.Email = dto.Email;
+
+  
+            stafi.Update(dto.Position, dto.DateHired, dto.DepartmentId);
+
+      
+            stafi.SetUpdated(adminId);
+
+  
+            await _unitOfWork.SaveChangesAsync();
+
+ 
+            var newValue = $"FirstName: {stafi.User.FirstName}, LastName: {stafi.User.LastName}, Email: {stafi.User.Email}, " +
+                           $"Position: {stafi.Position}, DateHired: {stafi.DateHired}, DepartmentId: {stafi.DepartmentId}";
+
+   
+            var log = new AuditLog(
+                adminId,
+                "UPDATE",
+                "StaffProfile",
+                stafi.Id,
+                oldValue,
+                newValue,
+                ipAddress
+            );
+
+            await _auditRepository.AddAsync(log);
+            await _unitOfWork.SaveChangesAsync();
+
+     
+            var response = new StaffResponseDto
+            {
+                FirstName = stafi.User.FirstName,
+                LastName = stafi.User.LastName,
+                Position = stafi.Position,
+                DateHired = stafi.DateHired
+            };
+
+            return response;
+        }
+
+        public async Task<StaffResponseDto> SoftDeleteStaffAsync(int id, int adminId, string ipAddress)
+        {
+            var staff = await _staffRepository.GetStaffProfileByIdAsync(id);
+            if (staff == null || staff.IsDeleted)
+                throw new Exception("Stafi nuk u gjet ose eshte fshire!");
+
+            var oldValue = $"Position: {staff.Position}, DateHired: {staff.DateHired}, DepartmentId: {staff.DepartmentId}, IsDeleted: {staff.IsDeleted}";
+
+           
+            staff.Delete(adminId);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            var newValue = $"Position: {staff.Position}, DateHired: {staff.DateHired}, DepartmentId: {staff.DepartmentId}, IsDeleted: {staff.IsDeleted}";
+            var log = new AuditLog(
+                adminId,
+                "SOFT_DELETE",
+                "StaffProfile",
+                staff.Id,
+                oldValue,
+                newValue,
+                ipAddress
+            );
+
+            await _auditRepository.AddAsync(log);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new StaffResponseDto
+            {
+                FirstName = staff.User.FirstName,
+                LastName = staff.User.LastName,
+                Position = staff.Position,
+                DateHired = staff.DateHired
+            };
+        }
+        public async Task<StaffListDto> GetStaffByIdAsync(int id)
+        {
+            var s = await _staffRepository.GetStaffProfileByIdAsync(id);
+            if (s == null) throw new Exception("Stafi nuk u gjet");
+
+            return new StaffListDto
+            {
+                Id = s.Id,
+                FirstName = s.User.FirstName,
+                LastName = s.User.LastName,
+                Email = s.User.Email,
+                Position = s.Position,
+                DepartmentName = s.Department?.Name,
+               
+            };
+        }
     }
 }
