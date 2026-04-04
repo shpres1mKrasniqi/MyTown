@@ -1,8 +1,9 @@
-﻿namespace MyTown.Domain.Entities
+﻿using MyTown.Domain.Common;
+
+namespace MyTown.Domain.Entities
 {
-    public class CitizenProfile
+    public class CitizenProfile : BaseEntity
     {
-        public int Id { get; private set; }
 
         public int UserId { get; private set; }
 
@@ -16,10 +17,6 @@
 
         public string Address { get; private set; }
 
-        public DateTime CreatedAt { get; private set; }
-
-        public DateTime UpdatedAt { get; private set; }
-
         public bool IsDeleted { get; private set; }
         protected CitizenProfile() { }
 
@@ -29,8 +26,6 @@
             KomunaId = komunaId;
             PhoneNumber = phoneNumber;
             Address = address;
-            CreatedAt = DateTime.UtcNow;
-            UpdatedAt = DateTime.UtcNow;
             IsDeleted = false;
         }
 
@@ -39,13 +34,13 @@
             KomunaId = komunaId;
             PhoneNumber = phoneNumber;
             Address = address;
-            UpdatedAt = DateTime.UtcNow;
         }
 
-        public void Delete()
+        public void Delete(int adminId)
         {
             IsDeleted = true;
             UpdatedAt = DateTime.UtcNow;
+            SetUpdated(adminId);
         }
     }
 }

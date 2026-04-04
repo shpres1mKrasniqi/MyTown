@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MyTown.Application.Authorization;
 using MyTown.Domain.Entities;
 using MyTown.Infrastructure.Persistence.Data;
 
@@ -10,29 +11,31 @@ namespace MyTown.Infrastructure.SeedData
         {
 
             var permissions = new List<Permission>
-            {
-                //Departmente
-                new Permission { Name = "CanCreateDepartment", Description = "Lejon shtimin e departamenteve" },
-                new Permission { Name = "CanViewDepartments", Description = "Lejon shikimin e listës së departamenteve" },
-                new Permission { Name = "CanUpdateDepartment", Description = "Lejon editimin e departamenteve" },
-                new Permission { Name = "CanDeleteDepartment", Description = "Lejon fshirjen e departamenteve" },
-                // Komuna
-                new Permission { Name = "CanCreateKomuna", Description = "Lejon krijimin e komunave" },
-                new Permission { Name = "CanViewKomunas", Description = "Lejon shikimin e komunave" },
-                new Permission { Name = "CanUpdateKomuna", Description = "Lejon perditesimin e komunave" },
-                new Permission { Name = "CanDeleteKomuna", Description = "Lejon fshirjen e komunave" },
+{
+    // Departmente
+    new Permission { Name = Permissions.CanCreateDepartment, Description = "Lejon shtimin e departamenteve" },
+    new Permission { Name = Permissions.CanViewDepartments, Description = "Lejon shikimin e listës së departamenteve" },
+    new Permission { Name = Permissions.CanUpdateDepartment, Description = "Lejon editimin e departamenteve" },
+    new Permission { Name = Permissions.CanDeleteDepartment, Description = "Lejon fshirjen e departamenteve" },
 
-                // Stafi
-                new Permission { Name = "CanCreateStaff", Description = "Lejon krijimin e staff" },
-                new Permission { Name = "CanViewStaff", Description = "Lejon shikimin e staff" },
-                new Permission { Name = "CanUpdateStaff", Description = "Lejon updaten e staff" },
-                new Permission { Name = "CanDeleteStaff", Description = "Lejon fshirjen e staff" },
+    // Komuna
+    new Permission { Name = Permissions.CanCreateKomuna, Description = "Lejon krijimin e komunave" },
+    new Permission { Name = Permissions.CanViewKomuna, Description = "Lejon shikimin e komunave" },
+    new Permission { Name = Permissions.CanUpdateKomuna, Description = "Lejon perditesimin e komunave" },
+    new Permission { Name = Permissions.CanDeleteKomuna, Description = "Lejon fshirjen e komunave" },
 
-                //Qytetart
-                new Permission { Name = "CanCreateCitizen", Description = "Lejon shikimin e Qytetarve" },
-                new Permission { Name = "CanUpdateCitizen", Description = "Lejon updaten e Qytetarve" },
-                new Permission { Name = "CanDeleteCitizen", Description = "Lejon fshirjen e Qytetarve" },
-            };
+    // Staff
+    new Permission { Name = Permissions.CanCreateStaff, Description = "Lejon krijimin e staff" },
+    new Permission { Name = Permissions.CanViewStaff, Description = "Lejon shikimin e staff" },
+    new Permission { Name = Permissions.CanUpdateStaff, Description = "Lejon updaten e staff" },
+    new Permission { Name = Permissions.CanDeleteStaff, Description = "Lejon fshirjen e staff" },
+
+    // Citizens
+    new Permission { Name = Permissions.CanCreateCitizen, Description = "Lejon krijimin e qytetareve" },
+    new Permission { Name = Permissions.CanViewCitizen, Description = "Lejon shikimin e qytetareve" },
+    new Permission { Name = Permissions.CanUpdateCitizen, Description = "Lejon updaten e qytetareve" },
+    new Permission { Name = Permissions.CanDeleteCitizen, Description = "Lejon fshirjen e qytetareve" },
+};
 
             foreach (var p in permissions)
             {

@@ -1,8 +1,9 @@
-﻿namespace MyTown.Domain.Entities
+﻿using MyTown.Domain.Common;
+
+namespace MyTown.Domain.Entities
 {
-    public class StaffProfile
+    public class StaffProfile : BaseEntity
     {
-        public int Id { get; private set; }
 
         public int UserId { get; private set; }
 
@@ -15,10 +16,6 @@
 
         public DateTime DateHired { get; private set; }
 
-        public DateTime CreatedAt { get; private set; }
-
-        public DateTime UpdatedAt { get; private set; }
-
         public bool IsDeleted { get; private set; }
         protected StaffProfile() { }
 
@@ -28,8 +25,6 @@
             Position = position;
             DateHired = dateHired;
             DepartmentId = departmentId;
-            CreatedAt = DateTime.UtcNow;
-            UpdatedAt = DateTime.UtcNow;
             IsDeleted = false;
         }
 
@@ -38,13 +33,14 @@
             Position = position;
             DateHired = dateHired;
             DepartmentId = departmentId;
-            UpdatedAt = DateTime.UtcNow;
+           
         }
 
-        public void Delete()
+        public void Delete(int adminId)
         {
             IsDeleted = true;
             UpdatedAt = DateTime.UtcNow;
+            SetUpdated(adminId);    
         }
 
     }

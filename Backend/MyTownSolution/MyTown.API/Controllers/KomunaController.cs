@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyTown.Application.Authorization;
 using MyTown.Application.DTOs.Komuna;
 using MyTown.Application.Ports.InboundPorts;
 using System.Security.Claims;
@@ -12,22 +13,19 @@ namespace MyTown.API.Controllers
     public class KomunaController : ControllerBase
     {
         private readonly IKomunaService _komunaService;
-        private readonly IPermissionService _permissionService;
-
-        public KomunaController(IKomunaService komunaService, IPermissionService permissionService)
+       
+        public KomunaController(IKomunaService komunaService)
         {
             _komunaService = komunaService;
-            _permissionService = permissionService;
+           
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = Permissions.CanViewKomuna)]
         public async Task<IActionResult> GetAll()
         {
-            if (!await _permissionService.UserHasPermission(User, "CanViewKomunas"))
-            {
-                return Forbid();
-            }
-
+           
             try
             {
                 var list = await _komunaService.GetAllAsync();
@@ -40,12 +38,9 @@ namespace MyTown.API.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetById(int id)
         {
-            if (!await _permissionService.UserHasPermission(User, "CanViewKomunas"))
-            {
-                return Forbid();
-            }
 
             try
             {
@@ -59,13 +54,11 @@ namespace MyTown.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = Permissions.CanCreateKomuna)]
         public async Task<IActionResult> Create([FromBody] CreateKomuna dto)
         {
-            if (!await _permissionService.UserHasPermission(User, "CanCreateKomuna"))
-            {
-                return Forbid();
-            }
-
+           
             var userIdClaim = User.Claims.FirstOrDefault(c =>
                 c.Type == ClaimTypes.NameIdentifier ||
                 c.Type == "id" ||
@@ -88,12 +81,11 @@ namespace MyTown.API.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = Permissions.CanUpdateKomuna)]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateKomuna dto)
         {
-            if (!await _permissionService.UserHasPermission(User, "CanUpdateKomuna"))
-            {
-                return Forbid();
-            }
+           
 
             var userIdClaim = User.Claims.FirstOrDefault(c =>
                 c.Type == ClaimTypes.NameIdentifier ||
@@ -117,12 +109,10 @@ namespace MyTown.API.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = Permissions.CanDeleteKomuna)]
         public async Task<IActionResult> Delete(int id)
         {
-            if (!await _permissionService.UserHasPermission(User, "CanDeleteKomuna"))
-            {
-                return Forbid();
-            }
 
             var userIdClaim = User.Claims.FirstOrDefault(c =>
                 c.Type == ClaimTypes.NameIdentifier ||
