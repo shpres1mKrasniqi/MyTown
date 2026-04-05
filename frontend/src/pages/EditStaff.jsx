@@ -88,12 +88,6 @@ if (!form.email || !emailRegex.test(form.email)) {
   return;
 }
 
-if (!form.password || form.password.length < 6 || form.password.length > 50) {
-  toast.error("Fjalëkalimi duhet të ketë 6 deri në 50 karaktere.");
-  return;
-}
-
-
 if (!form.position || form.position.length < 10 || form.position.length > 100) {
   toast.error("Pozita duhet të ketë 10 deri në 100 karaktere.");
   return;

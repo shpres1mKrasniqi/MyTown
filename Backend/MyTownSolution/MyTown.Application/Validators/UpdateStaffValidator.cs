@@ -4,34 +4,35 @@ using MyTown.Application.Validators;
 
 namespace MyTown.Application.Validators
 {
-    public class UpdateStaffValidator : AbstractValidator<CreateStaffDto>
+    public class UpdateStaffValidator : AbstractValidator<UpdateStaffDto>
     {
         public UpdateStaffValidator()
         {
             RuleFor(d => d.FirstName)
                 .NotEmpty().WithMessage("Emri i stafit eshte i detyrueshem.")
                 .MinimumLength(3).WithMessage("Emri i stafit duhet te kete te pakten 3 karaktere.")
-                .MaximumLength(100).WithMessage("Emri i stafit duhet te kete maksimumi 50 karaktere.");
+                .MaximumLength(50).WithMessage("Emri i stafit duhet te kete maksimumi 50 karaktere.");
 
 
             RuleFor(d => d.LastName)
                 .NotEmpty().WithMessage("Pershkrimi i departamentit eshte i detyrueshem.")
-                .MinimumLength(10).WithMessage("Pershkrimi i departamentit duhet te kete te pakten 10 karaktere.")
-                .MaximumLength(500).WithMessage("Pershkrimi i departamentit duhet te kete maksimumi 500 karaktere.");
+                .MinimumLength(3).WithMessage("Mbiemri  duhet te kete te pakten 3 karaktere.")
+                .MaximumLength(50).WithMessage("Mbiemri  duhet te kete maksimumi 50 karaktere.");
 
             RuleFor(d => d.Email)
              .NotEmpty().WithMessage("Email per stafin eshte i detyrueshem.")
              .NotEmpty().WithMessage("Email duhet te jete ne formatin korrekt.");
 
-            RuleFor(d => d.Password)
-             .NotEmpty().WithMessage("Passwordi per profilin e stafit eshte i detyrueshem.")
-             .MinimumLength(10).WithMessage("Passwordi per profilin e stafit duhet te kete te pakten 6 karaktere.")
-             .MaximumLength(500).WithMessage("Passwordi per profilin e stafit  duhet te kete maksimumi 50 karaktere.");
-
             RuleFor(d => d.Position)
          .NotEmpty().WithMessage("Position per profilin e stafit eshte i detyrueshem.")
          .MinimumLength(10).WithMessage("Position per profilin e stafit duhet te kete te pakten 10 karaktere.")
-         .MaximumLength(500).WithMessage("Position per profilin e stafit  duhet te kete maksimumi 100 karaktere.");
+         .MaximumLength(100).WithMessage("Position per profilin e stafit  duhet te kete maksimumi 100 karaktere.");
+
+            RuleFor(d => d.DepartmentId)
+    .GreaterThan(0)
+    .WithMessage("Departamenti është i detyrueshëm.");
+
+         
 
 
 

@@ -1,0 +1,16 @@
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\bin\Debug\net10.0\MyTown.Application.deps.json
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\bin\Debug\net10.0\MyTown.Application.dll
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\bin\Debug\net10.0\MyTown.Application.pdb
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\bin\Debug\net10.0\MyTown.Domain.dll
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\bin\Debug\net10.0\MyTown.Domain.pdb
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\obj\Debug\net10.0\MyTown.Application.csproj.AssemblyReference.cache
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\obj\Debug\net10.0\MyTown.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\obj\Debug\net10.0\MyTown.Application.AssemblyInfoInputs.cache
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\obj\Debug\net10.0\MyTown.Application.AssemblyInfo.cs
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\obj\Debug\net10.0\MyTown.Application.csproj.CoreCompileInputs.cache
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\obj\Debug\net10.0\MyTown.Application.sourcelink.json
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\obj\Debug\net10.0\MyTown.A.FE8537B4.Up2Date
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\obj\Debug\net10.0\MyTown.Application.dll
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\obj\Debug\net10.0\refint\MyTown.Application.dll
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\obj\Debug\net10.0\MyTown.Application.pdb
+C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Application\obj\Debug\net10.0\ref\MyTown.Application.dll

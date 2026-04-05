@@ -88,7 +88,9 @@ if (!form.position || form.position.length < 10 || form.position.length > 100) {
       toast.success("Stafi u shtua me sukses!");
       navigate("/manage-staff");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Shtimi i stafit dështoi");
+  console.log(err.response); // 🔥 shto këtë
+  toast.error(err.response?.data?.message || "Shtimi i stafit dështoi");
+
     } finally {
       setLoading(false);
     }

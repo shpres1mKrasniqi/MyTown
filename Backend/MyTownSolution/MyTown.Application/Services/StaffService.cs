@@ -132,10 +132,14 @@ namespace MyTown.Application.Services
             stafi.User.Email = dto.Email;
 
 
-  
-            stafi.Update(dto.Position, dto.DateHired, dto.DepartmentId);
 
-      
+            stafi.Update(
+    dto.Position,
+    dto.DateHired ?? stafi.DateHired,
+    dto.DepartmentId
+);
+
+
             stafi.SetUpdated(adminId);
 
   
