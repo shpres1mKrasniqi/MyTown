@@ -1,4 +1,4 @@
-﻿namespace MyTown.Application.DTOs.StaffProfiles
+﻿namespace MyTown.Application.DTOs.Staff
 {
     public class CreateStaffDto
     {

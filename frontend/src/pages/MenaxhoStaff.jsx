@@ -28,9 +28,6 @@ useEffect(() => {
   fetchStaffs();
 }, []);
 
-useEffect(() => {
-  console.log("STAFF DATA:", staffs);
-}, [staffs]);
 
   const filtered = staffs.filter((s) =>
     `${s.firstName} ${s.lastName}`

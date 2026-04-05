@@ -4,9 +4,9 @@ using MyTown.Application.Validators;
 
 namespace MyTown.Application.Validators
 {
-    public class CreateDepartmentValidator : AbstractValidator<CreateDepartment>
+    public class UpdateDepartmentValidator : AbstractValidator<UpdateDepartment>
     {
-        public CreateDepartmentValidator()
+        public UpdateDepartmentValidator()
         {
             RuleFor(d => d.Name)
                 .NotEmpty().WithMessage("Emri i departmentit eshte i detyrueshem.")
@@ -17,7 +17,7 @@ namespace MyTown.Application.Validators
             RuleFor(d => d.Description)
                 .NotEmpty().WithMessage("Pershkrimi i departamentit eshte i detyrueshem.")
                 .MinimumLength(10).WithMessage("Pershkrimi i departamentit duhet te kete te pakten 10 karaktere.")
-                .MaximumLength(500).WithMessage("Pershkrimi i departamentit duhet te kete maksimumi 500 karaktere.");   
+                .MaximumLength(500).WithMessage("Pershkrimi i departamentit duhet te kete maksimumi 500 karaktere.");
 
         }
     }

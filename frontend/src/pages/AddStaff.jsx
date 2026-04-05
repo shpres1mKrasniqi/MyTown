@@ -45,19 +45,34 @@ export default function AddStaff() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validimet
-    if (form.firstName.length < 2) {
-      toast.error("Emri duhet të ketë së paku 2 karaktere");
-      return;
-    }
-    if (form.lastName.length < 2) {
-      toast.error("Mbiemri duhet të ketë së paku 2 karaktere");
-      return;
-    }
-    if (form.password.length < 6) {
-      toast.error("Fjalëkalimi duhet të jetë së paku 6 karaktere");
-      return;
-    }
+ if (!form.firstName || form.firstName.length < 3 || form.firstName.length > 50) {
+  toast.error("Emri duhet të ketë 3 deri në 50 karaktere.");
+  return;
+}
+
+if (!form.lastName || form.lastName.length < 3 || form.lastName.length > 50) {
+  toast.error("Mbiemri duhet të ketë 3 deri në 50 karaktere.");
+  return;
+}
+
+
+const emailRegex = /\S+@\S+\.\S+/;
+if (!form.email || !emailRegex.test(form.email)) {
+  toast.error("Ju lutem jepni një email valid.");
+  return;
+}
+
+if (!form.password || form.password.length < 6 || form.password.length > 50) {
+  toast.error("Fjalëkalimi duhet të ketë 6 deri në 50 karaktere.");
+  return;
+}
+
+
+if (!form.position || form.position.length < 10 || form.position.length > 100) {
+  toast.error("Pozita duhet të ketë 10 deri në 100 karaktere.");
+  return;
+}
+
     if (!form.departmentId) {
       toast.error("Ju lutem zgjidhni një departament");
       return;

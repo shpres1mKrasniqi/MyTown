@@ -39,7 +39,7 @@ export default function EditStaff() {
           departmentService.getAll(),
         ]);
 
-        console.log("ID:", id);
+        
         const staff = staffRes.data;
 
 
@@ -71,15 +71,39 @@ export default function EditStaff() {
     e.preventDefault();
 
    
-    if (form.firstName.trim().length < 2 || form.lastName.trim().length < 2) {
-      toast.error("Emri dhe mbiemri duhet të kenë së paku 2 karaktere");
+    if (!form.firstName || form.firstName.length < 3 || form.firstName.length > 50) {
+  toast.error("Emri duhet të ketë 3 deri në 50 karaktere.");
+  return;
+}
+
+if (!form.lastName || form.lastName.length < 3 || form.lastName.length > 50) {
+  toast.error("Mbiemri duhet të ketë 3 deri në 50 karaktere.");
+  return;
+}
+
+
+const emailRegex = /\S+@\S+\.\S+/;
+if (!form.email || !emailRegex.test(form.email)) {
+  toast.error("Ju lutem jepni një email valid.");
+  return;
+}
+
+if (!form.password || form.password.length < 6 || form.password.length > 50) {
+  toast.error("Fjalëkalimi duhet të ketë 6 deri në 50 karaktere.");
+  return;
+}
+
+
+if (!form.position || form.position.length < 10 || form.position.length > 100) {
+  toast.error("Pozita duhet të ketë 10 deri në 100 karaktere.");
+  return;
+}
+
+    if (!form.departmentId) {
+      toast.error("Ju lutem zgjidhni një departament");
       return;
     }
 
-    if (!form.departmentId) {
-      toast.error("Zgjidhni një departament");
-      return;
-    }
 
     setLoading(true);
     try {

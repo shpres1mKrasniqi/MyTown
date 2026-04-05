@@ -67,7 +67,7 @@ namespace MyTown.API.Controllers
 
             try
             {
-                await _komunaService.CreateAsync(dto, adminId.Value);
+                await _komunaService.CreateAsync(dto, adminId.Value, ipAddress);
                 return StatusCode(201, new { message = "Komuna u krijua me sukses" });
             }
             catch (Exception ex)
@@ -87,7 +87,7 @@ namespace MyTown.API.Controllers
 
             try
             {
-                await _komunaService.UpdateAsync(id, dto, adminId.Value);
+                await _komunaService.UpdateAsync(id, dto, adminId.Value, ipAddress);
                 return Ok(new { message = "Komuna u perditesua me sukses" });
             }
             catch (Exception ex)
@@ -107,7 +107,7 @@ namespace MyTown.API.Controllers
 
             try
             {
-                await _komunaService.DeleteAsync(id, adminId.Value);
+                await _komunaService.DeleteAsync(id, adminId.Value, ipAddress);
                 return NoContent();
             }
             catch (Exception ex)

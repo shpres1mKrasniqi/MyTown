@@ -32,13 +32,29 @@ export default function EditDepartment() {
     fetchDep();
   }, [id, navigate]);
 
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+     if (form.name.length < 3 || form.name.length > 100) {
+      toast.error("Emri duhet të ketë 3-100 karaktere");
+      return;
+    }
+
+    if (form.description.length < 10 || form.description.length > 500) {
+      toast.error("Përshkrimi duhet të ketë 10-500 karaktere");
+      return;
+    }
+
+    if (!form.komunaId) {
+      toast.error("Zgjidhni një komunë");
+      return;
+    }
     setLoading(true);
     try {
       await departmentService.update(id, form);
       toast.success("Departamenti u përditësua me sukses!");
-      navigate("/admin-dashboard"); //ndryshimi ketu duhet me ba admin-dashboard
+      navigate("/admin-dashboard"); 
     } catch {
       toast.error("Përditësimi dështoi!");
     } finally {

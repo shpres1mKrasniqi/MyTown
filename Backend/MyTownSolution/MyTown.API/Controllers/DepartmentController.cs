@@ -40,8 +40,6 @@ namespace MyTown.API.Controllers
         [Authorize(Policy = Permissions.CanViewDepartments)]
         public async Task<IActionResult> GetById(int id)
         {
-            
-           
 
             try
             {
@@ -56,10 +54,7 @@ namespace MyTown.API.Controllers
         [HttpPost]
         [Authorize(Policy = Permissions.CanCreateDepartment)]
         public async Task<IActionResult> Create(CreateDepartment dto)
-        {
-
-
-
+        { 
             var adminId = GetAdminId();
             if (adminId == null) return Unauthorized();
 
@@ -68,7 +63,7 @@ namespace MyTown.API.Controllers
             try
             {
                 
-                await _departmentService.CreateAsync(dto, adminId.Value);
+                await _departmentService.CreateAsync(dto, adminId.Value,  ipAddress);
                 return StatusCode(201, new { message = "Departmenti u krijua me sukses" });
             }
             catch (Exception ex)
@@ -89,7 +84,7 @@ namespace MyTown.API.Controllers
 
             try
             {
-                await _departmentService.UpdateAsync(id, dto, adminId.Value);
+                await _departmentService.UpdateAsync(id, dto, adminId.Value, ipAddress);
                 return Ok(new { message = "Departmenti u perditesua me sukses" });
             }
             catch (Exception ex)
@@ -100,14 +95,15 @@ namespace MyTown.API.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Policy = Permissions.CanDeleteDepartment)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id )
         {
-            
-           
+            var adminId = GetAdminId();
+            if (adminId == null) return Unauthorized();
+            string ipAddress = GetIpAddress();
 
             try
             {
-                await _departmentService.DeleteAsync(id);
+                await _departmentService.DeleteAsync(id, adminId.Value, ipAddress);
                 return NoContent();
             }
             catch (Exception ex)
