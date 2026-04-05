@@ -38,7 +38,7 @@ export default function EditDepartment() {
     try {
       await departmentService.update(id, form);
       toast.success("Departamenti u përditësua me sukses!");
-      navigate("/adminDasboard");
+      navigate("/admin-dashboard"); //ndryshimi ketu duhet me ba admin-dashboard
     } catch {
       toast.error("Përditësimi dështoi!");
     } finally {

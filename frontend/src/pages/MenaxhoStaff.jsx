@@ -13,8 +13,10 @@ export default function MenaxhoStaff() {
   const fetchStaffs = async () => {
     setLoading(true);
     try {
+     
       const res = await staffService.getAll();
       setStaffs(res.data);
+      
     } catch {
       toast.error("Gabim gjatë marrjes së stafit");
     } finally {
@@ -22,9 +24,13 @@ export default function MenaxhoStaff() {
     }
   };
 
-  useEffect(() => {
-    fetchStaffs();
-  }, []);
+useEffect(() => {
+  fetchStaffs();
+}, []);
+
+useEffect(() => {
+  console.log("STAFF DATA:", staffs);
+}, [staffs]);
 
   const filtered = staffs.filter((s) =>
     `${s.firstName} ${s.lastName}`

@@ -83,10 +83,91 @@ namespace MyTown.Application.Services
             };
 
             return reponse;
-
-
-
         }
+        public async Task<IEnumerable<CitizenResponseDto>> GetAllCitizensAsync()
+        {
+            var citizens = await _citizenRepository.GetAll();
 
+            return citizens.Select(c => new CitizenResponseDto
+            {
+                FirstName = c.User.FirstName,
+                LastName = c.User.LastName,
+                Address = c.Address,
+                PhoneNumber = c.PhoneNumber
+            });
+        
+    }
+        public async Task<CitizenResponseDto> GetCitizenByIdAsync(int id)
+        {
+            var citizen = await _citizenRepository.GetById(id);
+
+            if (citizen == null)
+                throw new Exception("Qytetari nuk u gjet!");
+
+            return new CitizenResponseDto
+            {
+                FirstName = citizen.User.FirstName,
+                LastName = citizen.User.LastName,
+                Address = citizen.Address,
+                PhoneNumber = citizen.PhoneNumber
+            };
+        }
+        public async Task<CitizenResponseDto> UpdateCitizenAsync(int id, UpdateCitizenDto dto, int adminId, string ipAddress)
+        {
+            var citizen = await _citizenRepository.GetById(id);
+
+            if (citizen == null)
+                throw new Exception("Qytetari nuk u gjet!");
+
+            var oldValue = $"FirstName: {citizen.User.FirstName}, LastName: {citizen.User.LastName}, Email: {citizen.User.Email}, " +
+                           $"Address: {citizen.Address}, Phone: {citizen.PhoneNumber}";
+
+            
+            citizen.User.FirstName = dto.FirstName;
+            citizen.User.LastName = dto.LastName;
+            citizen.User.Email = dto.Email;
+
+            
+            citizen.Update(dto.KomunaId, dto.PhoneNumber, dto.Address);
+
+            citizen.SetUpdated(adminId);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            var newValue = $"FirstName: {citizen.User.FirstName}, LastName: {citizen.User.LastName}, Email: {citizen.User.Email}, " +
+                           $"Address: {citizen.Address}, Phone: {citizen.PhoneNumber}";
+
+            var log = new AuditLog(
+                adminId,
+                "UPDATE",
+                "CitizenProfile",
+                citizen.Id,
+                oldValue,
+                newValue,
+                ipAddress
+            );
+
+            await _auditRepository.AddAsync(log);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new CitizenResponseDto
+            {
+                FirstName = citizen.User.FirstName,
+                LastName = citizen.User.LastName,
+                Address = citizen.Address,
+                PhoneNumber = citizen.PhoneNumber
+            };
+        }
+        public async Task DeleteCitizenAsync(int id)
+        {
+            var citizen = await _citizenRepository.GetById(id);
+
+            if (citizen == null)
+                throw new Exception("Qytetari nuk u gjet!");
+
+            citizen.Delete();
+
+            await _unitOfWork.SaveChangesAsync();
+        }
     }
 }

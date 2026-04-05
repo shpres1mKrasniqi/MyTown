@@ -14,7 +14,7 @@ namespace MyTown.Application.Services
             _komunaRepository = komunaRepository;
         }
 
-        public async Task CreateAsync(CreateKomuna dto, int userId)
+        public async Task CreateAsync(CreateKomuna dto, int adminId)
         {
             if (await _komunaRepository.ExistsByNameAsync(dto.Name, null))
             {
@@ -22,7 +22,7 @@ namespace MyTown.Application.Services
             }
 
             var komuna = new Komuna(dto.Name, dto.Description);
-            komuna.SetCreated(userId);
+            komuna.SetCreated(adminId);
             await _komunaRepository.AddAsync(komuna);
             await _komunaRepository.SaveChangesAsync();
         }

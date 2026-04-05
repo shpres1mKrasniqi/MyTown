@@ -1,13 +1,15 @@
-﻿using MyTown.Application.DTOs.StaffProfiles;
+﻿using MyTown.Application.DTOs.Staff;
+using MyTown.Application.DTOs.StaffProfiles;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Domain.Common;
 using MyTown.Domain.Entities;
-//Qoja chatit bane copy qeta 4 
+using System.Collections;
+
 
 namespace MyTown.Application.Services
 {
-    public class StaffService : IStaffServices
+    public class StaffService : IStaffService
     {
         private readonly IStaffRepository _staffRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -42,6 +44,7 @@ namespace MyTown.Application.Services
                 Email = dto.Email,
                 PasswordHash = hashedPassword
             };
+          ;
 
             await _userRepo.CreateUserAsync(user);
 
@@ -61,6 +64,7 @@ namespace MyTown.Application.Services
             );
 
             await _staffRepository.AddStaffAsync(staff);
+            staff.SetCreated(adminId);
 
             await _unitOfWork.SaveChangesAsync();
 
@@ -93,13 +97,13 @@ namespace MyTown.Application.Services
             return response;
         }
 
-        public async Task<IEnumerable<StaffListDto>> GetAllStaffAsync()
+        public async Task<IEnumerable<StaffResponseDto>> GetAllStafAsync()
         {
-            var staffs = await _staffRepository.GetAllStaff();
+            var staffs = await _staffRepository.GetAllAsync();
 
-            var result = staffs.Select(s => new StaffListDto
+            var result = staffs.Select(s => new StaffResponseDto
             {
-                Id = s.Id,
+               Id = s.Id,
                 FirstName = s.User.FirstName,     
                 LastName = s.User.LastName,
                 Email = s.User.Email,             
@@ -110,10 +114,10 @@ namespace MyTown.Application.Services
             return result;
         }
 
-        public async Task<StaffResponseDto> UpdateStaffProfileAsync(UpdateStaffDto dto, int id, int adminId, string ipAddress)
+        public async Task<StaffResponseDto> UpdateAsync(int id,UpdateStaffDto dto, int adminId, string ipAddress)
         {
           
-            var stafi = await _staffRepository.GetStaffProfileByIdAsync(id);
+            var stafi = await _staffRepository.GetByIdAsync(id);
 
             if (stafi == null)
                 throw new Exception("Stafi nuk u gjet!");
@@ -126,6 +130,7 @@ namespace MyTown.Application.Services
             stafi.User.FirstName = dto.FirstName;
             stafi.User.LastName = dto.LastName;
             stafi.User.Email = dto.Email;
+
 
   
             stafi.Update(dto.Position, dto.DateHired, dto.DepartmentId);
@@ -157,6 +162,7 @@ namespace MyTown.Application.Services
      
             var response = new StaffResponseDto
             {
+                Id = id,
                 FirstName = stafi.User.FirstName,
                 LastName = stafi.User.LastName,
                 Position = stafi.Position,
@@ -166,16 +172,16 @@ namespace MyTown.Application.Services
             return response;
         }
 
-        public async Task<StaffResponseDto> SoftDeleteStaffAsync(int id, int adminId, string ipAddress)
+        public async Task<StaffResponseDto> DeleteAsync(int id, int adminId, string ipAddress)
         {
-            var staff = await _staffRepository.GetStaffProfileByIdAsync(id);
+            var staff = await _staffRepository.GetByIdAsync(id);
             if (staff == null || staff.IsDeleted)
                 throw new Exception("Stafi nuk u gjet ose eshte fshire!");
 
             var oldValue = $"Position: {staff.Position}, DateHired: {staff.DateHired}, DepartmentId: {staff.DepartmentId}, IsDeleted: {staff.IsDeleted}";
 
            
-            staff.Delete(adminId);
+            staff.Delete();
 
             await _unitOfWork.SaveChangesAsync();
 
@@ -195,18 +201,19 @@ namespace MyTown.Application.Services
 
             return new StaffResponseDto
             {
+                Id=staff.Id,
                 FirstName = staff.User.FirstName,
                 LastName = staff.User.LastName,
                 Position = staff.Position,
                 DateHired = staff.DateHired
             };
         }
-        public async Task<StaffListDto> GetStaffByIdAsync(int id)
+        public async Task<StaffResponseDto> GetStaffByIdAsync(int id)
         {
-            var s = await _staffRepository.GetStaffProfileByIdAsync(id);
+            var s = await _staffRepository.GetByIdAsync(id);
             if (s == null) throw new Exception("Stafi nuk u gjet");
 
-            return new StaffListDto
+            return new StaffResponseDto
             {
                 Id = s.Id,
                 FirstName = s.User.FirstName,

@@ -15,7 +15,7 @@ namespace MyTown.Application.Services
         {
             _departmentRepository = departmentRepository;
         }
-        public async Task CreateAsync(CreateDepartment dto, int userId)
+        public async Task CreateAsync(CreateDepartment dto, int adminId)
         {
             if(await _departmentRepository.ExistsByNameAsync(dto.Name, dto.KomunaId))
             {
@@ -23,7 +23,7 @@ namespace MyTown.Application.Services
             }
             var dep = new Department(dto.Name, dto.Description, dto.KomunaId);
 
-            dep.SetCreated(userId);
+            dep.SetCreated(adminId);
 
             await _departmentRepository.AddAsync(dep);
             await _departmentRepository.SaveChangesAsync();

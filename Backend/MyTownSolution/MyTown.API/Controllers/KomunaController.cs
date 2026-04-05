@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyTown.Application.Authorization;
 using MyTown.Application.DTOs.Komuna;
 using MyTown.Application.Ports.InboundPorts;
 using System.Security.Claims;
@@ -12,21 +13,19 @@ namespace MyTown.API.Controllers
     public class KomunaController : ControllerBase
     {
         private readonly IKomunaService _komunaService;
-        private readonly IPermissionService _permissionService;
 
-        public KomunaController(IKomunaService komunaService, IPermissionService permissionService)
+
+        public KomunaController(IKomunaService komunaService)
         {
             _komunaService = komunaService;
-            _permissionService = permissionService;
+           
         }
 
         [HttpGet]
+        [Authorize(Policy = Permissions.CanViewKomuna)]
         public async Task<IActionResult> GetAll()
         {
-            if (!await _permissionService.UserHasPermission(User, "CanViewKomunas"))
-            {
-                return Forbid();
-            }
+            
 
             try
             {
@@ -40,12 +39,10 @@ namespace MyTown.API.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize(Policy = Permissions.CanViewKomuna)]
         public async Task<IActionResult> GetById(int id)
         {
-            if (!await _permissionService.UserHasPermission(User, "CanViewKomunas"))
-            {
-                return Forbid();
-            }
+            
 
             try
             {
@@ -59,26 +56,18 @@ namespace MyTown.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = Permissions.CanCreateKomuna)]
         public async Task<IActionResult> Create([FromBody] CreateKomuna dto)
         {
-            if (!await _permissionService.UserHasPermission(User, "CanCreateKomuna"))
-            {
-                return Forbid();
-            }
+            var adminId = GetAdminId();
+            if (adminId == null) return Unauthorized();
 
-            var userIdClaim = User.Claims.FirstOrDefault(c =>
-                c.Type == ClaimTypes.NameIdentifier ||
-                c.Type == "id" ||
-                c.Type == "sub")?.Value;
+            string ipAddress = GetIpAddress();
 
-            if (!int.TryParse(userIdClaim, out int userId))
-            {
-                return Unauthorized("User ID not found");
-            }
 
             try
             {
-                await _komunaService.CreateAsync(dto, userId);
+                await _komunaService.CreateAsync(dto, adminId.Value);
                 return StatusCode(201, new { message = "Komuna u krijua me sukses" });
             }
             catch (Exception ex)
@@ -88,26 +77,17 @@ namespace MyTown.API.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Authorize(Policy = Permissions.CanEditKomuna)]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateKomuna dto)
         {
-            if (!await _permissionService.UserHasPermission(User, "CanUpdateKomuna"))
-            {
-                return Forbid();
-            }
+            var adminId = GetAdminId();
+            if (adminId == null) return Unauthorized();
 
-            var userIdClaim = User.Claims.FirstOrDefault(c =>
-                c.Type == ClaimTypes.NameIdentifier ||
-                c.Type == "id" ||
-                c.Type == "sub")?.Value;
-
-            if (!int.TryParse(userIdClaim, out int userId))
-            {
-                return Unauthorized("User ID not found");
-            }
+            string ipAddress = GetIpAddress();
 
             try
             {
-                await _komunaService.UpdateAsync(id, dto, userId);
+                await _komunaService.UpdateAsync(id, dto, adminId.Value);
                 return Ok(new { message = "Komuna u perditesua me sukses" });
             }
             catch (Exception ex)
@@ -117,26 +97,17 @@ namespace MyTown.API.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(Policy = Permissions.CanDeleteKomuna)]
         public async Task<IActionResult> Delete(int id)
         {
-            if (!await _permissionService.UserHasPermission(User, "CanDeleteKomuna"))
-            {
-                return Forbid();
-            }
+            var adminId = GetAdminId();
+            if (adminId == null) return Unauthorized();
 
-            var userIdClaim = User.Claims.FirstOrDefault(c =>
-                c.Type == ClaimTypes.NameIdentifier ||
-                c.Type == "id" ||
-                c.Type == "sub")?.Value;
-
-            if (!int.TryParse(userIdClaim, out int userId))
-            {
-                return Unauthorized("User ID not found");
-            }
+            string ipAddress = GetIpAddress();
 
             try
             {
-                await _komunaService.DeleteAsync(id, userId);
+                await _komunaService.DeleteAsync(id, adminId.Value);
                 return NoContent();
             }
             catch (Exception ex)
@@ -144,5 +115,18 @@ namespace MyTown.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+        private int? GetAdminId()
+        {
+            var claim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(claim)) return null;
+
+            return int.Parse(claim);
+        }
+
+        private string GetIpAddress()
+        {
+            return HttpContext.Connection.RemoteIpAddress?.ToString() ?? "I panjohur";
+        }
     }
 }
+

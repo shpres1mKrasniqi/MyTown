@@ -39,6 +39,7 @@ export default function EditStaff() {
           departmentService.getAll(),
         ]);
 
+        console.log("ID:", id);
         const staff = staffRes.data;
 
 

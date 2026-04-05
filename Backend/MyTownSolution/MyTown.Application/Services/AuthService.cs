@@ -60,7 +60,8 @@ namespace MyTown.Application.Services
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                RoleName = role.Name
+                Roles = new List<string> { role.Name },
+                Permissions = new List<string>()
             };
 
             var accessToken = _tokenService.GenerateAccessToken(tokenUser);
@@ -104,9 +105,9 @@ namespace MyTown.Application.Services
                 throw new Exception("Kredenciale te pavlefshme");
             }
 
-            var roles = user.UserRoles.Select(ur => ur.Role.Name).ToList();
+            var roles = user.UserRoles.Select(ur => ur.Role.Name).Distinct().ToList();
 
-            var permissions = user.UserRoles
+            var premissions = user.UserRoles
              .SelectMany(ur => ur.Role.RolePermissions)
                .Select(rp => rp.Permission.Name)
                .Distinct()
@@ -118,8 +119,8 @@ namespace MyTown.Application.Services
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                RoleName = roles.FirstOrDefault() ?? "Citizen",
-                Permissions = permissions
+                Roles = roles,
+                Permissions = premissions
             };
 
             var accessToken = _tokenService.GenerateAccessToken(tokenUser);
@@ -166,7 +167,13 @@ namespace MyTown.Application.Services
             var user = existingToken.User;
 
 
-            var roles = user.UserRoles.Select(ur => ur.Role.Name).ToList();
+            var roles = user.UserRoles.Select(ur => ur.Role.Name).Distinct().ToList();
+
+            var premissions = user.UserRoles
+             .SelectMany(ur => ur.Role.RolePermissions)
+               .Select(rp => rp.Permission.Name)
+               .Distinct()
+               .ToList();
 
 
             var tokenUser = new TokenUserDto
@@ -175,7 +182,8 @@ namespace MyTown.Application.Services
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                RoleName = roles.First()
+                Roles = roles,
+                Permissions = premissions
             };
 
 
@@ -225,4 +233,5 @@ namespace MyTown.Application.Services
         }
 
     }
+
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MyTown.Application.Authorization;
 using MyTown.Application.DTOs.Authentication;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Settings;
@@ -26,13 +27,18 @@ namespace MyTown.Application.Services
               new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
               new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
               new Claim(JwtRegisteredClaimNames.Email, user.Email),
-              new Claim(ClaimTypes.Role, user.RoleName),
+              
 
             };
 
-            foreach (var permission in user.Permissions)
+            foreach (var role in user.Roles.Distinct())
             {
-                claims.Add(new Claim("Permission", permission));
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            foreach (var premission in user.Permissions.Distinct())
+            {
+                claims.Add(new Claim(CustomClaimTypes.Permission, premission));
             }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));

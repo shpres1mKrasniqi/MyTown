@@ -3,13 +3,13 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MyTown.Application.Authorization;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Application.Services;
 using MyTown.Application.Settings;
 using MyTown.Application.Validators;
 using MyTown.Infrastructure.Persistence.Data;
-using MyTown.Infrastructure.Persistence.Repositories;
 using MyTown.Infrastructure.Repositories;
 using MyTown.Infrastructure.SeedData;
 using System.Security.Claims;
@@ -104,10 +104,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IKomunaRepository, KomunaRepository>();
-builder.Services.AddScoped<IKomunaService, KomunaService>();
-builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
 builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 builder.Services.AddScoped<IAuditRepository, AuditRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -116,14 +113,41 @@ builder.Services.AddScoped<ICitizenRepository, CitizenRepository>();
 // Servicet
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IPermissionService, PermissionService>();
-builder.Services.AddScoped<IStaffServices, StaffService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IKomunaService, KomunaService>();
+builder.Services.AddScoped<IStaffService, StaffService>();
 builder.Services.AddScoped<ICitizenService, CitizenService>();
+
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("CanCreateStaff", policy =>
-        policy.RequireClaim("Permission", "CanCreateStaff"));
+    var permissions = new[]
+ {
+    Permissions.CanCreateDepartment,
+    Permissions.CanUpdateDepartment,
+    Permissions.CanDeleteDepartment,
+    Permissions.CanViewDepartments,
+
+    Permissions.CanCreateStaff,
+    Permissions.CanEditStaff,
+    Permissions.CanDeleteStaff,
+    Permissions.CanViewStaff,
+
+    Permissions.CanCreateCitizen,
+    Permissions.CanEditCitizen,
+    Permissions.CanDeleteCitizen,
+    Permissions.CanViewCitizen,
+
+    Permissions.CanCreateKomuna,
+    Permissions.CanEditKomuna,
+    Permissions.CanDeleteKomuna,
+    Permissions.CanViewKomuna
+};
+    foreach (var premission in permissions)
+    {
+        options.AddPolicy(premission, policy => policy.RequireClaim(CustomClaimTypes.Permission, premission));
+    }
+
 });
 
 var app = builder.Build();

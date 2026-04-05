@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyTown.Application.Authorization;
 using MyTown.Application.DTOs.Department;
 using MyTown.Application.Ports.InboundPorts;
 using System.Security.Claims;
@@ -14,15 +15,14 @@ namespace MyTown.API.Controllers
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
-        private readonly IPermissionService _permissionService;
 
-        public DepartmentController(IDepartmentService departmentService, IPermissionService permissionService)
-        {
+
+        public DepartmentController(IDepartmentService departmentService) { 
             _departmentService = departmentService;
-            _permissionService = permissionService;
+            
         }
         [HttpGet]
-        [AllowAnonymous] 
+        [Authorize(Policy = Permissions.CanViewDepartments)]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -37,13 +37,11 @@ namespace MyTown.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = Permissions.CanViewDepartments)]
         public async Task<IActionResult> GetById(int id)
         {
             
-            if (!await _permissionService.UserHasPermission(User, "CanViewDepartments"))
-            {
-                return Forbid(); 
-            }
+           
 
             try
             {
@@ -56,30 +54,21 @@ namespace MyTown.API.Controllers
             }
         }
         [HttpPost]
+        [Authorize(Policy = Permissions.CanCreateDepartment)]
         public async Task<IActionResult> Create(CreateDepartment dto)
         {
 
-            
 
-            if (!await _permissionService.UserHasPermission(User, "CanCreateDepartment"))
-            {
-                return Forbid();
-            }
-            var userIdClaim = User.Claims.FirstOrDefault(c =>
-            c.Type == ClaimTypes.NameIdentifier ||
-            c.Type == "id" ||
-            c.Type == "sub"
-            )?.Value;
 
-            if (!int.TryParse(userIdClaim, out int userId))
-            {
-                return Unauthorized("User ID not found");
-            }
+            var adminId = GetAdminId();
+            if (adminId == null) return Unauthorized();
+
+            string ipAddress = GetIpAddress();
 
             try
             {
                 
-                await _departmentService.CreateAsync(dto, userId);
+                await _departmentService.CreateAsync(dto, adminId.Value);
                 return StatusCode(201, new { message = "Departmenti u krijua me sukses" });
             }
             catch (Exception ex)
@@ -89,27 +78,18 @@ namespace MyTown.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = Permissions.CanUpdateDepartment)]
         public async Task<IActionResult> Update(int id, UpdateDepartment dto)
         {
-            
-            if (!await _permissionService.UserHasPermission(User, "CanUpdateDepartment"))
-            {
-                return Forbid();
-            }
-            var userIdClaim = User.Claims.FirstOrDefault(c =>
-           c.Type == ClaimTypes.NameIdentifier ||
-           c.Type == "id" ||
-           c.Type == "sub"
-           )?.Value;
 
-            if (!int.TryParse(userIdClaim, out int userId))
-            {
-                return Unauthorized("User ID not found");
-            }
+            var adminId = GetAdminId();
+            if (adminId == null) return Unauthorized();
+
+            string ipAddress = GetIpAddress();
 
             try
             {
-                await _departmentService.UpdateAsync(id, dto, userId);
+                await _departmentService.UpdateAsync(id, dto, adminId.Value);
                 return Ok(new { message = "Departmenti u perditesua me sukses" });
             }
             catch (Exception ex)
@@ -119,13 +99,11 @@ namespace MyTown.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = Permissions.CanDeleteDepartment)]
         public async Task<IActionResult> Delete(int id)
         {
             
-            if (!await _permissionService.UserHasPermission(User, "CanDeleteDepartment"))
-            {
-                return Forbid();
-            }
+           
 
             try
             {
@@ -137,6 +115,19 @@ namespace MyTown.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+        private int? GetAdminId()
+        {
+            var claim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(claim)) return null;
+
+            return int.Parse(claim);
+        }
+
+        private string GetIpAddress()
+        {
+            return HttpContext.Connection.RemoteIpAddress?.ToString() ?? "I panjohur";
+        }
     }
 }
+
 
