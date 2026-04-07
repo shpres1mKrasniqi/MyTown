@@ -39,6 +39,8 @@ api.interceptors.response.use(
 
       try {
         await api.post("/auth/refresh");
+        
+        await new Promise(resolve => setTimeout(resolve, 100));
 
         processQueue(null);
         return api(originalRequest);

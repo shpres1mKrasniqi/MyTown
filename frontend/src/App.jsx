@@ -7,6 +7,7 @@ import "./App.css";
 import AdminLayout from "./layouts/AdminLayout";
 
 const Login = lazy(() => import("./components/Login"));
+const Register = lazy(() => import("./components/Register"));
 const AdminDashboard = lazy(() => import("./dashboards/adminDashboard"));
 const StaffDashboard = lazy(() => import("./dashboards/staffDashboard"));
 const CitizenDashboard = lazy(() => import("./dashboards/citizenDashboard"));
@@ -27,7 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
-
+        <Route path = "/signup" element={<Register />} />
         {/* ADMIN LAYOUT ROUTE WRAPPER */}
         <Route element={<AdminLayout />}>
           <Route path="/admin-dashboard" element={<AdminDashboard />} />

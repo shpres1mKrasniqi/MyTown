@@ -27,7 +27,7 @@ namespace MyTown.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(ex.Message);
             }
         }
 
@@ -67,7 +67,7 @@ namespace MyTown.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return Unauthorized(new { message = ex.Message }); ;
             }
         }
 

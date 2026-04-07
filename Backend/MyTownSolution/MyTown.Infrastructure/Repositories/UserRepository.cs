@@ -17,6 +17,7 @@ namespace MyTown.Infrastructure.Repositories
         public async Task CreateUserAsync(User user)
         {
             await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
 
         }
 
@@ -52,6 +53,7 @@ namespace MyTown.Infrastructure.Repositories
                 RoleId = roleId
             };
             await _context.UserRoles.AddAsync(userRoli);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -67,6 +67,39 @@ namespace MyTown.Infrastructure.SeedData
                 }
                 await context.SaveChangesAsync();
             }
+            var citizenRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == "Citizen");
+
+            if (citizenRole != null)
+            {
+                var permissionsToAdd = new List<string>
+    {
+                    Permissions.CanViewDepartments,
+                    Permissions.CanViewKomuna,
+                    Permissions.CanViewStaff,
+                    Permissions.CanViewCitizen
+    };
+
+                foreach (var permName in permissionsToAdd)
+                {
+                    var perm = await context.Permissions.FirstOrDefaultAsync(p => p.Name == permName);
+                    if (perm != null)
+                    {
+                        var exists = await context.RolePermissions.AnyAsync(rp =>
+                            rp.RoleId == citizenRole.Id && rp.PermissionId == perm.Id);
+                        if (!exists)
+                        {
+                            await context.RolePermissions.AddAsync(new RolePermission
+                            {
+                                RoleId = citizenRole.Id,
+                                PermissionId = perm.Id
+                            });
+                        }
+                    }
+                }
+
+                await context.SaveChangesAsync();
+        
+            }
         }
     }
 }

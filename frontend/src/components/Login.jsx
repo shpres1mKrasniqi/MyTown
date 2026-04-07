@@ -22,7 +22,7 @@ export default function Login() {
         navigate("/admin-dashboard");
       } else if (role === "Staff") {
         navigate("/staff-dashboard");
-      } else if (role === "citizen") {
+      } else if (role === "Citizen") {
         navigate("/citizen-dashboard");
       }
     } catch (err) {
