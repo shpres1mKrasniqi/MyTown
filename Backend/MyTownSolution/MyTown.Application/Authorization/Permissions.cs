@@ -39,5 +39,11 @@ namespace MyTown.Application.Authorization
         public const string CanEditIssueCategory = "CanEditIssueCategory";
         public const string CanDeleteIssueCategory = "CanDeleteIssueCategory";
         public const string CanViewIssueCategory = "CanViewIssueCategory";
+
+        public const string CanCreateWorkSchedule = "CanCreateWorkSchedule";
+        public const string CanEditWorkSchedule = "CanEditWorkSchedule";
+        public const string CanDeleteWorkSchedule = "CanDeleteWorkSchedule";
+        public const string CanViewWorkSchedule = "CanViewWorkSchedule";
+
     }
 }

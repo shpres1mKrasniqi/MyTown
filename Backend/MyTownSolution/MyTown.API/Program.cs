@@ -148,7 +148,13 @@ builder.Services.AddAuthorization(options =>
     Permissions.CanCreateIssueCategory,
     Permissions.CanEditIssueCategory,
     Permissions.CanDeleteIssueCategory,
-    Permissions.CanViewIssueCategory
+    Permissions.CanViewIssueCategory,
+
+    Permissions.CanCreateWorkSchedule,
+    Permissions.CanEditWorkSchedule,
+    Permissions.CanDeleteWorkSchedule,
+    Permissions.CanViewWorkSchedule
+
 };
     foreach (var premission in permissions)
     {

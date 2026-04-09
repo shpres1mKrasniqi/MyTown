@@ -435,5 +435,84 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyTown.API.Controllers.WorkScheduleController",
+    "Method": "Create",
+    "RelativePath": "api/WorkSchedule",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "MyTown.Application.DTOs.WorkSchedule.CreateWorkScheduleDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyTown.API.Controllers.WorkScheduleController",
+    "Method": "GetAll",
+    "RelativePath": "api/WorkSchedule",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyTown.API.Controllers.WorkScheduleController",
+    "Method": "Update",
+    "RelativePath": "api/WorkSchedule/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "MyTown.Application.DTOs.WorkSchedule.UpdateWorkScheduleDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyTown.API.Controllers.WorkScheduleController",
+    "Method": "Delete",
+    "RelativePath": "api/WorkSchedule/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyTown.API.Controllers.WorkScheduleController",
+    "Method": "GetById",
+    "RelativePath": "api/WorkSchedule/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

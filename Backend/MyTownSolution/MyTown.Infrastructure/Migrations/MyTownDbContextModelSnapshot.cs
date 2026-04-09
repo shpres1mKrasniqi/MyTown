@@ -537,6 +537,62 @@ namespace MyTown.Infrastructure.Migrations
                     b.ToTable("UserRoles");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.Entities.WorkSchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan>("ShiftEnd")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("ShiftStart")
+                        .HasColumnType("time");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StaffId");
+
+                    b.ToTable("WorkSchedules");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.CitizenProfile", b =>
                 {
                     b.HasOne("MyTown.Domain.Entities.Komuna", "Komuna")
@@ -669,6 +725,17 @@ namespace MyTown.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.Entities.WorkSchedule", b =>
+                {
+                    b.HasOne("MyTown.Domain.Entities.StaffProfile", "StaffProfile")
+                        .WithMany("WorkSchedules")
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StaffProfile");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.CitizenProfile", b =>
                 {
                     b.Navigation("Issues");
@@ -706,6 +773,11 @@ namespace MyTown.Infrastructure.Migrations
                     b.Navigation("RolePermissions");
 
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.StaffProfile", b =>
+                {
+                    b.Navigation("WorkSchedules");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.User", b =>

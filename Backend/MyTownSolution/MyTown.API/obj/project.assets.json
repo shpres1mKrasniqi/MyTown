@@ -3491,23 +3491,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\krasn\\.nuget\\packages\\": {},
+    "C:\\Users\\lenti\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\dev\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\MyTown.API.csproj",
+      "projectUniqueName": "C:\\Users\\lenti\\Desktop\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\MyTown.API.csproj",
       "projectName": "MyTown.API",
-      "projectPath": "C:\\dev\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\MyTown.API.csproj",
-      "packagesPath": "C:\\Users\\krasn\\.nuget\\packages\\",
-      "outputPath": "C:\\dev\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\obj\\",
+      "projectPath": "C:\\Users\\lenti\\Desktop\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\MyTown.API.csproj",
+      "packagesPath": "C:\\Users\\lenti\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\lenti\\Desktop\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\krasn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\lenti\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3522,11 +3522,11 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\dev\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\MyTown.Application.csproj": {
-              "projectPath": "C:\\dev\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\MyTown.Application.csproj"
+            "C:\\Users\\lenti\\Desktop\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\MyTown.Application.csproj": {
+              "projectPath": "C:\\Users\\lenti\\Desktop\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\MyTown.Application.csproj"
             },
-            "C:\\dev\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\MyTown.Infrastructure.csproj": {
-              "projectPath": "C:\\dev\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\MyTown.Infrastructure.csproj"
+            "C:\\Users\\lenti\\Desktop\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\MyTown.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\lenti\\Desktop\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\MyTown.Infrastructure.csproj"
             }
           }
         }
@@ -3585,7 +3585,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.200-preview.0.26103.119/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

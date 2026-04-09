@@ -32,7 +32,9 @@ namespace MyTown.Infrastructure.Persistence.Data
 
         public DbSet<Issue> Issues { get; set; }    
 
-        public DbSet<MyTownFile> Files { get; set; }   
+        public DbSet<MyTownFile> Files { get; set; }
+
+        public DbSet<WorkSchedule> WorkSchedules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -118,6 +120,12 @@ namespace MyTown.Infrastructure.Persistence.Data
     .WithMany(d => d.CitizenProfiles)
     .HasForeignKey(rp => rp.KomunaId)
     .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<WorkSchedule>()
+            .HasOne(ws => ws.StaffProfile)
+            .WithMany(s => s.WorkSchedules)
+            .HasForeignKey(ws => ws.StaffId);
+
         }
     }
 }

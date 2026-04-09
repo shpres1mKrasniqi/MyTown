@@ -42,6 +42,6 @@ namespace MyTown.Domain.Entities
             IsDeleted = true;
             UpdatedAt = DateTime.UtcNow;
         }
-
+        public ICollection<WorkSchedule> WorkSchedules { get; set; } = new List<WorkSchedule>();
     }
 }

@@ -41,6 +41,14 @@ namespace MyTown.Infrastructure.SeedData
      new Permission { Name = Permissions.CanViewIssueCategory, Description = "Lejon shikimin e  Kategorise se problemit" },
      new Permission { Name = Permissions.CanEditIssueCategory, Description = "Lejon editimin e  Kategorise se problemit" },
      new Permission { Name = Permissions.CanDeleteIssueCategory, Description = "Lejon fshirjen e  Kategorise se problemit" },
+
+     //WorkSchedule
+
+     new Permission { Name = Permissions.CanCreateWorkSchedule, Description = "Lejon krijimin e orareve të punës" },
+     new Permission { Name = Permissions.CanEditWorkSchedule, Description = "Lejon editimin e orareve të punës" },
+     new Permission { Name = Permissions.CanDeleteWorkSchedule, Description = "Lejon fshirjen e orareve të punës" },
+     new Permission { Name = Permissions.CanViewWorkSchedule, Description = "Lejon shikimin e orareve të punës" },
+
  };
 
             foreach (var p in permissions)
