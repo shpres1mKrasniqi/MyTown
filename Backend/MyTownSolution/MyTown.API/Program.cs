@@ -109,6 +109,7 @@ builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 builder.Services.AddScoped<IAuditRepository, AuditRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICitizenRepository, CitizenRepository>();
+builder.Services.AddScoped<IIssueCategoryRepository, IssueCategoryRepository>();
 
 // Servicet
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -117,6 +118,7 @@ builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IKomunaService, KomunaService>();
 builder.Services.AddScoped<IStaffService, StaffService>();
 builder.Services.AddScoped<ICitizenService, CitizenService>();
+builder.Services.AddScoped<IIssueCategoryService, IssueCategoryService>();
 
 
 builder.Services.AddAuthorization(options =>
@@ -141,7 +143,12 @@ builder.Services.AddAuthorization(options =>
     Permissions.CanCreateKomuna,
     Permissions.CanEditKomuna,
     Permissions.CanDeleteKomuna,
-    Permissions.CanViewKomuna
+    Permissions.CanViewKomuna,
+
+    Permissions.CanCreateIssueCategory,
+    Permissions.CanEditIssueCategory,
+    Permissions.CanDeleteIssueCategory,
+    Permissions.CanViewIssueCategory
 };
     foreach (var premission in permissions)
     {

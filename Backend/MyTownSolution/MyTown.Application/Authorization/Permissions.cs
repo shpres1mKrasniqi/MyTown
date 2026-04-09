@@ -34,5 +34,10 @@ namespace MyTown.Application.Authorization
         public const string CanEditKomuna = "CanEditKomuna";
         public const string CanDeleteKomuna = "CanDeleteKomuna";
         public const string CanViewKomuna = "CanViewKomuna";
+
+        public const string CanCreateIssueCategory = "CanCreateIssueCategory";
+        public const string CanEditIssueCategory = "CanEditIssueCategory";
+        public const string CanDeleteIssueCategory = "CanDeleteIssueCategory";
+        public const string CanViewIssueCategory = "CanViewIssueCategory";
     }
 }

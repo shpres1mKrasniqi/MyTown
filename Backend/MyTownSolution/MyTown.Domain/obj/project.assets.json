@@ -8,23 +8,23 @@
     "net10.0": []
   },
   "packageFolders": {
-    "C:\\Users\\rinor\\.nuget\\packages\\": {},
+    "C:\\Users\\krasn\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\MyTown.Domain.csproj",
+      "projectUniqueName": "C:\\dev\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\MyTown.Domain.csproj",
       "projectName": "MyTown.Domain",
-      "projectPath": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\MyTown.Domain.csproj",
-      "packagesPath": "C:\\Users\\rinor\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\obj\\",
+      "projectPath": "C:\\dev\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\MyTown.Domain.csproj",
+      "packagesPath": "C:\\Users\\krasn\\.nuget\\packages\\",
+      "outputPath": "C:\\dev\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\rinor\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\krasn\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

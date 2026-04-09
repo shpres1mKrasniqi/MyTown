@@ -28,6 +28,12 @@ namespace MyTown.Infrastructure.Persistence.Data
 
         public DbSet<CitizenProfile> CitizenProfiles { get; set; }
 
+        public DbSet<IssueCategory> IssueCategories { get; set; }
+
+        public DbSet<Issue> Issues { get; set; }    
+
+        public DbSet<MyTownFile> Files { get; set; }   
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -40,7 +46,18 @@ namespace MyTown.Infrastructure.Persistence.Data
                .HasForeignKey(t => t.UserId)
                .OnDelete(DeleteBehavior.Cascade);
 
-            
+            modelBuilder.Entity<Issue>()
+            .HasOne(i => i.Citizen)
+             .WithMany(c => c.Issues)
+                  .HasForeignKey(i => i.CitizenId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Issue>()
+            .HasOne(i => i.IssueCategory)
+            .WithMany(c => c.Issues)
+            .HasForeignKey(i => i.IssueCategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<UserRole>()
                 .HasIndex(ur => new { ur.UserId, ur.RoleId })
                 .IsUnique(); 

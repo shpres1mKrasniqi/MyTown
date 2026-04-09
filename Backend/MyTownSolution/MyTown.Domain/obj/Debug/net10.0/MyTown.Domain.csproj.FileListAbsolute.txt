@@ -10,3 +10,15 @@ C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\
 C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\refint\MyTown.Domain.dll
 C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.pdb
 C:\Users\rinor\OneDrive\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\ref\MyTown.Domain.dll
+C:\dev\MyTown\MyTown\Backend\MyTownSolution\MyTown.Domain\bin\Debug\net10.0\MyTown.Domain.deps.json
+C:\dev\MyTown\MyTown\Backend\MyTownSolution\MyTown.Domain\bin\Debug\net10.0\MyTown.Domain.dll
+C:\dev\MyTown\MyTown\Backend\MyTownSolution\MyTown.Domain\bin\Debug\net10.0\MyTown.Domain.pdb
+C:\dev\MyTown\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\dev\MyTown\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.AssemblyInfoInputs.cache
+C:\dev\MyTown\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.AssemblyInfo.cs
+C:\dev\MyTown\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.csproj.CoreCompileInputs.cache
+C:\dev\MyTown\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.sourcelink.json
+C:\dev\MyTown\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.dll
+C:\dev\MyTown\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\refint\MyTown.Domain.dll
+C:\dev\MyTown\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.pdb
+C:\dev\MyTown\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\ref\MyTown.Domain.dll

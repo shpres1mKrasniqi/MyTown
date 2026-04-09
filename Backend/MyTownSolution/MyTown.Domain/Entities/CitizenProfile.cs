@@ -20,6 +20,8 @@ namespace MyTown.Domain.Entities
 
 
         public bool IsDeleted { get; private set; }
+
+        public ICollection<Issue> Issues { get; private set; } = new List<Issue>();
         protected CitizenProfile() { }
 
         public CitizenProfile(User user, int komunaId, string phoneNumber, string address)

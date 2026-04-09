@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Ay6bzRDhB7Q=",
+  "dgSpecHash": "RDVJfDYuOAY=",
   "success": true,
-  "projectFilePath": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\MyTown.Domain.csproj",
+  "projectFilePath": "C:\\dev\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\MyTown.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

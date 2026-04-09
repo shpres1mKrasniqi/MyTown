@@ -35,6 +35,12 @@ namespace MyTown.Infrastructure.SeedData
      new Permission { Name = Permissions.CanViewCitizen, Description = "Lejon shikimin e qytetarëve" },
      new Permission { Name = Permissions.CanEditCitizen, Description = "Lejon editimin e qytetarëve" },
      new Permission { Name = Permissions.CanDeleteCitizen, Description = "Lejon fshirjen e qytetarëve" },
+
+      // Kategorite e problemit
+     new Permission { Name = Permissions.CanCreateIssueCategory, Description = "Lejon krijimin e Kategorise se problemit" },
+     new Permission { Name = Permissions.CanViewIssueCategory, Description = "Lejon shikimin e  Kategorise se problemit" },
+     new Permission { Name = Permissions.CanEditIssueCategory, Description = "Lejon editimin e  Kategorise se problemit" },
+     new Permission { Name = Permissions.CanDeleteIssueCategory, Description = "Lejon fshirjen e  Kategorise se problemit" },
  };
 
             foreach (var p in permissions)

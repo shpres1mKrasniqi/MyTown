@@ -150,6 +150,96 @@ namespace MyTown.Infrastructure.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.Entities.Issue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CitizenId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("IssueCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KomunaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CitizenId");
+
+                    b.HasIndex("IssueCategoryId");
+
+                    b.HasIndex("KomunaId");
+
+                    b.ToTable("Issues");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.IssueCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IssueCategories");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.Komuna", b =>
                 {
                     b.Property<int>("Id")
@@ -192,6 +282,48 @@ namespace MyTown.Infrastructure.Migrations
                         .HasFilter("[IsDeleted] = 0");
 
                     b.ToTable("Komunas");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.MyTownFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Entity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("IssueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UploadedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IssueId");
+
+                    b.ToTable("Files");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.Permission", b =>
@@ -435,6 +567,40 @@ namespace MyTown.Infrastructure.Migrations
                     b.Navigation("Komuna");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.Entities.Issue", b =>
+                {
+                    b.HasOne("MyTown.Domain.Entities.CitizenProfile", "Citizen")
+                        .WithMany("Issues")
+                        .HasForeignKey("CitizenId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MyTown.Domain.Entities.IssueCategory", "IssueCategory")
+                        .WithMany("Issues")
+                        .HasForeignKey("IssueCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MyTown.Domain.Entities.Komuna", "Komuna")
+                        .WithMany()
+                        .HasForeignKey("KomunaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Citizen");
+
+                    b.Navigation("IssueCategory");
+
+                    b.Navigation("Komuna");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.MyTownFile", b =>
+                {
+                    b.HasOne("MyTown.Domain.Entities.Issue", null)
+                        .WithMany("Files")
+                        .HasForeignKey("IssueId");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.RefreshToken", b =>
                 {
                     b.HasOne("MyTown.Domain.Entities.User", "User")
@@ -503,9 +669,24 @@ namespace MyTown.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.Entities.CitizenProfile", b =>
+                {
+                    b.Navigation("Issues");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.Department", b =>
                 {
                     b.Navigation("StaffProfiles");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.Issue", b =>
+                {
+                    b.Navigation("Files");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.IssueCategory", b =>
+                {
+                    b.Navigation("Issues");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.Komuna", b =>

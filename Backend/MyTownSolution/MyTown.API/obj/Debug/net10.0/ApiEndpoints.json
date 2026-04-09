@@ -200,6 +200,85 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "MyTown.API.Controllers.IssueCategoryController",
+    "Method": "CreateIssueCategory",
+    "RelativePath": "api/IssueCategory",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "MyTown.Application.DTOs.Issues.CreateIssueCategoryDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyTown.API.Controllers.IssueCategoryController",
+    "Method": "GetAll",
+    "RelativePath": "api/IssueCategory",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyTown.API.Controllers.IssueCategoryController",
+    "Method": "GetById",
+    "RelativePath": "api/IssueCategory/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyTown.API.Controllers.IssueCategoryController",
+    "Method": "Update",
+    "RelativePath": "api/IssueCategory/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "MyTown.Application.DTOs.Issues.UpdateIssueCategoryDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyTown.API.Controllers.IssueCategoryController",
+    "Method": "DeleteIssueCategory",
+    "RelativePath": "api/IssueCategory/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "MyTown.API.Controllers.KomunaController",
     "Method": "GetAll",
     "RelativePath": "api/Komuna",
