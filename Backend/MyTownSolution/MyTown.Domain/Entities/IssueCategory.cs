@@ -4,12 +4,12 @@ using MyTown.Domain.Common;
 
 namespace MyTown.Domain.Entities
 {
-    public class IssueCategory : BaseEntity 
+    public class IssueCategory : BaseEntity
     {
 
         public string Title { get; private set; }
 
-        public string Description { get; private set; } 
+        public string Description { get; private set; }
 
         public bool IsDeleted { get; private set; } = false;
 
@@ -29,7 +29,7 @@ namespace MyTown.Domain.Entities
             SetCreated(createdBy);
         }
 
-        public void Update(string title, string description, int adminId) 
+        public void Update(string title, string description, int adminId)
         {
             if (IsDeleted)
                 throw new InvalidOperationException("Nuk mund te perditesohet kategoria e fshire.");
@@ -42,7 +42,7 @@ namespace MyTown.Domain.Entities
 
             Title = title;
             Description = description;
-         
+
             SetUpdated(adminId);
         }
 

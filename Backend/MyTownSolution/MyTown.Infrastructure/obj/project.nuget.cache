@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "K926FbO/FrQ=",
+  "dgSpecHash": "zgOxOfcYP1Q=",
   "success": true,
-  "projectFilePath": "C:\\dev\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\MyTown.Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\krasn\\Desktop\\MTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\MyTown.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\krasn\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\krasn\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",

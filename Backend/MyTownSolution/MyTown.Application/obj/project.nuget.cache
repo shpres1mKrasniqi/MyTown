@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kd0GKt7J3VY=",
+  "dgSpecHash": "MsfdUcAS5jM=",
   "success": true,
-  "projectFilePath": "C:\\dev\\MyTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\MyTown.Application.csproj",
+  "projectFilePath": "C:\\Users\\krasn\\Desktop\\MTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\MyTown.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\krasn\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512",
     "C:\\Users\\krasn\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",

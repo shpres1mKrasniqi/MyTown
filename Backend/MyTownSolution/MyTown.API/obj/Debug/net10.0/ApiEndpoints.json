@@ -279,6 +279,42 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "MyTown.API.Controllers.IssuesController",
+    "Method": "CreateIssue",
+    "RelativePath": "api/Issues",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "KomunaId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "IssueCategoryId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Files",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "MyTown.API.Controllers.KomunaController",
     "Method": "GetAll",
     "RelativePath": "api/Komuna",

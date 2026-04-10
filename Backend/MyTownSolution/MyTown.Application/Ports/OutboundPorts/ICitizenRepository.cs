@@ -9,6 +9,8 @@ namespace MyTown.Application.Ports.OutboundPorts
         Task<IEnumerable<CitizenProfile>> GetAll();
         Task<CitizenProfile> GetById(int id);
         Task UpdateAsync(CitizenProfile citizenProfile);
+
+        Task<CitizenProfile?> GetByUserIdAsync(int userId);
         Task SaveChangesAsync();
     }
 }

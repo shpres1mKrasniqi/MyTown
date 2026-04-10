@@ -7,6 +7,7 @@ using MyTown.Application.Settings;
 using System.IdentityModel.Tokens.Jwt;
 using System.Runtime.InteropServices.JavaScript;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace MyTown.Application.Services
@@ -14,10 +15,22 @@ namespace MyTown.Application.Services
     public class TokenService : ITokenService
     {
         private readonly JwtSettings _jwtSettings;
+        private readonly string _refreshTokenSecretKey;
 
         public TokenService(IOptions<JwtSettings> jwtSettings)
         {
             _jwtSettings = jwtSettings.Value;
+            _refreshTokenSecretKey = Environment.GetEnvironmentVariable("REFRESH_TOKEN_SECRET_KEY") ?? "Nuk u gjet Refresh Token Sekreti";
+        }
+
+        public string HashRefreshToken(string refreshToken)
+        {
+            var keyBytes = Encoding.UTF8.GetBytes(_refreshTokenSecretKey);
+            var tokenBytes = Encoding.UTF8.GetBytes(refreshToken);
+
+            using var hmac = new HMACSHA256(keyBytes);
+            var hash = hmac.ComputeHash(tokenBytes);
+            return Convert.ToBase64String(hash);
         }
 
         public string GenerateAccessToken(TokenUserDto user)
@@ -27,9 +40,13 @@ namespace MyTown.Application.Services
               new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
               new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
               new Claim(JwtRegisteredClaimNames.Email, user.Email),
-              
 
             };
+
+            if (user.CitizenId.HasValue)
+            {
+                claims.Add(new Claim("CitizenId", user.CitizenId.Value.ToString()));
+            }
 
             foreach (var role in user.Roles.Distinct())
             {
@@ -65,6 +82,8 @@ namespace MyTown.Application.Services
                 ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationDays)
             };
         }
+
+
 
     }
 

@@ -8,6 +8,6 @@ namespace MyTown.Application.Ports.InboundPorts
 
         RefreshTokenDto GenerateRefreshToken();
 
-        
+        string HashRefreshToken(string token);
     }
 }

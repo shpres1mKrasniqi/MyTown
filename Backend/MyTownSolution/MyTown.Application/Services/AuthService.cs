@@ -14,17 +14,20 @@ namespace MyTown.Application.Services
         private readonly IRoleRepository _roleRepository;
         private readonly ITokenService _tokenService;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
-
+        private readonly ICitizenRepository _citizenRepository;
         public AuthService(
                  IUserRepository userRepository,
                  IRoleRepository roleRepository,
                  ITokenService tokenService,
-                 IRefreshTokenRepository refreshTokenRepository)
+                 IRefreshTokenRepository refreshTokenRepository,
+                 ICitizenRepository citizenRepository)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _tokenService = tokenService;
             _refreshTokenRepository = refreshTokenRepository;
+            _citizenRepository = citizenRepository;
+
         }
 
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
@@ -67,9 +70,8 @@ namespace MyTown.Application.Services
             var accessToken = _tokenService.GenerateAccessToken(tokenUser);
             var refreshTokenDto = _tokenService.GenerateRefreshToken();
 
-            var tokenHash = Convert.ToBase64String(
-                      SHA256.HashData(Encoding.UTF8.GetBytes(refreshTokenDto.Token))
-                );
+            var tokenHash = _tokenService.HashRefreshToken(refreshTokenDto.Token);
+
 
             var refreshToken = new RefreshToken
             {
@@ -104,10 +106,11 @@ namespace MyTown.Application.Services
             {
                 throw new Exception("Kredenciale te pavlefshme");
             }
+            var citizen = await _citizenRepository.GetByUserIdAsync(user.Id);
 
             var roles = user.UserRoles.Select(ur => ur.Role.Name).Distinct().ToList();
 
-            var premissions = user.UserRoles
+            var permissions = user.UserRoles
              .SelectMany(ur => ur.Role.RolePermissions)
                .Select(rp => rp.Permission.Name)
                .Distinct()
@@ -116,19 +119,18 @@ namespace MyTown.Application.Services
             var tokenUser = new TokenUserDto
             {
                 Id = user.Id,
+                CitizenId = citizen?.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
                 Roles = roles,
-                Permissions = premissions
+                Permissions = permissions
             };
 
             var accessToken = _tokenService.GenerateAccessToken(tokenUser);
             var refreshTokenDto = _tokenService.GenerateRefreshToken();
 
-            var tokenHash = Convert.ToBase64String(
-                     SHA256.HashData(Encoding.UTF8.GetBytes(refreshTokenDto.Token))
-                );
+            var tokenHash = _tokenService.HashRefreshToken(refreshTokenDto.Token);
 
             var refreshToken = new RefreshToken
             {
@@ -153,9 +155,7 @@ namespace MyTown.Application.Services
         public async Task<AuthResponse> RefreshTokenAsync(string refreshToken)
         {
 
-            var tokenHash = Convert.ToBase64String(
-                SHA256.HashData(Encoding.UTF8.GetBytes(refreshToken))
-            );
+            var tokenHash = _tokenService.HashRefreshToken(refreshToken);
 
 
             var existingToken = await _refreshTokenRepository.GetByTokenHashAsync(tokenHash);
@@ -166,10 +166,11 @@ namespace MyTown.Application.Services
 
             var user = existingToken.User;
 
+            var citizenProfile = await _citizenRepository.GetByUserIdAsync(user.Id);
 
             var roles = user.UserRoles.Select(ur => ur.Role.Name).Distinct().ToList();
 
-            var premissions = user.UserRoles
+            var permissions = user.UserRoles
              .SelectMany(ur => ur.Role.RolePermissions)
                .Select(rp => rp.Permission.Name)
                .Distinct()
@@ -179,11 +180,12 @@ namespace MyTown.Application.Services
             var tokenUser = new TokenUserDto
             {
                 Id = user.Id,
+                CitizenId = citizenProfile?.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
                 Roles = roles,
-                Permissions = premissions
+                Permissions = permissions
             };
 
 
@@ -195,9 +197,7 @@ namespace MyTown.Application.Services
             await _refreshTokenRepository.UpdateAsync(existingToken);
 
 
-            var newTokenHash = Convert.ToBase64String(
-                SHA256.HashData(Encoding.UTF8.GetBytes(newRefreshTokenDto.Token))
-            );
+            var newTokenHash = _tokenService.HashRefreshToken(newRefreshTokenDto.Token);
 
 
             var newRefreshToken = new RefreshToken

@@ -21,4 +21,8 @@
     <ProjectReference Include="..\MyTown.Infrastructure\MyTown.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\issues\" />
+  </ItemGroup>
+
 </Project>

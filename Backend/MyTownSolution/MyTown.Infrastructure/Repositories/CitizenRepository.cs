@@ -34,5 +34,11 @@ namespace MyTown.Infrastructure.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<CitizenProfile?> GetByUserIdAsync(int userId)
+        {
+            return await _context.CitizenProfiles
+                .FirstOrDefaultAsync(c => c.UserId == userId && !c.IsDeleted);
+        }
     }
 }

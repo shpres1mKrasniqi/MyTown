@@ -53,6 +53,11 @@ builder.Services.Configure<JwtSettings>(options =>
     options.RefreshTokenExpirationDays = jwtSettings.RefreshTokenExpirationDays;
 });
 
+//Qelsi i Tokenit:
+
+var qelsiSekreti = Environment.GetEnvironmentVariable("REFRESH_TOKEN_SECRET_KEY");
+
+
 // Pjesa e Authit
 builder.Services.AddAuthentication(options =>
 {
@@ -110,6 +115,8 @@ builder.Services.AddScoped<IAuditRepository, AuditRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICitizenRepository, CitizenRepository>();
 builder.Services.AddScoped<IIssueCategoryRepository, IssueCategoryRepository>();
+builder.Services.AddScoped<IIssueRepository, IssueRepository>();
+builder.Services.AddScoped<IFileRepository, FileRepository>();
 
 // Servicet
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -119,6 +126,8 @@ builder.Services.AddScoped<IKomunaService, KomunaService>();
 builder.Services.AddScoped<IStaffService, StaffService>();
 builder.Services.AddScoped<ICitizenService, CitizenService>();
 builder.Services.AddScoped<IIssueCategoryService, IssueCategoryService>();
+builder.Services.AddScoped<IIssueService, IssueService>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 
 builder.Services.AddAuthorization(options =>
@@ -148,13 +157,7 @@ builder.Services.AddAuthorization(options =>
     Permissions.CanCreateIssueCategory,
     Permissions.CanEditIssueCategory,
     Permissions.CanDeleteIssueCategory,
-    Permissions.CanViewIssueCategory,
-
-    Permissions.CanCreateWorkSchedule,
-    Permissions.CanEditWorkSchedule,
-    Permissions.CanDeleteWorkSchedule,
-    Permissions.CanViewWorkSchedule
-
+    Permissions.CanViewIssueCategory
 };
     foreach (var premission in permissions)
     {
@@ -185,7 +188,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseStaticFiles();
 app.MapControllers();
 
 app.Run();
