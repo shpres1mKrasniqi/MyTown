@@ -22,7 +22,7 @@ namespace MyTown.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = Permissions.CanViewKomuna)]
+        //[Authorize(Policy = Permissions.CanViewKomuna)] Komentuar per shkak qe me u lexu nga Citizens
         public async Task<IActionResult> GetAll()
         {
             
@@ -39,7 +39,7 @@ namespace MyTown.API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [Authorize(Policy = Permissions.CanViewKomuna)]
+        //[Authorize(Policy = Permissions.CanViewKomuna)]
         public async Task<IActionResult> GetById(int id)
         {
             

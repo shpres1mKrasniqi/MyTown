@@ -37,7 +37,7 @@ namespace MyTown.API.Controllers
 
 
         [HttpGet]
-        [Authorize(Policy = Permissions.CanViewIssueCategory)]
+        //[Authorize(Policy = Permissions.CanViewIssueCategory)] Komentuar me qellim qe me lexu Citizens
         public async Task<IActionResult> GetAll()
         {
             var result = await _issueCategoryService.GetAllAsync();
@@ -46,7 +46,7 @@ namespace MyTown.API.Controllers
 
 
         [HttpGet("{id}")]
-        [Authorize(Policy = Permissions.CanViewIssueCategory)]  
+        //[Authorize(Policy = Permissions.CanViewIssueCategory)]  
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _issueCategoryService.GetByIdAsync(id);

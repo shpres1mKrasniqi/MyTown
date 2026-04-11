@@ -1,43 +1,129 @@
-# .NET build
+# =========================
+# Build folders
+# =========================
 bin/
 obj/
 Debug/
 Release/
+x64/
+x86/
 
+# =========================
 # Logs
+# =========================
 *.log
 logs/
 
-# VS
+# =========================
+# Visual Studio
+# =========================
 .vs/
-.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 
-# OS
+# =========================
+# VS Code
+# =========================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# =========================
+# Rider / JetBrains
+# =========================
+.idea/
+*.sln.iml
+
+# =========================
+# OS files
+# =========================
 .DS_Store
 Thumbs.db
+Desktop.ini
 
-# Node
+# =========================
+# NuGet
+# =========================
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# =========================
+# Test results
+# =========================
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# =========================
+# Code coverage
+# =========================
+coverage/
+coverage*.json
+coverage*.xml
+
+# =========================
+# Publish
+# =========================
+publish/
+*.publish.xml
+*.azurePubxml
+*.pubxml
+
+# =========================
+# Azure
+# =========================
+*.PublishSettings
+PublishScripts/
+
+# =========================
+# Secrets (SHUMË e rëndësishme)
+# =========================
+appsettings.Development.json
+appsettings.*.json
+
+# Nëse don me i leju config pa secrets, përdor:
+#!appsettings.json
+
+# =========================
+# Node (nëse përdor frontend)
+# =========================
 node_modules/
 
-# React build
-dist/
-build/
+# =========================
+# Misc
+# =========================
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
 
-# Vite cache
-.vite/
+# =========================
+# Database files
+# =========================
+*.mdf
+*.ldf
+*.ndf
 
-# Environment variables
+
+#=============
+#Env file
+#=============
 .env
-.env.local
-.env.*.local
 
-# Tailwind/PostCSS cache
-.cache/
-*.css.map
+# =========================
+# Docker (optional)
+# =========================
+docker-compose.override.yml
 
-# Test results
-TestResults/
-coverage/
-
-# Upload files
-wwwroot/uploads/
+#==========================
+#Pjesa per imazhet
+#==========================
+wwwroot/images/*

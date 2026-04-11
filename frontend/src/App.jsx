@@ -21,6 +21,7 @@ const MenaxhoKomunat = lazy(() => import("./pages/MenaxhoKomunat"));
 const MenaxhoStaff = lazy(() => import("./pages/MenaxhoStaff"));
 const AddStaff = lazy(() => import("./pages/AddStaff"));
 const EditStaff = lazy(() => import("./pages/EditStaff"));
+const AddIssue = lazy(() => import("./pages/AddIssues"));
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
-        <Route path = "/signup" element={<Register />} />
+        <Route path="/signup" element={<Register />} />
         {/* ADMIN LAYOUT ROUTE WRAPPER */}
         <Route element={<AdminLayout />}>
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
@@ -44,6 +45,7 @@ function App() {
           <Route path="/add-staff" element={<AddStaff />} />
         </Route>
 
+        <Route path="/add-issue" element={<AddIssue />} />
         <Route path="/staff-dashboard" element={<StaffDashboard />} />
         <Route path="/citizen-dashboard" element={<CitizenDashboard />} />
       </Routes>
