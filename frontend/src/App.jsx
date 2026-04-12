@@ -22,6 +22,8 @@ const MenaxhoStaff = lazy(() => import("./pages/MenaxhoStaff"));
 const AddStaff = lazy(() => import("./pages/AddStaff"));
 const EditStaff = lazy(() => import("./pages/EditStaff"));
 const AddIssue = lazy(() => import("./pages/AddIssues"));
+const IssueList = lazy(() => import("./pages/IssueList"));
+// const EditIssue = lazy(() => import("./pages/EditIssue"));
 
 function App() {
   return (
@@ -48,6 +50,8 @@ function App() {
         <Route path="/add-issue" element={<AddIssue />} />
         <Route path="/staff-dashboard" element={<StaffDashboard />} />
         <Route path="/citizen-dashboard" element={<CitizenDashboard />} />
+        <Route path="/issues" element={<IssueList />} />
+        {/* <Route path="/edit-issue/:id" element={<EditIssue />} /> */}
       </Routes>
 
       <ToastContainer

@@ -47,6 +47,83 @@ namespace MyTown.API.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetIssues()
+        {
+            try
+            {
+              
+                var result = await _issueService.GetAllAsync();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromForm] UpdateIssueDto dto)
+        {
+            try
+            {
+                var citizenId = GetUserId();
+
+                if (!citizenId.HasValue)
+                    return Unauthorized();
+
+                string ipAddress = GetIpAddress();
+
+                await _issueService.UpdateIssueAsync(id, dto, citizenId.Value, ipAddress);
+
+                return Ok(new { message = "Postimi u rregullua me sukses" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                var result = await _issueService.GetByIdAsync(id);
+
+                if (result == null)
+                    return NotFound();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var userId = GetUserId();
+
+                if (!userId.HasValue)
+                    return Unauthorized();
+
+                string ipAddress = GetIpAddress();
+
+                await _issueService.DeleteAsync(id, userId.Value, ipAddress);
+
+                return Ok(new { message = "Postimi i problemit u fshi me sukses" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         private int? GetCitizenId()
         {
             var claim = User.FindFirst("CitizenId")?.Value;

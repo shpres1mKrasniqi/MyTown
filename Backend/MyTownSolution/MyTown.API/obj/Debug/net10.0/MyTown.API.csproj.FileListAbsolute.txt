@@ -516,5 +516,5 @@ C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\obj\Debug\
 C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\obj\Debug\net10.0\MyTown.API.csproj.Up2Date
 C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\obj\Debug\net10.0\MyTown.API.genruntimeconfig.cache
 C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\obj\Debug\net10.0\ref\MyTown.API.dll
-C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
 C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\bin\Debug\net10.0\MyTown.API.staticwebassets.runtime.json
+C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

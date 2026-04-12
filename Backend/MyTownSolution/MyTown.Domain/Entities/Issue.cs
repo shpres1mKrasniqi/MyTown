@@ -24,7 +24,7 @@ namespace MyTown.Domain.Entities
 
         public IssueCategory IssueCategory { get; private set; }
 
-        public ICollection<MyTownFile> Files;
+        public ICollection<MyTownFile> Files { get; private set; } = new List<MyTownFile>();
         protected Issue() { }
 
         public Issue(string title, string description, int issueCategoryId, int citizenId, int komunaId, IssueStatus status, int createdBy)

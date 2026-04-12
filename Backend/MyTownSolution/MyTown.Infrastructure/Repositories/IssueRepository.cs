@@ -1,5 +1,6 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore;
 using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Domain.Entities;
 using MyTown.Infrastructure.Persistence.Data;
@@ -19,6 +20,30 @@ namespace MyTown.Infrastructure.Repositories
         public async Task AddIssueAsync(Issue issue)
         {
             await _context.AddAsync(issue);
+        }
+
+        public async Task<IEnumerable<Issue>> GetAllAsync()
+        {
+            return await _context.Issues
+                .Include(i => i.Files)
+                .Include(i => i.IssueCategory)
+                .Include(i => i.Komuna)
+                .Where(i => i.IsDeleted == false)
+                .ToListAsync();
+        }
+
+        public async Task<Issue?> GetIssueByIdAsync(int id)
+        {
+            return await _context.Issues
+                .Include(i => i.Files)
+                .Include(i => i.IssueCategory)
+                .Include(i => i.Komuna)
+                .FirstOrDefaultAsync(i => i.Id == id && !i.IsDeleted);
+        }
+
+        public async Task Update(Issue issue)
+        {
+            _context.Issues.Update(issue);
         }
     }
 }

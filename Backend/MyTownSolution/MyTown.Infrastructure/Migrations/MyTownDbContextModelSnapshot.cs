@@ -313,10 +313,15 @@ namespace MyTown.Infrastructure.Migrations
                     b.Property<long>("FileSize")
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("IssueId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UploadedBy")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IssueId");
 
                     b.ToTable("Files");
                 });
@@ -645,6 +650,13 @@ namespace MyTown.Infrastructure.Migrations
                     b.Navigation("Komuna");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.Entities.MyTownFile", b =>
+                {
+                    b.HasOne("MyTown.Domain.Entities.Issue", null)
+                        .WithMany("Files")
+                        .HasForeignKey("IssueId");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.RefreshToken", b =>
                 {
                     b.HasOne("MyTown.Domain.Entities.User", "User")
@@ -732,6 +744,11 @@ namespace MyTown.Infrastructure.Migrations
             modelBuilder.Entity("MyTown.Domain.Entities.Department", b =>
                 {
                     b.Navigation("StaffProfiles");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.Issue", b =>
+                {
+                    b.Navigation("Files");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.IssueCategory", b =>

@@ -1,5 +1,6 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore;
 using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Domain.Entities;
 using MyTown.Infrastructure.Persistence.Data;
@@ -17,6 +18,11 @@ namespace MyTown.Infrastructure.Repositories
         {
             await _context.Files.AddAsync(file);
 
+        }
+
+        public async Task<IEnumerable<MyTownFile>> ReadFilesAsync()
+        {
+            return await _context.Files.ToArrayAsync();
         }
     }
 }

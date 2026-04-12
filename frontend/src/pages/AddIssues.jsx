@@ -85,7 +85,13 @@ function AddIssue() {
   };
 
   const handleFileChange = (e) => {
-    setForm({ ...form, files: Array.from(e.target.files) });
+    const selectedFiles = Array.from(e.target.files);
+
+    setForm((prev) => ({
+      ...prev,
+      files: [...prev.files, ...selectedFiles].slice(0, 5),
+    }));
+
     if (errors.files) setErrors({ ...errors, files: null });
   };
 
@@ -227,29 +233,17 @@ function AddIssue() {
               Dokumentimi (Foto)
             </label>
             <div
-              className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-xl transition-colors bg-gray-50/50 
-              ${errors.files ? "border-red-400" : "border-gray-200 hover:border-blue-400"}`}
+              className={`mt-1 border-2 border-dashed rounded-xl p-6 transition-colors bg-gray-50/50 
+            ${errors.files ? "border-red-400" : "border-gray-200 hover:border-blue-400"}`}
             >
               <div className="space-y-1 text-center">
-                <svg
-                  className={`mx-auto h-10 w-10 ${errors.files ? "text-red-400" : "text-gray-400"}`}
-                  stroke="currentColor"
-                  fill="none"
-                  viewBox="0 0 48 48"
-                >
-                  <path
-                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
                 <div className="flex text-sm text-gray-600 justify-center">
                   <label className="relative cursor-pointer font-medium text-blue-600 hover:text-blue-500">
                     <span>Ngarko skedarët</span>
                     <input
                       type="file"
                       multiple
+                      accept="image/*"
                       onChange={handleFileChange}
                       className="sr-only"
                     />
@@ -259,11 +253,37 @@ function AddIssue() {
                   PNG, JPG deri në 10MB (Maks. 5)
                 </p>
                 {form.files.length > 0 && (
-                  <p className="text-xs text-green-600 font-medium">
+                  <p className="text-xs text-green-600 font-medium pt-1">
                     {form.files.length} skedarë u zgjodhën
                   </p>
                 )}
               </div>
+
+              {form.files.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2 justify-center">
+                  {form.files.map((file, index) => (
+                    <div key={index} className="relative h-14 w-14 group">
+                      <img
+                        src={URL.createObjectURL(file)}
+                        className="h-full w-full object-cover rounded-md border"
+                        alt="preview"
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setForm({
+                            ...form,
+                            files: form.files.filter((_, i) => i !== index),
+                          })
+                        }
+                        className="absolute -top-2 -right-2 bg-black/70 text-white text-[8px] w-5 h-5 flex items-center justify-center rounded-full cursor-pointer hover:bg-red-500 transition-colors"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             {errors.files && (
               <p className="text-red-500 text-xs mt-1 text-center">

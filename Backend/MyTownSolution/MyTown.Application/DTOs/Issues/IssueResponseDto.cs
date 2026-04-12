@@ -1,19 +1,19 @@
-﻿
-using Microsoft.AspNetCore.Http;
+﻿using MyTown.Application.DTOs.Files;
 using MyTown.Domain.Enums;
 
-namespace MyTown.Application.DTOs.Issues
+public class IssueResponseDto
 {
-    public class IssueResponseDto
-    {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public int KomunaId { get; set; }
-        public int IssueCategoryId { get; set; }
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
 
-        public IssueStatus Status { get; set; }
+    public int KomunaId { get; set; }
+    public string KomunaName { get; set; }
 
-        public List<IFormFile> Files { get; set; }
-    }
+    public int IssueCategoryId { get; set; }
+    public string CategoryName { get; set; }
+
+    public IssueStatus Status { get; set; }
+
+    public List<MyTownFileResponseDto> Files { get; set; }
 }

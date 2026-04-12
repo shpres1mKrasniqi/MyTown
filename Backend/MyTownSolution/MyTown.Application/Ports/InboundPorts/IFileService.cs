@@ -8,5 +8,6 @@ namespace MyTown.Application.Ports.InboundPorts
     public interface IFileService
     {
         Task<(string fileName, string path, long size)> SaveFileAsync(IFormFile file);
+       
     }
 }
