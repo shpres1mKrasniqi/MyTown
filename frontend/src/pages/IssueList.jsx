@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { IssueService } from "../services/issueServices";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import * as signalR from "@microsoft/signalr";
 
 function ImageCarousel({ files }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -64,8 +65,30 @@ function IssueList() {
   const [loading, setLoading] = useState(true);
   const [openMenuId, setOpenMenuId] = useState(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     fetchIssues();
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl("https://localhost:7214/hubs/problems")
+      .withAutomaticReconnect()
+      .build();
+
+    connection
+      .start()
+      .then(() => {
+        console.log("SignalR u lidh");
+
+        connection.on("ProblemCreated", (data) => {
+          console.log("Realtime issue: ", data);
+
+          fetchIssues();
+        });
+      })
+      .catch((err) => console.error("SignalR error: ", err));
+
+    return () => {
+      connection.stop();
+    };
   }, []);
 
   const fetchIssues = async () => {

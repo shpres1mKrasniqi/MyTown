@@ -63,6 +63,28 @@ namespace MyTown.Application.Services
                 await _unitOfWork.SaveChangesAsync();
             }
 
+            var newValue = System.Text.Json.JsonSerializer.Serialize(new
+            {
+                issue.Title,
+                issue.Description,
+                issue.KomunaId,
+                issue.IssueCategoryId
+            });
+
+            var audit = new AuditLog(
+               userId,
+               "CREATE",
+               nameof(Issue),
+               issue.Id,
+               null,
+               newValue,
+               ipAddress ?? "Unknown"
+           );
+
+            await _auditRepository.AddAsync(audit);
+
+            await _unitOfWork.SaveChangesAsync();
+
             return new IssueResponseDto
             {
                 Id = issue.Id,

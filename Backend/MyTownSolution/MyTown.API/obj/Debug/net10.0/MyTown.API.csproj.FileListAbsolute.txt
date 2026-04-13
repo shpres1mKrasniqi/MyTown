@@ -518,3 +518,9 @@ C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\obj\Debug\
 C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\obj\Debug\net10.0\ref\MyTown.API.dll
 C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\bin\Debug\net10.0\MyTown.API.staticwebassets.runtime.json
 C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
+C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\bin\Debug\net10.0\DnsClient.dll
+C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\bin\Debug\net10.0\MongoDB.Bson.dll
+C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\bin\Debug\net10.0\MongoDB.Driver.dll
+C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\bin\Debug\net10.0\SharpCompress.dll
+C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\bin\Debug\net10.0\Snappier.dll
+C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.API\bin\Debug\net10.0\ZstdSharp.dll

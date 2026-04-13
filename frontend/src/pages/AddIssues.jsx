@@ -239,7 +239,7 @@ function AddIssue() {
               <div className="space-y-1 text-center">
                 <div className="flex text-sm text-gray-600 justify-center">
                   <label className="relative cursor-pointer font-medium text-blue-600 hover:text-blue-500">
-                    <span>Ngarko skedarët</span>
+                    <span>Ngarko foto të problemit</span>
                     <input
                       type="file"
                       multiple

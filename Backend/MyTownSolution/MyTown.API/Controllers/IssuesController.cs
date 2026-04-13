@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using MyTown.API.Hubs.Problems;
 using MyTown.Application.DTOs.Issues;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Domain.Entities;
@@ -13,10 +15,12 @@ namespace MyTown.API.Controllers
     public class IssuesController : ControllerBase
     {
         private readonly IIssueService _issueService;
+        private readonly IHubContext<ProblemHub> _hub;
 
-        public IssuesController(IIssueService issueService)
+        public IssuesController(IIssueService issueService, IHubContext<ProblemHub> hub)
         {
             _issueService = issueService;
+            _hub = hub;
         }
 
         [HttpPost]
@@ -38,6 +42,13 @@ namespace MyTown.API.Controllers
                 string ipAddress = GetIpAddress();
 
                 var result = await _issueService.CreateIssueAsync(createIssueDto, citizenId.Value, userId.Value, ipAddress);
+
+                await _hub.Clients.All.SendAsync("ProblemCreated", new
+                {
+                    message = "Problemi i ri u postua",
+                    issue = result  
+                });
+
                 return Ok(result);
             }
             catch (Exception ex)
