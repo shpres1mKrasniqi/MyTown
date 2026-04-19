@@ -126,4 +126,4 @@ docker-compose.override.yml
 #==========================
 #Pjesa per imazhet
 #==========================
-wwwroot/images/*
+**/wwwroot/images/**
