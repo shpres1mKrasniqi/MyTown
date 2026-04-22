@@ -180,15 +180,15 @@
           "build/Microsoft.AspNetCore.OpenApi.targets": {}
         }
       },
-      "Microsoft.AspNetCore.SignalR/1.2.9": {
+      "Microsoft.AspNetCore.SignalR.Client.Core/10.0.5": {
         "type": "package",
         "compile": {
-          "lib/netstandard2.0/_._": {
+          "lib/net10.0/Microsoft.AspNetCore.SignalR.Client.Core.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/netstandard2.0/_._": {
+          "lib/net10.0/Microsoft.AspNetCore.SignalR.Client.Core.dll": {
             "related": ".xml"
           }
         }
@@ -1289,6 +1289,9 @@
       "MyTown.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "Microsoft.AspNetCore.SignalR.Client.Core": "10.0.5"
+        },
         "compile": {
           "bin/placeholder/MyTown.Domain.dll": {}
         },
@@ -1536,17 +1539,26 @@
         "microsoft.aspnetcore.openapi.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.SignalR/1.2.9": {
-      "sha512": "stJwCxfcXqY982p+4dRzlK1Qv2ISrpJrVRzUWvr9PximZXBMSYFVCtOPy9LI2WsjHH/zEL4jSh3Qn2fYZomyKg==",
+    "Microsoft.AspNetCore.SignalR.Client.Core/10.0.5": {
+      "sha512": "A2+sApRgxWSxzD0Q5eRqElPPzqIqOljYCzt/mtC/KIjlTNLvVWoQn2amNnX3o7BrbaSdI1yeFcyKVal7zVgcSw==",
       "type": "package",
-      "path": "microsoft.aspnetcore.signalr/1.2.9",
+      "path": "microsoft.aspnetcore.signalr.client.core/10.0.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/netstandard2.0/Microsoft.AspNetCore.SignalR.dll",
-        "lib/netstandard2.0/Microsoft.AspNetCore.SignalR.xml",
-        "microsoft.aspnetcore.signalr.1.2.9.nupkg.sha512",
-        "microsoft.aspnetcore.signalr.nuspec"
+        "Icon.png",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net10.0/Microsoft.AspNetCore.SignalR.Client.Core.dll",
+        "lib/net10.0/Microsoft.AspNetCore.SignalR.Client.Core.xml",
+        "lib/net462/Microsoft.AspNetCore.SignalR.Client.Core.dll",
+        "lib/net462/Microsoft.AspNetCore.SignalR.Client.Core.xml",
+        "lib/netstandard2.0/Microsoft.AspNetCore.SignalR.Client.Core.dll",
+        "lib/netstandard2.0/Microsoft.AspNetCore.SignalR.Client.Core.xml",
+        "lib/netstandard2.1/Microsoft.AspNetCore.SignalR.Client.Core.dll",
+        "lib/netstandard2.1/Microsoft.AspNetCore.SignalR.Client.Core.xml",
+        "microsoft.aspnetcore.signalr.client.core.10.0.5.nupkg.sha512",
+        "microsoft.aspnetcore.signalr.client.core.nuspec"
       ]
     },
     "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
@@ -3705,30 +3717,29 @@
       "DotNetEnv >= 3.1.1",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 10.0.5",
       "Microsoft.AspNetCore.OpenApi >= 10.0.4",
-      "Microsoft.AspNetCore.SignalR >= 1.2.9",
       "Microsoft.EntityFrameworkCore.Design >= 10.0.5",
       "MyTown.Application >= 1.0.0",
       "MyTown.Infrastructure >= 1.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\krasn\\.nuget\\packages\\": {},
+    "C:\\Users\\rinor\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\krasn\\Desktop\\MTown\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\MyTown.API.csproj",
+      "projectUniqueName": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\MyTown.API.csproj",
       "projectName": "MyTown.API",
-      "projectPath": "C:\\Users\\krasn\\Desktop\\MTown\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\MyTown.API.csproj",
-      "packagesPath": "C:\\Users\\krasn\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\krasn\\Desktop\\MTown\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\obj\\",
+      "projectPath": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\MyTown.API.csproj",
+      "packagesPath": "C:\\Users\\rinor\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\krasn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\rinor\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3741,13 +3752,14 @@
       },
       "frameworks": {
         "net10.0": {
+          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\krasn\\Desktop\\MTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\MyTown.Application.csproj": {
-              "projectPath": "C:\\Users\\krasn\\Desktop\\MTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\MyTown.Application.csproj"
+            "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\MyTown.Application.csproj": {
+              "projectPath": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\MyTown.Application.csproj"
             },
-            "C:\\Users\\krasn\\Desktop\\MTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\MyTown.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\krasn\\Desktop\\MTown\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\MyTown.Infrastructure.csproj"
+            "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\MyTown.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\MyTown.Infrastructure.csproj"
             }
           }
         }
@@ -3766,6 +3778,7 @@
     },
     "frameworks": {
       "net10.0": {
+        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "DotNetEnv": {
@@ -3779,10 +3792,6 @@
           "Microsoft.AspNetCore.OpenApi": {
             "target": "Package",
             "version": "[10.0.4, )"
-          },
-          "Microsoft.AspNetCore.SignalR": {
-            "target": "Package",
-            "version": "[1.2.9, )"
           },
           "Microsoft.EntityFrameworkCore.Design": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -3810,7 +3819,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.202/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
@@ -4227,17 +4236,5 @@
         }
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1510",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "PackageReference Microsoft.AspNetCore.SignalR will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.",
-      "libraryId": "Microsoft.AspNetCore.SignalR",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  }
 }
