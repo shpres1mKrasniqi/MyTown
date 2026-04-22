@@ -105,6 +105,16 @@ export default function AdminLayout() {
               active={activeView === "settings"}
               onClick={() => {}}
             />
+            <SidebarItem
+              icon={
+                <PlusIcon
+                  size={20}
+                  className="text-blue-400 group-hover:text-white transition-colors"
+                />
+              }
+              label="Shto Kategori te problemit"
+              onClick={() => navigate("/add-issueCategory")}
+            />
           </nav>
         </div>
 
