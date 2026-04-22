@@ -57,6 +57,8 @@ namespace MyTown.Application.Services
 
             await _userRepository.AssignRoleAsync(user, role.Id);
 
+
+
             var tokenUser = new TokenUserDto
             {
                 Id = user.Id,

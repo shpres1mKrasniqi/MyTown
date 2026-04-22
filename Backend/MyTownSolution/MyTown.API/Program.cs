@@ -10,6 +10,7 @@ using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Application.Services;
 using MyTown.Application.Settings;
 using MyTown.Application.Validators;
+using MyTown.Infrastructure.Hubs;
 using MyTown.Infrastructure.Persistence.Data;
 using MyTown.Infrastructure.Persistence.Mongo;
 using MyTown.Infrastructure.Repositories;
@@ -127,6 +128,7 @@ builder.Services.AddScoped<ICitizenRepository, CitizenRepository>();
 builder.Services.AddScoped<IIssueCategoryRepository, IssueCategoryRepository>();
 builder.Services.AddScoped<IIssueRepository, IssueRepository>();
 builder.Services.AddScoped<IFileRepository, FileRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
 // Servicet
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -138,6 +140,7 @@ builder.Services.AddScoped<ICitizenService, CitizenService>();
 builder.Services.AddScoped<IIssueCategoryService, IssueCategoryService>();
 builder.Services.AddScoped<IIssueService, IssueService>();
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 //DI per mongo:
 builder.Services.AddSingleton<MongoDbContext>();
@@ -145,7 +148,7 @@ builder.Services.AddSingleton<MongoDbContext>();
 //SignalR:
 
 builder.Services.AddSignalR();
-
+builder.Services.AddScoped<INotificationSender, SignalRNotificationSender>();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -225,6 +228,7 @@ app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapHub<ProblemHub>("/hubs/problems");
+app.MapHub<NotificationHub>("/hubs/notifications");
 app.UseStaticFiles();
 app.MapControllers();
 

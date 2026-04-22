@@ -17,13 +17,18 @@ namespace MyTown.Application.Services
         private readonly IFileService _fileService;
         private readonly IFileRepository _fileRepository;
         private readonly IAuditRepository _auditRepository;
-        public IssueService(IIssueRepository issueRepository, IUnitOfWork unitOfWork, IFileService fileService, IFileRepository fileRepository, IAuditRepository auditRepository)
+        private readonly INotificationService _notificationService;
+        private readonly IStaffRepository _staffRepository;
+
+        public IssueService(IIssueRepository issueRepository, IUnitOfWork unitOfWork, IFileService fileService, IFileRepository fileRepository, IAuditRepository auditRepository, INotificationService notificationService, IStaffRepository staffRepository)
         {
             _issueRepository = issueRepository;
             _unitOfWork = unitOfWork;
             _fileService = fileService;
             _fileRepository = fileRepository;
             _auditRepository = auditRepository;
+            _notificationService = notificationService;
+            _staffRepository = staffRepository;
         }
 
         public async Task<IssueResponseDto> CreateIssueAsync(CreateIssueDto createIssueDto, int citizenId, int userId, string ipAddress)
@@ -41,6 +46,15 @@ namespace MyTown.Application.Services
 
             await _issueRepository.AddIssueAsync(issue);
             await _unitOfWork.SaveChangesAsync();
+
+            var staffMembers = await _staffRepository.GetByKomunaIdAsync(issue.KomunaId);
+            foreach(var staff in staffMembers)
+            {
+                await _notificationService.CreateNotificationAsync(
+                    staff.UserId,
+                    $"Nje qytetar ka raportuar nje problem te ri: {issue.Title}"
+                    );
+            }
 
             if (createIssueDto.Files != null && createIssueDto.Files.Count > 0)
             {

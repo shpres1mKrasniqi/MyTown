@@ -35,6 +35,7 @@ namespace MyTown.Infrastructure.Persistence.Data
         public DbSet<MyTownFile> Files { get; set; }
 
         public DbSet<WorkSchedule> WorkSchedules { get; set; }
+        public DbSet<Notifications> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
