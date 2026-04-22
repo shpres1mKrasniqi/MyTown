@@ -34,3 +34,15 @@ C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Deb
 C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\refint\MyTown.Domain.dll
 C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.pdb
 C:\Users\krasn\Desktop\MTown\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\ref\MyTown.Domain.dll
+C:\Users\lenti\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\bin\Debug\net10.0\MyTown.Domain.deps.json
+C:\Users\lenti\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\bin\Debug\net10.0\MyTown.Domain.dll
+C:\Users\lenti\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\bin\Debug\net10.0\MyTown.Domain.pdb
+C:\Users\lenti\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lenti\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.AssemblyInfoInputs.cache
+C:\Users\lenti\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.AssemblyInfo.cs
+C:\Users\lenti\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.csproj.CoreCompileInputs.cache
+C:\Users\lenti\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.sourcelink.json
+C:\Users\lenti\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.dll
+C:\Users\lenti\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\refint\MyTown.Domain.dll
+C:\Users\lenti\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\MyTown.Domain.pdb
+C:\Users\lenti\Desktop\MyTown\Backend\MyTownSolution\MyTown.Domain\obj\Debug\net10.0\ref\MyTown.Domain.dll

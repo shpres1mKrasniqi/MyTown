@@ -8,6 +8,7 @@ import {
   MapPin,
   Users,
   PlusSquare,
+  PlusSquareIcon,
 } from "lucide-react";
 
 export default function AdminLayout() {
@@ -107,7 +108,7 @@ export default function AdminLayout() {
             />
             <SidebarItem
               icon={
-                <PlusIcon
+                <PlusSquareIcon
                   size={20}
                   className="text-blue-400 group-hover:text-white transition-colors"
                 />
