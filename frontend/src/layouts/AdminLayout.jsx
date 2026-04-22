@@ -8,6 +8,7 @@ import {
   MapPin,
   Users,
   PlusSquare,
+  PlusSquareIcon,
 } from "lucide-react";
 
 export default function AdminLayout() {
@@ -104,6 +105,16 @@ export default function AdminLayout() {
               label="Settings"
               active={activeView === "settings"}
               onClick={() => {}}
+            />
+            <SidebarItem
+              icon={
+                <PlusSquareIcon
+                  size={20}
+                  className="text-blue-400 group-hover:text-white transition-colors"
+                />
+              }
+              label="Shto Kategori te problemit"
+              onClick={() => navigate("/add-issueCategory")}
             />
           </nav>
         </div>
