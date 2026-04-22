@@ -3,24 +3,68 @@
   "WorkspaceRootPath": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\services\\notificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|solutionrelative:mytown.application\\services\\notificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.api\\controllers\\notificationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|solutionrelative:mytown.api\\controllers\\notificationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3CCA222B-801C-5F70-33DD-A4D01AD81697}|MyTown.Infrastructure\\MyTown.Infrastructure.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.infrastructure\\repositories\\notificationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3CCA222B-801C-5F70-33DD-A4D01AD81697}|MyTown.Infrastructure\\MyTown.Infrastructure.csproj|solutionrelative:mytown.infrastructure\\repositories\\notificationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.api\\controllers\\issuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|solutionrelative:mytown.api\\controllers\\issuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\services\\notificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|solutionrelative:mytown.application\\services\\notificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{30FA77BF-885A-31D0-B84C-98957D6B678A}|MyTown.Domain\\MyTown.Domain.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.domain\\entities\\notifications.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{30FA77BF-885A-31D0-B84C-98957D6B678A}|MyTown.Domain\\MyTown.Domain.csproj|solutionrelative:mytown.domain\\entities\\notifications.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3CCA222B-801C-5F70-33DD-A4D01AD81697}|MyTown.Infrastructure\\MyTown.Infrastructure.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.infrastructure\\repositories\\signalrnotificationsender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CCA222B-801C-5F70-33DD-A4D01AD81697}|MyTown.Infrastructure\\MyTown.Infrastructure.csproj|solutionrelative:mytown.infrastructure\\repositories\\signalrnotificationsender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CCA222B-801C-5F70-33DD-A4D01AD81697}|MyTown.Infrastructure\\MyTown.Infrastructure.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.infrastructure\\notificationshub\\notificationhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CCA222B-801C-5F70-33DD-A4D01AD81697}|MyTown.Infrastructure\\MyTown.Infrastructure.csproj|solutionrelative:mytown.infrastructure\\notificationshub\\notificationhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\ports\\outboundports\\inotificationsender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|solutionrelative:mytown.application\\ports\\outboundports\\inotificationsender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\services\\issueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|solutionrelative:mytown.application\\services\\issueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.api\\controllers\\issuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|solutionrelative:mytown.api\\controllers\\issuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|solutionrelative:mytown.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\ports\\inboundports\\inotificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|solutionrelative:mytown.application\\ports\\inboundports\\inotificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\services\\departmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|solutionrelative:mytown.application\\services\\departmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30FA77BF-885A-31D0-B84C-98957D6B678A}|MyTown.Domain\\MyTown.Domain.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.domain\\entities\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30FA77BF-885A-31D0-B84C-98957D6B678A}|MyTown.Domain\\MyTown.Domain.csproj|solutionrelative:mytown.domain\\entities\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.api\\controllers\\departmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|solutionrelative:mytown.api\\controllers\\departmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\dtos\\notifications\\notificationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|solutionrelative:mytown.application\\dtos\\notifications\\notificationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\ports\\outboundports\\inotificationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|solutionrelative:mytown.application\\ports\\outboundports\\inotificationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30FA77BF-885A-31D0-B84C-98957D6B678A}|MyTown.Domain\\MyTown.Domain.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.domain\\entities\\notifications.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30FA77BF-885A-31D0-B84C-98957D6B678A}|MyTown.Domain\\MyTown.Domain.csproj|solutionrelative:mytown.domain\\entities\\notifications.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -39,20 +83,12 @@
       "RelativeMoniker": "D:0:0:{30FA77BF-885A-31D0-B84C-98957D6B678A}|MyTown.Domain\\MyTown.Domain.csproj|solutionrelative:mytown.domain\\entities\\citizenprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|solutionrelative:mytown.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|solutionrelative:mytown.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\services\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|solutionrelative:mytown.application\\services\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.api\\controllers\\departmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|solutionrelative:mytown.api\\controllers\\departmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.api\\.env||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -69,18 +105,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{3CCA222B-801C-5F70-33DD-A4D01AD81697}|MyTown.Infrastructure\\MyTown.Infrastructure.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.infrastructure\\repositories\\departmentrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3CCA222B-801C-5F70-33DD-A4D01AD81697}|MyTown.Infrastructure\\MyTown.Infrastructure.csproj|solutionrelative:mytown.infrastructure\\repositories\\departmentrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\ports\\inboundports\\inotificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|solutionrelative:mytown.application\\ports\\inboundports\\inotificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\ports\\outboundports\\inotificationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|solutionrelative:mytown.application\\ports\\outboundports\\inotificationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Migrations\\20260421093629_tabelaNotifications.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:MyTown.Infrastructure\\Migrations\\20260421093629_tabelaNotifications.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3CCA222B-801C-5F70-33DD-A4D01AD81697}|MyTown.Infrastructure\\MyTown.Infrastructure.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.infrastructure\\persistence\\data\\mytowndbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -143,10 +167,6 @@
       "RelativeMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|solutionrelative:mytown.application\\ports\\inboundports\\ikomunaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\services\\departmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|solutionrelative:mytown.application\\services\\departmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\ports\\inboundports\\idepartmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|solutionrelative:mytown.application\\ports\\inboundports\\idepartmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -165,10 +185,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.api\\controllers\\citizencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9ED79D44-A547-EE98-5E2F-36B9B20DE4DB}|MyTown.API\\MyTown.API.csproj|solutionrelative:mytown.api\\controllers\\citizencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{30FA77BF-885A-31D0-B84C-98957D6B678A}|MyTown.Domain\\MyTown.Domain.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.domain\\entities\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{30FA77BF-885A-31D0-B84C-98957D6B678A}|MyTown.Domain\\MyTown.Domain.csproj|solutionrelative:mytown.domain\\entities\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A6FA026C-C238-D98B-7184-30B85D292D55}|MyTown.Application\\MyTown.Application.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.application\\ports\\inboundports\\icitizenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -245,6 +261,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Migrations\\20260401191044_StaffAdded.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:MyTown.Infrastructure\\Migrations\\20260401191044_StaffAdded.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CCA222B-801C-5F70-33DD-A4D01AD81697}|MyTown.Infrastructure\\MyTown.Infrastructure.csproj|c:\\users\\rinor\\onedrive\\desktop\\mytown\\backend\\mytownsolution\\mytown.infrastructure\\migrations\\20260421093629_tabelanotifications.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CCA222B-801C-5F70-33DD-A4D01AD81697}|MyTown.Infrastructure\\MyTown.Infrastructure.csproj|solutionrelative:mytown.infrastructure\\migrations\\20260421093629_tabelanotifications.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -254,7 +274,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -270,67 +290,93 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "IssueService.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\IssueService.cs",
-              "RelativeDocumentMoniker": "MyTown.Application\\Services\\IssueService.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\IssueService.cs",
-              "RelativeToolTip": "MyTown.Application\\Services\\IssueService.cs",
-              "ViewState": "AgIAAIAAAAAAAAAAAAAgwDkAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "NotificationController.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Controllers\\NotificationController.cs",
+              "RelativeDocumentMoniker": "MyTown.API\\Controllers\\NotificationController.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Controllers\\NotificationController.cs",
+              "RelativeToolTip": "MyTown.API\\Controllers\\NotificationController.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAcwC4AAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T09:51:00.816Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "CitizenProfile.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Entities\\CitizenProfile.cs",
-              "RelativeDocumentMoniker": "MyTown.Domain\\Entities\\CitizenProfile.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Entities\\CitizenProfile.cs",
-              "RelativeToolTip": "MyTown.Domain\\Entities\\CitizenProfile.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAkwDIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-05T09:50:24.227Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "CitizenRepository.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\CitizenRepository.cs",
-              "RelativeDocumentMoniker": "MyTown.Infrastructure\\Repositories\\CitizenRepository.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\CitizenRepository.cs",
-              "RelativeToolTip": "MyTown.Infrastructure\\Repositories\\CitizenRepository.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAgwCwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-05T09:54:52.678Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "CitizenService.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\CitizenService.cs",
-              "RelativeDocumentMoniker": "MyTown.Application\\Services\\CitizenService.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\CitizenService.cs",
-              "RelativeToolTip": "MyTown.Application\\Services\\CitizenService.cs",
-              "ViewState": "AgIAAJAAAAAAAAAAAAAwwK0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-05T10:32:47.462Z",
+              "WhenOpened": "2026-04-22T10:39:24.228Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Notifications.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Entities\\Notifications.cs",
-              "RelativeDocumentMoniker": "MyTown.Domain\\Entities\\Notifications.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Entities\\Notifications.cs",
-              "RelativeToolTip": "MyTown.Domain\\Entities\\Notifications.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAQwBoAAAAUAAAAAAAAAA==",
+              "Title": "SignalRNotificationSender.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\SignalRNotificationSender.cs",
+              "RelativeDocumentMoniker": "MyTown.Infrastructure\\Repositories\\SignalRNotificationSender.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\SignalRNotificationSender.cs",
+              "RelativeToolTip": "MyTown.Infrastructure\\Repositories\\SignalRNotificationSender.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T09:32:21.038Z",
+              "WhenOpened": "2026-04-22T10:51:30.798Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Program.cs",
+              "RelativeDocumentMoniker": "MyTown.API\\Program.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Program.cs",
+              "RelativeToolTip": "MyTown.API\\Program.cs",
+              "ViewState": "AgIAANcAAAAAAAAAAADwv+YAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-25T11:58:19.12Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IssuesController.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Controllers\\IssuesController.cs",
+              "RelativeDocumentMoniker": "MyTown.API\\Controllers\\IssuesController.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Controllers\\IssuesController.cs",
+              "RelativeToolTip": "MyTown.API\\Controllers\\IssuesController.cs",
+              "ViewState": "AgIAAIMAAAAAAAAAAAAowJ8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-21T10:23:24.655Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NotificationService.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\NotificationService.cs",
+              "RelativeDocumentMoniker": "MyTown.Application\\Services\\NotificationService.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\NotificationService.cs",
+              "RelativeToolTip": "MyTown.Application\\Services\\NotificationService.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAswDQAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-21T09:41:39.701Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "INotificationSender.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\OutboundPorts\\INotificationSender.cs",
+              "RelativeDocumentMoniker": "MyTown.Application\\Ports\\OutboundPorts\\INotificationSender.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\OutboundPorts\\INotificationSender.cs",
+              "RelativeToolTip": "MyTown.Application\\Ports\\OutboundPorts\\INotificationSender.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-22T10:49:31.053Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "NotificationHub.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\NotificationsHub\\NotificationHub.cs",
+              "RelativeDocumentMoniker": "MyTown.Infrastructure\\NotificationsHub\\NotificationHub.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\NotificationsHub\\NotificationHub.cs",
+              "RelativeToolTip": "MyTown.Infrastructure\\NotificationsHub\\NotificationHub.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-22T10:55:17.106Z",
               "EditorCaption": ""
             },
             {
@@ -339,154 +385,24 @@
               "Title": "NotificationRepository.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\NotificationRepository.cs",
               "RelativeDocumentMoniker": "MyTown.Infrastructure\\Repositories\\NotificationRepository.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\NotificationRepository.cs",
-              "RelativeToolTip": "MyTown.Infrastructure\\Repositories\\NotificationRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA/AAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\NotificationRepository.cs*",
+              "RelativeToolTip": "MyTown.Infrastructure\\Repositories\\NotificationRepository.cs*",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAgwBEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-21T09:44:38.594Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "NotificationService.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\NotificationService.cs",
-              "RelativeDocumentMoniker": "MyTown.Application\\Services\\NotificationService.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\NotificationService.cs",
-              "RelativeToolTip": "MyTown.Application\\Services\\NotificationService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAA1AAAAAAAAAA==",
+              "DocumentIndex": 6,
+              "Title": "IssueService.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\IssueService.cs",
+              "RelativeDocumentMoniker": "MyTown.Application\\Services\\IssueService.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\IssueService.cs",
+              "RelativeToolTip": "MyTown.Application\\Services\\IssueService.cs",
+              "ViewState": "AgIAAPUAAAAAAAAAAADwvxIBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T09:41:39.701Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AuthService.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\AuthService.cs",
-              "RelativeDocumentMoniker": "MyTown.Application\\Services\\AuthService.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\AuthService.cs",
-              "RelativeToolTip": "MyTown.Application\\Services\\AuthService.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAowDgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-05T14:13:05.173Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "IssuesController.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Controllers\\IssuesController.cs",
-              "RelativeDocumentMoniker": "MyTown.API\\Controllers\\IssuesController.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Controllers\\IssuesController.cs",
-              "RelativeToolTip": "MyTown.API\\Controllers\\IssuesController.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAAwCIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T10:23:24.655Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "TokenService.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\TokenService.cs",
-              "RelativeDocumentMoniker": "MyTown.Application\\Services\\TokenService.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\TokenService.cs",
-              "RelativeToolTip": "MyTown.Application\\Services\\TokenService.cs",
-              "ViewState": "AgIAAEMAAAAAAAAAAAAcwFEAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-26T10:22:15.412Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Program.cs",
-              "RelativeDocumentMoniker": "MyTown.API\\Program.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Program.cs",
-              "RelativeToolTip": "MyTown.API\\Program.cs",
-              "ViewState": "AgIAAM0AAAAAAAAAAADwv+oAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-25T11:58:19.12Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "MyTown.API\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "MyTown.API\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE0AAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-26T11:29:24.853Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": ".env",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\.env",
-              "RelativeDocumentMoniker": "MyTown.API\\.env",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\.env",
-              "RelativeToolTip": "MyTown.API\\.env",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAcAAAAmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-03-23T19:42:03.8Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "INotificationRepository.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\OutboundPorts\\INotificationRepository.cs",
-              "RelativeDocumentMoniker": "MyTown.Application\\Ports\\OutboundPorts\\INotificationRepository.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\OutboundPorts\\INotificationRepository.cs",
-              "RelativeToolTip": "MyTown.Application\\Ports\\OutboundPorts\\INotificationRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T09:38:08.572Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "INotificationService.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\InboundPorts\\INotificationService.cs",
-              "RelativeDocumentMoniker": "MyTown.Application\\Ports\\InboundPorts\\INotificationService.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\InboundPorts\\INotificationService.cs",
-              "RelativeToolTip": "MyTown.Application\\Ports\\InboundPorts\\INotificationService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAABBAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T09:40:55.504Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "IStaffRepository.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\OutboundPorts\\IStaffRepository.cs",
-              "RelativeDocumentMoniker": "MyTown.Application\\Ports\\OutboundPorts\\IStaffRepository.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\OutboundPorts\\IStaffRepository.cs",
-              "RelativeToolTip": "MyTown.Application\\Ports\\OutboundPorts\\IStaffRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABCAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-05T09:58:37.099Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "StaffRepository.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\StaffRepository.cs",
-              "RelativeDocumentMoniker": "MyTown.Infrastructure\\Repositories\\StaffRepository.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\StaffRepository.cs",
-              "RelativeToolTip": "MyTown.Infrastructure\\Repositories\\StaffRepository.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAkwCUAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-05T09:58:23.4Z",
+              "WhenOpened": "2026-04-21T09:51:00.816Z",
               "EditorCaption": ""
             },
             {
@@ -497,14 +413,194 @@
               "RelativeDocumentMoniker": "MyTown.API\\Controllers\\DepartmentController.cs",
               "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Controllers\\DepartmentController.cs",
               "RelativeToolTip": "MyTown.API\\Controllers\\DepartmentController.cs",
-              "ViewState": "AgIAAGUAAAAAAAAAAAAswHcAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAFQAAAAAAAAAAAAowHcAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-25T11:41:15.107Z",
+              "WhenOpened": "2026-03-25T11:41:15.107Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DepartmentService.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\DepartmentService.cs",
+              "RelativeDocumentMoniker": "MyTown.Application\\Services\\DepartmentService.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\DepartmentService.cs",
+              "RelativeToolTip": "MyTown.Application\\Services\\DepartmentService.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAkwGwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-25T10:49:46.821Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "INotificationService.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\InboundPorts\\INotificationService.cs",
+              "RelativeDocumentMoniker": "MyTown.Application\\Ports\\InboundPorts\\INotificationService.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\InboundPorts\\INotificationService.cs",
+              "RelativeToolTip": "MyTown.Application\\Ports\\InboundPorts\\INotificationService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-21T09:40:55.504Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Department.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Entities\\Department.cs",
+              "RelativeDocumentMoniker": "MyTown.Domain\\Entities\\Department.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Entities\\Department.cs",
+              "RelativeToolTip": "MyTown.Domain\\Entities\\Department.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBEAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-25T10:01:55.07Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "NotificationDto.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\DTOs\\Notifications\\NotificationDto.cs",
+              "RelativeDocumentMoniker": "MyTown.Application\\DTOs\\Notifications\\NotificationDto.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\DTOs\\Notifications\\NotificationDto.cs",
+              "RelativeToolTip": "MyTown.Application\\DTOs\\Notifications\\NotificationDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-22T10:36:20.875Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Notifications.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Entities\\Notifications.cs",
+              "RelativeDocumentMoniker": "MyTown.Domain\\Entities\\Notifications.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Entities\\Notifications.cs",
+              "RelativeToolTip": "MyTown.Domain\\Entities\\Notifications.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwBoAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-21T09:32:21.038Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "CitizenService.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\CitizenService.cs",
+              "RelativeDocumentMoniker": "MyTown.Application\\Services\\CitizenService.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\CitizenService.cs",
+              "RelativeToolTip": "MyTown.Application\\Services\\CitizenService.cs",
+              "ViewState": "AgIAAJAAAAAAAAAAAAAwwK0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-05T10:32:47.462Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "INotificationRepository.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\OutboundPorts\\INotificationRepository.cs",
+              "RelativeDocumentMoniker": "MyTown.Application\\Ports\\OutboundPorts\\INotificationRepository.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\OutboundPorts\\INotificationRepository.cs",
+              "RelativeToolTip": "MyTown.Application\\Ports\\OutboundPorts\\INotificationRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-21T09:38:08.572Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "CitizenRepository.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\CitizenRepository.cs",
+              "RelativeDocumentMoniker": "MyTown.Infrastructure\\Repositories\\CitizenRepository.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\CitizenRepository.cs",
+              "RelativeToolTip": "MyTown.Infrastructure\\Repositories\\CitizenRepository.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAgwCwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-05T09:54:52.678Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "CitizenProfile.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Entities\\CitizenProfile.cs",
+              "RelativeDocumentMoniker": "MyTown.Domain\\Entities\\CitizenProfile.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Entities\\CitizenProfile.cs",
+              "RelativeToolTip": "MyTown.Domain\\Entities\\CitizenProfile.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAkwDIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-05T09:50:24.227Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 16,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "MyTown.Application\\Services\\AuthService.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\AuthService.cs",
+              "RelativeToolTip": "MyTown.Application\\Services\\AuthService.cs",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAowDgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-05T14:13:05.173Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "TokenService.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\TokenService.cs",
+              "RelativeDocumentMoniker": "MyTown.Application\\Services\\TokenService.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\TokenService.cs",
+              "RelativeToolTip": "MyTown.Application\\Services\\TokenService.cs",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAcwFEAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T10:22:15.412Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "MyTown.API\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "MyTown.API\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE0AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-26T11:29:24.853Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": ".env",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\.env",
+              "RelativeDocumentMoniker": "MyTown.API\\.env",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\.env",
+              "RelativeToolTip": "MyTown.API\\.env",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAcAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-23T19:42:03.8Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "IStaffRepository.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\OutboundPorts\\IStaffRepository.cs",
+              "RelativeDocumentMoniker": "MyTown.Application\\Ports\\OutboundPorts\\IStaffRepository.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\OutboundPorts\\IStaffRepository.cs",
+              "RelativeToolTip": "MyTown.Application\\Ports\\OutboundPorts\\IStaffRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-05T09:58:37.099Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "StaffRepository.cs",
+              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\StaffRepository.cs",
+              "RelativeDocumentMoniker": "MyTown.Infrastructure\\Repositories\\StaffRepository.cs",
+              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\StaffRepository.cs",
+              "RelativeToolTip": "MyTown.Infrastructure\\Repositories\\StaffRepository.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAkwCUAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-05T09:58:23.4Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
               "Title": "DepartmentRepository.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\DepartmentRepository.cs",
               "RelativeDocumentMoniker": "MyTown.Infrastructure\\Repositories\\DepartmentRepository.cs",
@@ -512,12 +608,11 @@
               "RelativeToolTip": "MyTown.Infrastructure\\Repositories\\DepartmentRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-25T10:36:20.492Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-25T10:36:20.492Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 65,
               "Title": "20260421093629_tabelaNotifications.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Migrations\\20260421093629_tabelaNotifications.cs",
               "RelativeDocumentMoniker": "MyTown.Infrastructure\\Migrations\\20260421093629_tabelaNotifications.cs",
@@ -525,12 +620,11 @@
               "RelativeToolTip": "MyTown.Infrastructure\\Migrations\\20260421093629_tabelaNotifications.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T09:36:29.839Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-21T09:36:29.839Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 30,
               "Title": "PermissionSeed.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\SeedData\\PermissionSeed.cs",
               "RelativeDocumentMoniker": "MyTown.Infrastructure\\SeedData\\PermissionSeed.cs",
@@ -542,7 +636,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 29,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\appsettings.json",
               "RelativeDocumentMoniker": "MyTown.API\\appsettings.json",
@@ -554,7 +648,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 28,
               "Title": "MyTown.Application.csproj",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\MyTown.Application.csproj",
               "RelativeDocumentMoniker": "MyTown.Application\\MyTown.Application.csproj",
@@ -562,12 +656,11 @@
               "RelativeToolTip": "MyTown.Application\\MyTown.Application.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-25T11:32:06.197Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-25T11:32:06.197Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 27,
               "Title": "UserRepository.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\UserRepository.cs",
               "RelativeDocumentMoniker": "MyTown.Infrastructure\\Repositories\\UserRepository.cs",
@@ -575,12 +668,11 @@
               "RelativeToolTip": "MyTown.Infrastructure\\Repositories\\UserRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADcAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-07T08:10:05.801Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-07T08:10:05.801Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 26,
               "Title": "MyTownDbContext.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Persistence\\Data\\MyTownDbContext.cs",
               "RelativeDocumentMoniker": "MyTown.Infrastructure\\Persistence\\Data\\MyTownDbContext.cs",
@@ -588,12 +680,11 @@
               "RelativeToolTip": "MyTown.Infrastructure\\Persistence\\Data\\MyTownDbContext.cs",
               "ViewState": "AgIAABgAAAAAAAAAAAA1wCUAAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-25T10:25:54.811Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-25T10:25:54.811Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 32,
               "Title": "UpdateStaffDto.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\DTOs\\Staff\\UpdateStaffDto.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\DTOs\\Staff\\UpdateStaffDto.cs",
@@ -605,7 +696,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 37,
               "Title": "UpdateDepartmentValidator.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Validators\\UpdateDepartmentValidator.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\Validators\\UpdateDepartmentValidator.cs",
@@ -617,7 +708,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 34,
               "Title": "CreateStaffValidator.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Validators\\CreateStaffValidator.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\Validators\\CreateStaffValidator.cs",
@@ -629,7 +720,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 31,
               "Title": "StaffService.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\StaffService.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\Services\\StaffService.cs",
@@ -641,7 +732,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 33,
               "Title": "UpdateStaffValidator.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Validators\\UpdateStaffValidator.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\Validators\\UpdateStaffValidator.cs",
@@ -653,7 +744,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 35,
               "Title": "StaffController.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Controllers\\StaffController.cs",
               "RelativeDocumentMoniker": "MyTown.API\\Controllers\\StaffController.cs",
@@ -665,7 +756,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 39,
               "Title": "KomunaService.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\KomunaService.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\Services\\KomunaService.cs",
@@ -677,7 +768,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 36,
               "Title": "Staff.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Entities\\Staff.cs",
               "RelativeDocumentMoniker": "MyTown.Domain\\Entities\\Staff.cs",
@@ -689,7 +780,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 42,
               "Title": "IStaffService.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\InboundPorts\\IStaffService.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\Ports\\InboundPorts\\IStaffService.cs",
@@ -701,7 +792,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 38,
               "Title": "KomunaController.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Controllers\\KomunaController.cs",
               "RelativeDocumentMoniker": "MyTown.API\\Controllers\\KomunaController.cs",
@@ -713,7 +804,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 40,
               "Title": "IKomunaService.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\InboundPorts\\IKomunaService.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\Ports\\InboundPorts\\IKomunaService.cs",
@@ -725,7 +816,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 41,
               "Title": "IDepartmentService.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\InboundPorts\\IDepartmentService.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\Ports\\InboundPorts\\IDepartmentService.cs",
@@ -737,19 +828,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
-              "Title": "DepartmentService.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\DepartmentService.cs",
-              "RelativeDocumentMoniker": "MyTown.Application\\Services\\DepartmentService.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Services\\DepartmentService.cs",
-              "RelativeToolTip": "MyTown.Application\\Services\\DepartmentService.cs",
-              "ViewState": "AgIAAHcAAAAAAAAAAADwv2wAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-25T10:49:46.821Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 43,
               "Title": "CreateStaffDto.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\DTOs\\Staff\\CreateStaffDto.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\DTOs\\Staff\\CreateStaffDto.cs",
@@ -761,7 +840,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 45,
               "Title": "CitizenController.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.API\\Controllers\\CitizenController.cs",
               "RelativeDocumentMoniker": "MyTown.API\\Controllers\\CitizenController.cs",
@@ -773,7 +852,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 44,
               "Title": "CreateDepartmentValidator.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Validators\\CreateDepartmentValidator.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\Validators\\CreateDepartmentValidator.cs",
@@ -785,19 +864,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
-              "Title": "Department.cs",
-              "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Entities\\Department.cs",
-              "RelativeDocumentMoniker": "MyTown.Domain\\Entities\\Department.cs",
-              "ToolTip": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Entities\\Department.cs",
-              "RelativeToolTip": "MyTown.Domain\\Entities\\Department.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAgwBEAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-25T10:01:55.07Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 46,
               "Title": "ICitizenService.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\InboundPorts\\ICitizenService.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\Ports\\InboundPorts\\ICitizenService.cs",
@@ -809,7 +876,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 47,
               "Title": "RefreshTokenRepository.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Repositories\\RefreshTokenRepository.cs",
               "RelativeDocumentMoniker": "MyTown.Infrastructure\\Repositories\\RefreshTokenRepository.cs",
@@ -821,7 +888,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 48,
               "Title": "TokenUserDto.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\DTOs\\Authentication\\TokenUserDto.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\DTOs\\Authentication\\TokenUserDto.cs",
@@ -833,7 +900,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 49,
               "Title": "Permissions.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Authorization\\Permissions.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\Authorization\\Permissions.cs",
@@ -845,7 +912,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 50,
               "Title": "CustomClaimTypes.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Authorization\\CustomClaimTypes.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\Authorization\\CustomClaimTypes.cs",
@@ -857,7 +924,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 51,
               "Title": "StaffResponseDto.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\DTOs\\Staff\\StaffResponseDto.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\DTOs\\Staff\\StaffResponseDto.cs",
@@ -869,7 +936,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 59,
+              "DocumentIndex": 63,
               "Title": "20260405104843_tabelatCitizendheStaff.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Migrations\\20260405104843_tabelatCitizendheStaff.cs",
               "RelativeDocumentMoniker": "MyTown.Infrastructure\\Migrations\\20260405104843_tabelatCitizendheStaff.cs",
@@ -880,7 +947,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 52,
               "Title": "UpdateCitizenDto.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\DTOs\\Citizens\\UpdateCitizenDto.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\DTOs\\Citizens\\UpdateCitizenDto.cs",
@@ -892,7 +959,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 53,
               "Title": "ICitizenRepository.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\OutboundPorts\\ICitizenRepository.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\Ports\\OutboundPorts\\ICitizenRepository.cs",
@@ -904,7 +971,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 50,
+              "DocumentIndex": 54,
               "Title": "AdminSeed.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\SeedData\\AdminSeed.cs",
               "RelativeDocumentMoniker": "MyTown.Infrastructure\\SeedData\\AdminSeed.cs",
@@ -916,7 +983,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 51,
+              "DocumentIndex": 55,
               "Title": "UpdateDepartment.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\DTOs\\Department\\UpdateDepartment.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\DTOs\\Department\\UpdateDepartment.cs",
@@ -928,7 +995,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 60,
+              "DocumentIndex": 64,
               "Title": "20260401191044_StaffAdded.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\Migrations\\20260401191044_StaffAdded.cs",
               "RelativeDocumentMoniker": "MyTown.Infrastructure\\Migrations\\20260401191044_StaffAdded.cs",
@@ -939,7 +1006,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 52,
+              "DocumentIndex": 56,
               "Title": "BaseEntity.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Common\\BaseEntity.cs",
               "RelativeDocumentMoniker": "MyTown.Domain\\Common\\BaseEntity.cs",
@@ -951,7 +1018,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 53,
+              "DocumentIndex": 57,
               "Title": "IDepartmentRepository.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\Ports\\OutboundPorts\\IDepartmentRepository.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\Ports\\OutboundPorts\\IDepartmentRepository.cs",
@@ -963,7 +1030,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 54,
+              "DocumentIndex": 58,
               "Title": "DepartmentResponse.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\DTOs\\Department\\DepartmentResponse.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\DTOs\\Department\\DepartmentResponse.cs",
@@ -975,7 +1042,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 55,
+              "DocumentIndex": 59,
               "Title": "Role.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\Entities\\Role.cs",
               "RelativeDocumentMoniker": "MyTown.Domain\\Entities\\Role.cs",
@@ -987,7 +1054,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 56,
+              "DocumentIndex": 60,
               "Title": "CreateDepartment.cs",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Application\\DTOs\\Department\\CreateDepartment.cs",
               "RelativeDocumentMoniker": "MyTown.Application\\DTOs\\Department\\CreateDepartment.cs",
@@ -999,7 +1066,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 57,
+              "DocumentIndex": 61,
               "Title": "MyTown.Domain.csproj",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Domain\\MyTown.Domain.csproj",
               "RelativeDocumentMoniker": "MyTown.Domain\\MyTown.Domain.csproj",
@@ -1007,12 +1074,11 @@
               "RelativeToolTip": "MyTown.Domain\\MyTown.Domain.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-25T10:10:22.897Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-25T10:10:22.897Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 58,
+              "DocumentIndex": 62,
               "Title": "MyTown.Infrastructure.csproj",
               "DocumentMoniker": "C:\\Users\\rinor\\OneDrive\\Desktop\\MyTown\\Backend\\MyTownSolution\\MyTown.Infrastructure\\MyTown.Infrastructure.csproj",
               "RelativeDocumentMoniker": "MyTown.Infrastructure\\MyTown.Infrastructure.csproj",
@@ -1020,8 +1086,7 @@
               "RelativeToolTip": "MyTown.Infrastructure\\MyTown.Infrastructure.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-22T15:23:13.677Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-22T15:23:13.677Z"
             }
           ]
         }

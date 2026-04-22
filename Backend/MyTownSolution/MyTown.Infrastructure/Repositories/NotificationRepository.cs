@@ -15,6 +15,7 @@ namespace MyTown.Infrastructure.Repositories
         public async Task AddAsync(Notifications notifications)
         {
             await _context.Notifications.AddAsync(notifications);
+
         }
         public async Task<List<Notifications>> GetByUserIdAsync(int userId)
         {
