@@ -1,10 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.AspNetCore.SignalR;
+using MyTown.Application.Ports.OutboundPorts;
+using MyTown.Domain.Entities;
+using MyTown.Infrastructure.Hubs;
 
-namespace MyTown.Infrastructure.Repositories
+public class SignalRNotificationSender : INotificationSender
 {
-    internal class SignalRNotificationSender
+    private readonly IHubContext<NotificationHub> _hubContext;
+
+    public SignalRNotificationSender(IHubContext<NotificationHub> hubContext)
     {
+        _hubContext = hubContext;
+    }
+
+    public async Task SendNotificationAsync(int userId, object data)
+    {
+        await _hubContext.Clients.Group("Staff").SendAsync("ReceiveNotification", data);
     }
 }
