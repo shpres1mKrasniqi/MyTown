@@ -10,9 +10,11 @@ using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Application.Services;
 using MyTown.Application.Settings;
 using MyTown.Application.Validators;
+using MyTown.API.Services;
 using MyTown.Infrastructure.Persistence.Data;
 using MyTown.Infrastructure.Persistence.Mongo;
 using MyTown.Infrastructure.Repositories;
+using MyTown.Infrastructure.Services;
 using MyTown.Infrastructure.SeedData;
 using System.Security.Claims;
 using System.Text;
@@ -138,6 +140,8 @@ builder.Services.AddScoped<ICitizenService, CitizenService>();
 builder.Services.AddScoped<IIssueCategoryService, IssueCategoryService>();
 builder.Services.AddScoped<IIssueService, IssueService>();
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IPostInteractionService, PostInteractionService>();
+builder.Services.AddScoped<IRealtimeInteractionNotifier, RealtimeInteractionNotifier>();
 
 //DI per mongo:
 builder.Services.AddSingleton<MongoDbContext>();
@@ -204,6 +208,7 @@ using (var scope = app.Services.CreateScope())
 
         var command = new MongoDB.Bson.BsonDocument("ping", 1);
         await mongoContext.Database.RunCommandAsync<MongoDB.Bson.BsonDocument>(command);
+        await mongoContext.EnsureIndexesAsync();
 
         Console.WriteLine(" MongoDB u lidh me sukses!");
     }
