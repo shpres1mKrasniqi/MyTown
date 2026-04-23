@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import { IssueService } from "../services/issueServices";
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { IssueService } from "../services/IssueServices";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Heart,
+  MessageCircle,
+  MoreHorizontal,
+} from "lucide-react";
 import * as signalR from "@microsoft/signalr";
 
 function ImageCarousel({ files }) {
@@ -64,7 +69,9 @@ function IssueList() {
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openMenuId, setOpenMenuId] = useState(null);
-  const navigate = useNavigate();
+  /** @type {Record<number, { likeCount: number, likedByMe: boolean, comments: Array<{ id: string, authorName: string, content: string, createdAt: string }> }>} */
+  const [socialByIssue, setSocialByIssue] = useState({});
+  const [commentDraft, setCommentDraft] = useState({});
 
   useEffect(() => {
     fetchIssues();
@@ -83,6 +90,42 @@ function IssueList() {
 
           fetchIssues();
         });
+
+        connection.on("LikeUpdated", (payload) => {
+          const postId = payload.postId;
+          setSocialByIssue((prev) => ({
+            ...prev,
+            [postId]: {
+              ...(prev[postId] || {
+                likeCount: 0,
+                likedByMe: false,
+                comments: [],
+              }),
+              likeCount: payload.likeCount,
+            },
+          }));
+        });
+
+        connection.on("CommentAdded", (payload) => {
+          const postId = payload.postId;
+          const comment = payload.comment;
+          setSocialByIssue((prev) => {
+            const cur = prev[postId] || {
+              likeCount: 0,
+              likedByMe: false,
+              comments: [],
+            };
+            const list = cur.comments || [];
+            if (list.some((c) => c.id === comment.id)) return prev;
+            return {
+              ...prev,
+              [postId]: {
+                ...cur,
+                comments: [...list, comment],
+              },
+            };
+          });
+        });
       })
       .catch((err) => console.error("SignalR error: ", err));
 
@@ -91,14 +134,81 @@ function IssueList() {
     };
   }, []);
 
+  const loadSocialForIssues = async (issueList) => {
+    if (!issueList?.length) {
+      setSocialByIssue({});
+      return;
+    }
+    const map = {};
+    await Promise.all(
+      issueList.map(async (issue) => {
+        try {
+          const [likesRes, commentsRes] = await Promise.all([
+            IssueService.getLikes(issue.id),
+            IssueService.getComments(issue.id),
+          ]);
+          map[issue.id] = {
+            likeCount: likesRes.data.likeCount,
+            likedByMe: likesRes.data.likedByCurrentUser,
+            comments: commentsRes.data,
+          };
+        } catch {
+          map[issue.id] = { likeCount: 0, likedByMe: false, comments: [] };
+        }
+      }),
+    );
+    setSocialByIssue(map);
+  };
+
   const fetchIssues = async () => {
     try {
       const res = await IssueService.getAll();
       setIssues(res.data);
+      await loadSocialForIssues(res.data);
     } catch (err) {
       console.log(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleToggleLike = async (issueId) => {
+    try {
+      const res = await IssueService.toggleLike(issueId);
+      setSocialByIssue((prev) => ({
+        ...prev,
+        [issueId]: {
+          ...(prev[issueId] || {
+            likeCount: 0,
+            likedByMe: false,
+            comments: [],
+          }),
+          likeCount: res.data.likeCount,
+          likedByMe: res.data.likedByCurrentUser,
+        },
+      }));
+    } catch (err) {
+      if (err.response?.status === 401) {
+        alert("Duhet të jeni të kyçur për të pëlqyer postimin.");
+      } else {
+        console.error(err);
+      }
+    }
+  };
+
+  const handleAddComment = async (e, issueId) => {
+    e.preventDefault();
+    const text = (commentDraft[issueId] || "").trim();
+    if (!text) return;
+    try {
+      await IssueService.addComment(issueId, text);
+      setCommentDraft((prev) => ({ ...prev, [issueId]: "" }));
+    } catch (err) {
+      if (err.response?.status === 401) {
+        alert("Duhet të jeni të kyçur për të komentuar.");
+      } else {
+        console.error(err);
+      }
     }
   };
 
@@ -193,6 +303,78 @@ function IssueList() {
                   },
                 )}
               </p>
+            </div>
+
+            <div className="px-3 pb-3 border-t border-gray-100 pt-2 space-y-2">
+              <div className="flex items-center gap-4 text-sm text-gray-700">
+                <button
+                  type="button"
+                  onClick={() => handleToggleLike(issue.id)}
+                  className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
+                  aria-label="Pëlqe"
+                >
+                  <Heart
+                    size={20}
+                    className={
+                      socialByIssue[issue.id]?.likedByMe
+                        ? "fill-red-500 text-red-500"
+                        : "text-gray-700"
+                    }
+                  />
+                  <span className="text-xs font-medium tabular-nums">
+                    {socialByIssue[issue.id]?.likeCount ?? 0}
+                  </span>
+                </button>
+                <div className="flex items-center gap-1.5 text-gray-500">
+                  <MessageCircle size={18} />
+                  <span className="text-xs">
+                    {socialByIssue[issue.id]?.comments?.length ?? 0} komente
+                  </span>
+                </div>
+              </div>
+
+              <div className="space-y-2 max-h-36 overflow-y-auto">
+                {(socialByIssue[issue.id]?.comments || []).map((c) => (
+                  <div key={c.id} className="text-xs text-gray-800 leading-snug">
+                    <span className="font-semibold text-gray-900">
+                      {c.authorName}
+                    </span>
+                    <span className="mx-1.5 text-gray-600">{c.content}</span>
+                    <span className="text-[10px] text-gray-400 whitespace-nowrap">
+                      {new Date(c.createdAt).toLocaleString("sq-AL", {
+                        day: "numeric",
+                        month: "short",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <form
+                onSubmit={(e) => handleAddComment(e, issue.id)}
+                className="flex gap-2 items-center"
+              >
+                <input
+                  type="text"
+                  value={commentDraft[issue.id] || ""}
+                  onChange={(e) =>
+                    setCommentDraft((prev) => ({
+                      ...prev,
+                      [issue.id]: e.target.value,
+                    }))
+                  }
+                  placeholder="Shto koment..."
+                  className="flex-1 text-xs rounded-md border border-gray-200 px-2 py-1.5 outline-none focus:ring-1 focus:ring-indigo-500"
+                />
+                <button
+                  type="submit"
+                  className="text-xs font-medium text-indigo-600 px-2 py-1 rounded hover:bg-indigo-50"
+                >
+                  Dërgo
+                </button>
+              </form>
             </div>
           </div>
         ))}

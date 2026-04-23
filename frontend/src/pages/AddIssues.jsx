@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IssueService } from "../services/issueServices";
+import { IssueService } from "../services/IssueServices";
 import { komunaService } from "../services/komunaService";
 import { issueCategoryService } from "../services/issueCategoryService";
 

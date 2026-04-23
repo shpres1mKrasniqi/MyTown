@@ -7,4 +7,17 @@ export const IssueService = {
   // update: (id, data) =>
   //   api.put(`/issues/${id}`, data, { withCredentials: true }),
   delete: (id) => api.delete(`/issues/${id}`, { withCredentials: true }),
+
+  getLikes: (issueId) =>
+    api.get(`/issues/${issueId}/likes`, { withCredentials: true }),
+  toggleLike: (issueId) =>
+    api.post(`/issues/${issueId}/likes/toggle`, {}, { withCredentials: true }),
+  getComments: (issueId) =>
+    api.get(`/issues/${issueId}/comments`, { withCredentials: true }),
+  addComment: (issueId, content) =>
+    api.post(
+      `/issues/${issueId}/comments`,
+      { content },
+      { withCredentials: true },
+    ),
 };
