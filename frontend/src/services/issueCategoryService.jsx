@@ -1,7 +1,8 @@
-// services/issueCategoryService.js
 import api from "../api/axios";
 
 export const issueCategoryService = {
-  getAll: () => api.get("/IssueCategory"),
-  getById: (id) => api.get(`/IssueCategory/${id}`),
+  create: (data) => api.post("/IssueCategory", data, { withCredentials: true }),
+
+  getAll: () => api.get("/IssueCategory", { withCredentials: true }),
+  getById: (id) => api.get(`/IssueCategory/${id}`, { withCredentials: true }),
 };

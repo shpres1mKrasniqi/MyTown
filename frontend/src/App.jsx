@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
+
 import AdminLayout from "./layouts/AdminLayout";
 
 const Login = lazy(() => import("./components/Login"));
@@ -24,6 +25,7 @@ const EditStaff = lazy(() => import("./pages/EditStaff"));
 const AddIssue = lazy(() => import("./pages/AddIssues"));
 const IssueList = lazy(() => import("./pages/IssueList"));
 // const EditIssue = lazy(() => import("./pages/EditIssue"));
+const AddIssueCategory = lazy(() => import("./pages/AddIssueCategory"));
 
 function App() {
   return (
@@ -45,6 +47,7 @@ function App() {
           <Route path="/edit-staff/:id" element={<EditStaff />} />
           <Route path="/manage-staff" element={<MenaxhoStaff />} />
           <Route path="/add-staff" element={<AddStaff />} />
+          <Route path="/add-issueCategory" element={<AddIssueCategory />} />
         </Route>
 
         <Route path="/add-issue" element={<AddIssue />} />

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using MyTown.API.Hubs.Problems;
@@ -12,6 +13,7 @@ namespace MyTown.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class IssuesController : ControllerBase
     {
         private readonly IIssueService _issueService;
