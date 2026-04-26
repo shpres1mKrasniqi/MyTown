@@ -40,5 +40,11 @@ namespace MyTown.Infrastructure.Repositories
             return await _context.CitizenProfiles
                 .FirstOrDefaultAsync(c => c.UserId == userId && !c.IsDeleted);
         }
+
+        public async Task<bool> ExistsByPersonalNumberAsync(string personalNumber)
+        {
+            return await _context.CitizenProfiles
+                .AnyAsync(c => c.PersonalNumber == personalNumber && !c.IsDeleted);
+        }
     }
 }

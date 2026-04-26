@@ -12,8 +12,8 @@ using MyTown.Infrastructure.Persistence.Data;
 namespace MyTown.Infrastructure.Migrations
 {
     [DbContext(typeof(MyTownDbContext))]
-    [Migration("20260412185811_FileRead")]
-    partial class FileRead
+    [Migration("20260426145606_CitizenAIFormFill")]
+    partial class CitizenAIFormFill
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,14 +83,27 @@ namespace MyTown.Infrastructure.Migrations
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<int>("KomunaId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Nationality")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PersonalNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PlaceOfBirth")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -105,6 +118,10 @@ namespace MyTown.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("KomunaId");
+
+                    b.HasIndex("PersonalNumber")
+                        .IsUnique()
+                        .HasFilter("[IsDeleted] = 0");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -327,6 +344,41 @@ namespace MyTown.Infrastructure.Migrations
                     b.HasIndex("IssueId");
 
                     b.ToTable("Files");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.Notifications", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.Permission", b =>

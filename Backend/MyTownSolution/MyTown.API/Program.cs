@@ -1,22 +1,24 @@
+using Azure;
+using Azure.AI.FormRecognizer.DocumentAnalysis;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MyTown.API.Hubs.Problems;
+using MyTown.API.Services;
 using MyTown.Application.Authorization;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Application.Services;
 using MyTown.Application.Settings;
 using MyTown.Application.Validators;
-using MyTown.API.Services;
 using MyTown.Infrastructure.Hubs;
 using MyTown.Infrastructure.Persistence.Data;
 using MyTown.Infrastructure.Persistence.Mongo;
 using MyTown.Infrastructure.Repositories;
-using MyTown.Infrastructure.Services;
 using MyTown.Infrastructure.SeedData;
+using MyTown.Infrastructure.Services;
 using System.Security.Claims;
 using System.Text;
 
@@ -145,6 +147,19 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IPostInteractionService, PostInteractionService>();
 builder.Services.AddScoped<IRealtimeInteractionNotifier, RealtimeInteractionNotifier>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+
+
+builder.Services.AddSingleton(sp =>
+{
+    var endpoint = Environment.GetEnvironmentVariable("AZURE_DOC_ENDPOINT");
+    var key = Environment.GetEnvironmentVariable("AZURE_DOC_KEY");
+
+    return new DocumentAnalysisClient(
+        new Uri(endpoint),
+        new AzureKeyCredential(key));
+});
+
+builder.Services.AddScoped<IIdScanService, AzureIdScanService>();
 
 //DI per mongo:
 builder.Services.AddSingleton<MongoDbContext>();

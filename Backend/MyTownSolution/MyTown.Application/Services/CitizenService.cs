@@ -24,6 +24,10 @@ namespace MyTown.Application.Services
 
         public async Task<CitizenResponseDto> CreateCitizenAsync(CreateCitizenDto createCitizen, int adminId, string ipAddress)
         {
+
+            if (await _citizenRepository.ExistsByPersonalNumberAsync(createCitizen.PersonalNumber))
+                throw new Exception("Qytetari me kete numr personal ekziston.");
+
             if (createCitizen == null)
             {
                 throw new Exception("Nuk eshte dhene formati valid i te dhenav");
@@ -50,12 +54,16 @@ namespace MyTown.Application.Services
             await _unitOfWork.SaveChangesAsync();
 
             var citizen = new CitizenProfile
-                (
+            (
                 user,
                 createCitizen.KomunaId,
                 createCitizen.PhoneNumber,
-                createCitizen.Address
-                );
+                createCitizen.Address,
+                createCitizen.PersonalNumber,
+                DateTime.Parse(createCitizen.DateOfBirth),
+                createCitizen.Nationality,
+                createCitizen.PlaceOfBirth
+            );
 
             await _citizenRepository.AddCitizenAsync(citizen);
             await _unitOfWork.SaveChangesAsync();

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MyTown.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class IssuesPerCitizen : Migration
+    public partial class CitizenAIFormFill : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,25 +29,6 @@ namespace MyTown.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AuditLogs", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Files",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Entity = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EntityId = table.Column<int>(type: "int", nullable: false),
-                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FileSize = table.Column<long>(type: "bigint", nullable: false),
-                    UploadedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Files", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,6 +68,25 @@ namespace MyTown.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Komunas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    UpdatedBy = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -199,6 +199,10 @@ namespace MyTown.Infrastructure.Migrations
                     KomunaId = table.Column<int>(type: "int", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PersonalNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Nationality = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PlaceOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -377,10 +381,42 @@ namespace MyTown.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Files",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Entity = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EntityId = table.Column<int>(type: "int", nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileSize = table.Column<long>(type: "bigint", nullable: false),
+                    UploadedBy = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IssueId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Files", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Files_Issues_IssueId",
+                        column: x => x.IssueId,
+                        principalTable: "Issues",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CitizenProfiles_KomunaId",
                 table: "CitizenProfiles",
                 column: "KomunaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CitizenProfiles_PersonalNumber",
+                table: "CitizenProfiles",
+                column: "PersonalNumber",
+                unique: true,
+                filter: "[IsDeleted] = 0");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CitizenProfiles_UserId",
@@ -392,6 +428,11 @@ namespace MyTown.Infrastructure.Migrations
                 name: "IX_Departments_KomunaId",
                 table: "Departments",
                 column: "KomunaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Files_IssueId",
+                table: "Files",
+                column: "IssueId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Issues_CitizenId",
@@ -469,7 +510,7 @@ namespace MyTown.Infrastructure.Migrations
                 name: "Files");
 
             migrationBuilder.DropTable(
-                name: "Issues");
+                name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
@@ -484,10 +525,7 @@ namespace MyTown.Infrastructure.Migrations
                 name: "WorkSchedules");
 
             migrationBuilder.DropTable(
-                name: "CitizenProfiles");
-
-            migrationBuilder.DropTable(
-                name: "IssueCategories");
+                name: "Issues");
 
             migrationBuilder.DropTable(
                 name: "Permissions");
@@ -497,6 +535,12 @@ namespace MyTown.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "StaffProfiles");
+
+            migrationBuilder.DropTable(
+                name: "CitizenProfiles");
+
+            migrationBuilder.DropTable(
+                name: "IssueCategories");
 
             migrationBuilder.DropTable(
                 name: "Departments");

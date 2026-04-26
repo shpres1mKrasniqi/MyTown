@@ -122,6 +122,10 @@ namespace MyTown.Infrastructure.Persistence.Data
     .HasForeignKey(rp => rp.KomunaId)
     .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<CitizenProfile>()
+    .HasIndex(c => c.PersonalNumber)
+      .IsUnique();
+
             modelBuilder.Entity<WorkSchedule>()
             .HasOne(ws => ws.StaffProfile)
             .WithMany(s => s.WorkSchedules)

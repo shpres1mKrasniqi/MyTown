@@ -12,5 +12,7 @@ namespace MyTown.Application.Ports.OutboundPorts
 
         Task<CitizenProfile?> GetByUserIdAsync(int userId);
         Task SaveChangesAsync();
+
+        Task<bool> ExistsByPersonalNumberAsync(string personalNumber);
     }
 }
