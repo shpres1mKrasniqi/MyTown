@@ -4,11 +4,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
-
 import AdminLayout from "./layouts/AdminLayout";
 
 const Login = lazy(() => import("./components/Login"));
-const Register = lazy(() => import("./components/Register"));
 const AdminDashboard = lazy(() => import("./dashboards/adminDashboard"));
 const StaffDashboard = lazy(() => import("./dashboards/staffDashboard"));
 const CitizenDashboard = lazy(() => import("./dashboards/citizenDashboard"));
@@ -26,14 +24,13 @@ const AddIssue = lazy(() => import("./pages/AddIssues"));
 const IssueList = lazy(() => import("./pages/IssueList"));
 // const EditIssue = lazy(() => import("./pages/EditIssue"));
 const AddIssueCategory = lazy(() => import("./pages/AddIssueCategory"));
-
+const CreateCitizen = lazy(() => import("./pages/CreateCitizen"));
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Register />} />
         {/* ADMIN LAYOUT ROUTE WRAPPER */}
         <Route element={<AdminLayout />}>
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
@@ -50,6 +47,7 @@ function App() {
           <Route path="/add-issueCategory" element={<AddIssueCategory />} />
         </Route>
 
+        <Route path="/create-citizen" element={<CreateCitizen />} />
         <Route path="/add-issue" element={<AddIssue />} />
         <Route path="/staff-dashboard" element={<StaffDashboard />} />
         <Route path="/citizen-dashboard" element={<CitizenDashboard />} />

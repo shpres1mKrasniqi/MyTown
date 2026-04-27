@@ -75,7 +75,7 @@ export default function Login() {
 
         <p className="text-center py-8">
           Nuk keni llogari?{" "}
-          <a href="/signup" className="text-indigo-600 hover:underline">
+          <a href="/create-citizen" className="text-[#0067b8] hover:underline">
             Regjistrohu
           </a>
         </p>

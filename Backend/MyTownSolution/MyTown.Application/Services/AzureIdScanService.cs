@@ -12,13 +12,17 @@ namespace MyTown.Application.Services
         private readonly DocumentAnalysisClient _client;
         private readonly ILogger<AzureIdScanService> _logger;
 
-        public AzureIdScanService(DocumentAnalysisClient client, ILogger<AzureIdScanService> logger)
+        public AzureIdScanService(
+            DocumentAnalysisClient client,
+            ILogger<AzureIdScanService> logger)
         {
             _client = client;
             _logger = logger;
         }
 
-        public async Task<IdScanResultDto> ExtractIdDataAsync(Stream documentStream, CancellationToken ct)
+        public async Task<IdScanResultDto> ExtractIdDataAsync(
+            Stream documentStream,
+            CancellationToken ct)
         {
             AnalyzeDocumentOperation operation;
 
@@ -32,14 +36,16 @@ namespace MyTown.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Azure Document Intelligence request failed.");
-                throw new Exception("ID scan service is unavailable. Please try again.", ex);
+                _logger.LogError(ex, "Kerkesa per Azure Document Intelligence deshtoi.");
+                throw new Exception(
+                    "Sherbimi per skanimin e ID eshte i paqasshem. Ju lutem provoni me vone.",
+                    ex);
             }
 
             var result = operation.Value;
 
             if (!result.Documents.Any())
-                throw new Exception("No ID document detected in the uploaded image.");
+                throw new Exception("Nuk u gjet asnje dokument valid.");
 
             var doc = result.Documents[0];
             var fields = doc.Fields;
@@ -55,7 +61,6 @@ namespace MyTown.Application.Services
             }
 
             _logger.LogInformation("Full OCR Content: {Content}", fullText);
-
 
             var firstName = FirstNonEmpty(
                 ExtractField(fields, "FirstName"),
@@ -89,16 +94,17 @@ namespace MyTown.Application.Services
                 ExtractField(fields, "PlaceOfBirth")
             );
 
-
+            // OCR fallback
             firstName ??= ExtractByLabel(fullText, "GIVEN NAME", "EMRI");
             lastName ??= ExtractByLabel(fullText, "SURNAME", "MBIEMRI");
             dob ??= ExtractByLabel(fullText, "DATE OF BIRTH", "DATA E LINDJES", "LINDUR");
             personalNumber ??= ExtractByLabel(fullText, "PERSONAL NO", "DOCUMENT NO", "NR", "NUMRI PERSONAL");
-            nationality ??= ExtractByLabel(fullText, "NATIONALITY", "SHTETËSIA", "SHTETESIA");
+            nationality ??= ExtractByLabel(fullText, "NATIONALITY");
             placeOfBirth ??= ExtractByLabel(fullText, "PLACE OF BIRTH", "VENDI I LINDJES");
 
-
-            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
+            // MRZ fallback (Passport)
+            if (string.IsNullOrWhiteSpace(firstName) ||
+                string.IsNullOrWhiteSpace(lastName))
             {
                 var mrz = TryExtractMrzName(fullText);
 
@@ -106,12 +112,22 @@ namespace MyTown.Application.Services
                 lastName ??= mrz.LastName;
             }
 
+            // Normalize nationality
+            nationality = NormalizeNationalityOrDefault(nationality);
+
             var missing = new List<string>();
-            if (string.IsNullOrWhiteSpace(firstName)) missing.Add("FirstName");
-            if (string.IsNullOrWhiteSpace(lastName)) missing.Add("LastName");
-            if (string.IsNullOrWhiteSpace(dob)) missing.Add("DateOfBirth");
-            if (string.IsNullOrWhiteSpace(personalNumber)) missing.Add("PersonalNumber");
-            if (string.IsNullOrWhiteSpace(nationality)) missing.Add("Nationality");
+
+            if (string.IsNullOrWhiteSpace(firstName))
+                missing.Add("FirstName");
+
+            if (string.IsNullOrWhiteSpace(lastName))
+                missing.Add("LastName");
+
+            if (string.IsNullOrWhiteSpace(dob))
+                missing.Add("DateOfBirth");
+
+            if (string.IsNullOrWhiteSpace(personalNumber))
+                missing.Add("PersonalNumber");
 
             return new IdScanResultDto
             {
@@ -119,7 +135,7 @@ namespace MyTown.Application.Services
                 LastName = NormalizeName(lastName),
                 DateOfBirth = dob,
                 PersonalNumber = personalNumber,
-                Nationality = nationality ?? "KOSOVAR", //Qita e kena lan se te leternjoftimi spe lexon
+                Nationality = nationality,
                 PlaceOfBirth = NormalizeName(placeOfBirth),
                 MissingFields = missing
             };
@@ -151,28 +167,40 @@ namespace MyTown.Application.Services
 
         private static string? FirstNonEmpty(params string?[] values)
         {
-            return values.FirstOrDefault(v => !string.IsNullOrWhiteSpace(v));
+            return values.FirstOrDefault(v =>
+                !string.IsNullOrWhiteSpace(v));
         }
 
-        private static string? ExtractByLabel(string text, params string[] labels)
+        private static string? ExtractByLabel(
+            string text,
+            params string[] labels)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return null;
 
             foreach (var label in labels)
             {
-                var pattern = $@"{Regex.Escape(label)}\s*[:\-]?\s*(.+)";
-                var match = Regex.Match(text, pattern, RegexOptions.IgnoreCase);
+                var pattern =
+                    $@"{Regex.Escape(label)}\s*[:\-]?\s*(.+)";
+
+                var match = Regex.Match(
+                    text,
+                    pattern,
+                    RegexOptions.IgnoreCase);
 
                 if (match.Success)
                 {
-                    var value = match.Groups[1].Value.Trim();
+                    var value =
+                        match.Groups[1].Value.Trim();
 
                     if (!string.IsNullOrWhiteSpace(value))
                     {
-                        // merr vetëm rreshtin e parë
-                        var firstLine = value.Split('\n', '\r', StringSplitOptions.RemoveEmptyEntries)
-                                             .FirstOrDefault()?.Trim();
+                        var firstLine = value
+                            .Split(
+                                new[] { '\r', '\n' },
+                                StringSplitOptions.RemoveEmptyEntries)
+                            .FirstOrDefault()
+                            ?.Trim();
 
                         if (!string.IsNullOrWhiteSpace(firstLine))
                             return firstLine;
@@ -183,48 +211,123 @@ namespace MyTown.Application.Services
             return null;
         }
 
-        private static (string? FirstName, string? LastName) TryExtractMrzName(string text)
+        private static (string? FirstName, string? LastName)
+            TryExtractMrzName(string text)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return (null, null);
 
             var lines = text
-                .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                .Split(
+                    new[] { '\r', '\n' },
+                    StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim())
                 .ToList();
 
-            // kërko rresht MRZ që fillon me P<
-            var mrzLine = lines.FirstOrDefault(x => x.StartsWith("P<"));
+            var mrzLine =
+                lines.FirstOrDefault(x => x.StartsWith("P<"));
 
             if (string.IsNullOrWhiteSpace(mrzLine))
                 return (null, null);
 
-            // format tipik: P<KOSLASTNAME<<FIRSTNAME<MIDDLENAME<<<<<<
-            var afterCountry = mrzLine.Length > 5 ? mrzLine.Substring(5) : null;
+            var afterCountry =
+                mrzLine.Length > 5
+                    ? mrzLine.Substring(5)
+                    : null;
 
             if (string.IsNullOrWhiteSpace(afterCountry))
                 return (null, null);
 
-            var parts = afterCountry.Split("<<", StringSplitOptions.None);
+            var parts = afterCountry.Split("<<");
 
-            var lastName = parts.Length > 0 ? parts[0].Replace("<", " ").Trim() : null;
-            var firstName = parts.Length > 1 ? parts[1].Replace("<", " ").Trim() : null;
+            var lastName =
+                parts.Length > 0
+                    ? parts[0].Replace("<", " ").Trim()
+                    : null;
+
+            var firstName =
+                parts.Length > 1
+                    ? parts[1].Replace("<", " ").Trim()
+                    : null;
 
             return (
-                string.IsNullOrWhiteSpace(firstName) ? null : firstName,
-                string.IsNullOrWhiteSpace(lastName) ? null : lastName
+                string.IsNullOrWhiteSpace(firstName)
+                    ? null
+                    : firstName,
+
+                string.IsNullOrWhiteSpace(lastName)
+                    ? null
+                    : lastName
             );
         }
 
-        private static string? NormalizeName(string? value)
+        private static string NormalizeNationalityOrDefault(
+            string? value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return "KOSOVAR";
+
+            value = value.Trim();
+
+            var invalidKeywords = new[]
+            {
+                "date of expiry",
+                "expiry",
+                "expiration",
+                "document",
+                "surname",
+                "given name",
+                "date of birth",
+                "place of birth",
+                "personal number"
+            };
+
+            if (invalidKeywords.Any(x =>
+                value.Contains(
+                    x,
+                    StringComparison.OrdinalIgnoreCase)))
+            {
+                return "KOSOVAR";
+            }
+
+            if (value.Equals("KOS",
+                    StringComparison.OrdinalIgnoreCase) ||
+                value.Equals("KOSOVO",
+                    StringComparison.OrdinalIgnoreCase) ||
+                value.Equals("REPUBLIC OF KOSOVO",
+                    StringComparison.OrdinalIgnoreCase) ||
+                value.Equals("KOSOVAR",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                return "KOSOVAR";
+            }
+
+            if (Regex.IsMatch(value,
+                @"^[A-Za-zÇËçë\s]{3,40}$"))
+            {
+                return NormalizeName(value)
+                       ?? "KOSOVAR";
+            }
+
+            return "KOSOVAR";
+        }
+
+        private static string? NormalizeName(
+            string? value)
         {
             if (string.IsNullOrWhiteSpace(value))
                 return value;
 
             value = value.Trim().ToLowerInvariant();
-            return string.Join(" ",
-                value.Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                     .Select(word => char.ToUpper(word[0]) + word[1..]));
+
+            return string.Join(
+                " ",
+                value.Split(
+                        ' ',
+                        StringSplitOptions.RemoveEmptyEntries)
+                     .Select(word =>
+                         char.ToUpper(word[0]) +
+                         word[1..]));
         }
     }
 }
