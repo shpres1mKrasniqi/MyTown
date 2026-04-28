@@ -5,33 +5,108 @@ import { toast } from "react-toastify";
 import { ArrowLeft, Save, MapPin, AlignLeft, Loader2 } from "lucide-react";
 
 export default function AddKomuna() {
-  const [form, setForm] = useState({
+  const initialForm = {
     name: "",
     description: "",
-  });
+  };
 
+  const [form, setForm] = useState(initialForm);
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+
+  const showToast = (type, message) => {
+    toast.dismiss();
+
+    toast[type](message, {
+      toastId: "main-toast",
+      onClick: () => toast.dismiss("main-toast"),
+    });
+  };
+
+  const normalizeFieldName = (key) => {
+    const lowerKey = key.toLowerCase();
+
+    if (lowerKey.includes("name")) return "name";
+    if (lowerKey.includes("description")) return "description";
+
+    return key.charAt(0).toLowerCase() + key.slice(1);
+  };
+
+  const formatBackendErrors = (responseErrors) => {
+    const formattedErrors = {};
+
+    Object.keys(responseErrors).forEach((key) => {
+      const fieldName = normalizeFieldName(key);
+      const messages = responseErrors[key];
+
+      formattedErrors[fieldName] = Array.isArray(messages)
+        ? messages[0]
+        : messages;
+    });
+
+    return formattedErrors;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (form.name.length < 3) {
-      toast.error("Emri duhet të ketë së paku 3 karaktere");
-      return;
-    }
+    if (loading) return;
 
+    setErrors({});
     setLoading(true);
+
     try {
       await komunaService.create(form);
-      toast.success("Komuna u krijua me sukses");
+
+      showToast("success", "Komuna u krijua me sukses.");
+      setForm(initialForm);
       navigate("/MenaxhoKomunat");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Shtimi dështoi");
+      console.error(
+        "Gabim gjatë krijimit të komunës:",
+        err.response?.data || err,
+      );
+
+      const backendData = err.response?.data;
+
+      if (backendData?.errors) {
+        setErrors(formatBackendErrors(backendData.errors));
+        return;
+      }
+
+      const backendMessage =
+        backendData?.message ||
+        backendData?.title ||
+        "Shtimi i komunës dështoi.";
+
+      showToast("error", backendMessage);
     } finally {
       setLoading(false);
     }
   };
+
+  const getInputClasses = (fieldName) =>
+    `w-full px-4 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 transition-all text-sm ${
+      errors[fieldName]
+        ? "border-red-400 focus:ring-red-200 focus:border-red-500"
+        : "border-slate-200 focus:ring-[#010694]/20 focus:border-[#010694]"
+    }`;
 
   return (
     <div className="max-w-2xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -40,64 +115,86 @@ export default function AddKomuna() {
           onClick={() => navigate(-1)}
           className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-[#010694] transition-colors w-fit group"
         >
-          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+          <ArrowLeft
+            size={18}
+            className="group-hover:-translate-x-1 transition-transform"
+          />
           Kthehu mbrapa
         </button>
-        <h1 className="text-2xl font-semibold text-slate-900">Shto Komunë të re</h1>
+
+        <h1 className="text-2xl font-semibold text-slate-900">
+          Shto Komunë të re
+        </h1>
+
         <p className="text-sm text-slate-500">
-          Plotësoni të dhënat më poshtë për të krijuar një komunë të re në sistem.
+          Plotësoni të dhënat më poshtë për të krijuar një komunë të re në
+          sistem.
         </p>
       </div>
 
       <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="p-8 space-y-6" noValidate>
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-              <MapPin size={16} className="text-[#010694]" /> 
+              <MapPin size={16} className="text-[#010694]" />
               Emri i Komunës
             </label>
+
             <input
               type="text"
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#010694]/20 focus:border-[#010694] transition-all text-sm"
-              placeholder="Psh. Komuna e Prishtinës"
+              name="name"
               value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              required
+              onChange={handleChange}
+              placeholder="Psh. Komuna e Prishtinës"
+              className={getInputClasses("name")}
             />
+
+            {errors.name && (
+              <p className="text-sm text-red-500">{errors.name}</p>
+            )}
           </div>
 
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-              <AlignLeft size={16} className="text-[#010694]" /> 
-              Përshkrimi i shkurtër
+              <AlignLeft size={16} className="text-[#010694]" />
+              Përshkrimi
             </label>
+
             <textarea
               rows="4"
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#010694]/20 focus:border-[#010694] transition-all text-sm resize-none"
-              placeholder="Shpjegoni detaje shtesë rreth kësaj komune..."
+              name="description"
               value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              onChange={handleChange}
+              placeholder="Shpjegoni detaje shtesë rreth kësaj komune..."
+              className={`${getInputClasses("description")} resize-none`}
             />
+
+            {errors.description && (
+              <p className="text-sm text-red-500">{errors.description}</p>
+            )}
           </div>
 
           <div className="pt-4 flex items-center gap-3">
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="flex-1 px-4 py-2.5 border border-slate-200 text-slate-600 rounded-xl text-sm font-medium hover:bg-slate-50 transition-all"
+              disabled={loading}
+              className="flex-1 px-4 py-2.5 border border-slate-200 text-slate-600 rounded-xl text-sm font-medium hover:bg-slate-50 transition-all disabled:opacity-70"
             >
               Anulo
             </button>
+
             <button
               type="submit"
               disabled={loading}
-              className="flex-[2] flex items-center justify-center gap-2 bg-[#010694] hover:bg-[#1a1e8a] text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all shadow-sm disabled:opacity-70 transform hover:scale-[1.02]"
+              className="flex-[2] flex items-center justify-center gap-2 bg-[#010694] hover:bg-[#1a1e8a] text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all shadow-sm disabled:opacity-70"
             >
               {loading ? (
                 <Loader2 size={18} className="animate-spin" />
               ) : (
                 <Save size={18} />
               )}
+
               {loading ? "Duke u ruajtur..." : "Ruaj Komunën"}
             </button>
           </div>
@@ -106,7 +203,8 @@ export default function AddKomuna() {
 
       <div className="p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
         <p className="text-xs text-blue-600 leading-relaxed">
-          <b>Shënim:</b> Pas ruajtjes, komuna do të jetë e disponueshme në sistem për t'u menaxhuar dhe për të lidhur staf apo drejtori me të.
+          <b>Shënim:</b> Pas ruajtjes, komuna do të jetë e disponueshme në
+          sistem për t'u menaxhuar dhe për të lidhur staf apo drejtori me të.
         </p>
       </div>
     </div>

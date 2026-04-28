@@ -5,50 +5,48 @@ import { toast } from "react-toastify";
 import { ArrowLeft, Save, Tag, AlignLeft, Loader2 } from "lucide-react";
 
 export default function AddIssueCategory() {
-  const [form, setForm] = useState({
+  const initialForm = {
     title: "",
     description: "",
-  });
-
-  const [errors, setErrors] = useState({
-    title: "",
-    description: "",
-  });
-
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-  const validateField = (name, value) => {
-    const trimmedValue = value.trim();
-
-    switch (name) {
-      case "title":
-        if (!trimmedValue) return "Titulli është i detyrueshëm";
-        if (trimmedValue.length < 3)
-          return "Titulli duhet të ketë së paku 3 karaktere";
-        if (trimmedValue.length > 100)
-          return "Titulli nuk mund të ketë më shumë se 100 karaktere";
-        return "";
-
-      case "description":
-        if (trimmedValue.length > 500)
-          return "Përshkrimi nuk mund të ketë më shumë se 500 karaktere";
-        return "";
-
-      default:
-        return "";
-    }
   };
 
-  const validateForm = () => {
-    const newErrors = {
-      title: validateField("title", form.title),
-      description: validateField("description", form.description),
-    };
+  const [form, setForm] = useState(initialForm);
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
-    setErrors(newErrors);
+  const navigate = useNavigate();
 
-    return !newErrors.title && !newErrors.description;
+  const showToast = (type, message) => {
+    toast.dismiss();
+
+    toast[type](message, {
+      toastId: "main-toast",
+      onClick: () => toast.dismiss("main-toast"),
+    });
+  };
+
+  const normalizeFieldName = (key) => {
+    const lowerKey = key.toLowerCase();
+
+    if (lowerKey.includes("title")) return "title";
+    if (lowerKey.includes("description")) return "description";
+
+    return key.charAt(0).toLowerCase() + key.slice(1);
+  };
+
+  const formatBackendErrors = (responseErrors) => {
+    const formattedErrors = {};
+
+    Object.keys(responseErrors).forEach((key) => {
+      const fieldName = normalizeFieldName(key);
+      const messages = responseErrors[key];
+
+      formattedErrors[fieldName] = Array.isArray(messages)
+        ? messages[0]
+        : messages;
+    });
+
+    return formattedErrors;
   };
 
   const handleChange = (e) => {
@@ -61,7 +59,7 @@ export default function AddIssueCategory() {
 
     setErrors((prev) => ({
       ...prev,
-      [name]: validateField(name, value),
+      [name]: "",
     }));
   };
 
@@ -70,43 +68,39 @@ export default function AddIssueCategory() {
 
     if (loading) return;
 
-    const isValid = validateForm();
-    if (!isValid) {
-      toast.error("Ju lutem plotësoni formën saktë");
-      return;
-    }
+    setErrors({});
+    setLoading(true);
 
     const payload = {
-      title: form.title.trim(),
-      description: form.description.trim(),
+      title: form.title,
+      description: form.description,
     };
-
-    setLoading(true);
 
     try {
       await issueCategoryService.create(payload);
-      toast.success("Kategoria e problemit u krijua me sukses");
 
-      setForm({
-        title: "",
-        description: "",
-      });
-
-      setErrors({
-        title: "",
-        description: "",
-      });
-
+      showToast("success", "Kategoria e problemit u krijua me sukses.");
+      setForm(initialForm);
       navigate("/admin-dashboard");
     } catch (err) {
-      const message =
-        err.response?.data?.message ||
-        err.response?.data ||
-        "Shtimi i kategorisë dështoi";
-
-      toast.error(
-        typeof message === "string" ? message : "Shtimi i kategorisë dështoi",
+      console.error(
+        "Gabim gjatë krijimit të kategorisë:",
+        err.response?.data || err,
       );
+
+      const backendData = err.response?.data;
+
+      if (backendData?.errors) {
+        setErrors(formatBackendErrors(backendData.errors));
+        return;
+      }
+
+      const backendMessage =
+        backendData?.message ||
+        backendData?.title ||
+        "Shtimi i kategorisë dështoi.";
+
+      showToast("error", backendMessage);
     } finally {
       setLoading(false);
     }
@@ -155,8 +149,6 @@ export default function AddIssueCategory() {
               placeholder="Psh. Infrastrukturë"
               value={form.title}
               onChange={handleChange}
-              onBlur={handleChange}
-              maxLength={100}
             />
 
             {errors.title && (
@@ -181,21 +173,11 @@ export default function AddIssueCategory() {
               placeholder="Shpjegoni detaje shtesë rreth kësaj kategorie..."
               value={form.description}
               onChange={handleChange}
-              onBlur={handleChange}
-              maxLength={500}
             />
 
-            <div className="flex items-center justify-between">
-              {errors.description ? (
-                <p className="text-sm text-red-500">{errors.description}</p>
-              ) : (
-                <span />
-              )}
-
-              <p className="text-xs text-slate-400">
-                {form.description.length}/500
-              </p>
-            </div>
+            {errors.description && (
+              <p className="text-sm text-red-500">{errors.description}</p>
+            )}
           </div>
 
           <div className="pt-4 flex items-center gap-3">

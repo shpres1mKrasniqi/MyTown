@@ -17,7 +17,11 @@ namespace MyTown.Application.Validators
             RuleFor(d => d.Description)
                 .NotEmpty().WithMessage("Pershkrimi i departamentit eshte i detyrueshem.")
                 .MinimumLength(10).WithMessage("Pershkrimi i departamentit duhet te kete te pakten 10 karaktere.")
-                .MaximumLength(500).WithMessage("Pershkrimi i departamentit duhet te kete maksimumi 500 karaktere.");   
+                .MaximumLength(500).WithMessage("Pershkrimi i departamentit duhet te kete maksimumi 500 karaktere.");
+
+            RuleFor(c => c.KomunaId)
+                .GreaterThan(0)
+                .WithMessage("Ju lutem zgjedhni komunen tuaj.");
 
         }
     }

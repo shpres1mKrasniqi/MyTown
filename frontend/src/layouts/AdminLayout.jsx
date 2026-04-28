@@ -74,12 +74,6 @@ export default function AdminLayout() {
             />
 
             <SidebarItem
-              icon={<PlusCircle size={20} />}
-              label="Shto Departament"
-              onClick={() => navigate("/AddDepartment")}
-            />
-
-            <SidebarItem
               icon={
                 <Users
                   size={20}
@@ -90,16 +84,6 @@ export default function AdminLayout() {
               onClick={() => navigate("/manage-staff")}
             />
 
-            <SidebarItem
-              icon={
-                <PlusSquare
-                  size={20}
-                  className="text-blue-400 group-hover:text-white transition-colors"
-                />
-              }
-              label="Shto Staf"
-              onClick={() => navigate("/add-staff")}
-            />
             <SidebarItem
               icon={<Settings size={20} />}
               label="Settings"

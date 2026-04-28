@@ -22,16 +22,16 @@ const AddStaff = lazy(() => import("./pages/AddStaff"));
 const EditStaff = lazy(() => import("./pages/EditStaff"));
 const AddIssue = lazy(() => import("./pages/AddIssues"));
 const IssueList = lazy(() => import("./pages/IssueList"));
-// const EditIssue = lazy(() => import("./pages/EditIssue"));
 const AddIssueCategory = lazy(() => import("./pages/AddIssueCategory"));
 const CreateCitizen = lazy(() => import("./pages/CreateCitizen"));
+
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
-        {/* ADMIN LAYOUT ROUTE WRAPPER */}
+
         <Route element={<AdminLayout />}>
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/AddDepartment" element={<AddDepartment />} />
@@ -52,14 +52,17 @@ function App() {
         <Route path="/staff-dashboard" element={<StaffDashboard />} />
         <Route path="/citizen-dashboard" element={<CitizenDashboard />} />
         <Route path="/issues" element={<IssueList />} />
-        {/* <Route path="/edit-issue/:id" element={<EditIssue />} /> */}
       </Routes>
 
       <ToastContainer
         position="top-center"
         autoClose={2000}
-        hideProgressBar
         limit={1}
+        newestOnTop
+        closeOnClick
+        pauseOnHover={false}
+        draggable={false}
+        hideProgressBar={false}
         theme="colored"
       />
     </Suspense>

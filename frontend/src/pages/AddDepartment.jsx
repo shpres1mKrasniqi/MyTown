@@ -3,18 +3,37 @@ import { useNavigate } from "react-router-dom";
 import { departmentService } from "../services/departmentService";
 import { komunaService } from "../services/komunaService";
 import { toast } from "react-toastify";
-import { ArrowLeft, Save, Building2, AlignLeft, Loader2, MapPin } from "lucide-react";
+import {
+  ArrowLeft,
+  Save,
+  Building2,
+  AlignLeft,
+  Loader2,
+  MapPin,
+} from "lucide-react";
 
 export default function AddDepartment() {
-  const [form, setForm] = useState({
+  const initialForm = {
     name: "",
     description: "",
     komunaId: "",
-  });
+  };
 
+  const [form, setForm] = useState(initialForm);
+  const [errors, setErrors] = useState({});
   const [komunas, setKomunas] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+
+  const showToast = (type, message) => {
+    toast.dismiss();
+
+    toast[type](message, {
+      toastId: "main-toast",
+      onClick: () => toast.dismiss("main-toast"),
+    });
+  };
 
   useEffect(() => {
     const fetchKomunas = async () => {
@@ -22,50 +41,105 @@ export default function AddDepartment() {
         const res = await komunaService.getAll();
         setKomunas(res.data);
       } catch (err) {
-        toast.error("Gabim gjatë marrjes së komunave");
+        console.error("Gabim gjatë marrjes së komunave:", err);
       }
     };
+
     fetchKomunas();
   }, []);
+
+  const normalizeFieldName = (key) => {
+    const lowerKey = key.toLowerCase();
+
+    if (lowerKey.includes("name")) return "name";
+    if (lowerKey.includes("description")) return "description";
+    if (lowerKey.includes("komunaid")) return "komunaId";
+
+    return key.charAt(0).toLowerCase() + key.slice(1);
+  };
+
+  const formatBackendErrors = (responseErrors) => {
+    const formattedErrors = {};
+
+    Object.keys(responseErrors).forEach((key) => {
+      const fieldName = normalizeFieldName(key);
+      const messages = responseErrors[key];
+
+      formattedErrors[fieldName] = Array.isArray(messages)
+        ? messages[0]
+        : messages;
+    });
+
+    return formattedErrors;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-  
-    if (form.name.length < 3 || form.name.length > 100) {
-      toast.error("Emri duhet të ketë 3-100 karaktere");
-      return;
-    }
+    if (loading) return;
 
-    if (form.description.length < 10 || form.description.length > 500) {
-      toast.error("Përshkrimi duhet të ketë 10-500 karaktere");
-      return;
-    }
-
-    if (!form.komunaId) {
-      toast.error("Zgjidhni një komunë");
-      return;
-    }
-
+    setErrors({});
     setLoading(true);
+
+    const payload = {
+      name: form.name,
+      description: form.description,
+      komunaId: Number(form.komunaId),
+    };
+
     try {
-      const payload = {
-        ...form,
-        komunaId: parseInt(form.komunaId, 10)
-      };
       await departmentService.create(payload);
-      toast.success("Departamenti u krijua me sukses");
+
+      showToast("success", "Departamenti u krijua me sukses.");
+      setForm(initialForm);
       navigate("/menaxhoDepartments");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Shtimi dështoi");
+      console.error(
+        "Gabim gjatë krijimit të departamentit:",
+        err.response?.data || err,
+      );
+
+      const backendData = err.response?.data;
+
+      if (backendData?.errors) {
+        setErrors(formatBackendErrors(backendData.errors));
+        return;
+      }
+
+      const backendMessage =
+        backendData?.message ||
+        backendData?.title ||
+        "Shtimi i departamentit dështoi.";
+
+      showToast("error", backendMessage);
     } finally {
       setLoading(false);
     }
   };
 
+  const getInputClasses = (fieldName) =>
+    `w-full px-4 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 transition-all text-sm ${
+      errors[fieldName]
+        ? "border-red-400 focus:ring-red-200 focus:border-red-500"
+        : "border-slate-200 focus:ring-[#010694]/5 focus:border-[#010694]"
+    }`;
+
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-     
       <div className="flex flex-col gap-2">
         <button
           onClick={() => navigate(-1)}
@@ -74,75 +148,94 @@ export default function AddDepartment() {
           <ArrowLeft size={18} />
           Kthehu mbrapa
         </button>
-        <h1 className="text-2xl font-semibold text-slate-900">Shto Drejtori të re</h1>
+
+        <h1 className="text-2xl font-semibold text-slate-900">
+          Shto Drejtori të re
+        </h1>
+
         <p className="text-sm text-slate-500">
-          Plotësoni të dhënat më poshtë për të krijuar një departament të ri në sistem.
+          Plotësoni të dhënat më poshtë për të krijuar një departament të ri në
+          sistem.
         </p>
       </div>
 
-     
       <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-        <form onSubmit={handleSubmit} className="p-8 space-y-6">
-          
-    
+        <form onSubmit={handleSubmit} className="p-8 space-y-6" noValidate>
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-              <MapPin size={16} className="text-[#010694]" /> 
+              <MapPin size={16} className="text-[#010694]" />
               Zgjedh Komunën
             </label>
+
             <select
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#010694]/5 focus:border-[#010694] transition-all text-sm"
+              name="komunaId"
+              className={getInputClasses("komunaId")}
               value={form.komunaId}
-              onChange={(e) => setForm({ ...form, komunaId: e.target.value })}
-              required
+              onChange={handleChange}
             >
-              <option value="" disabled>Selektoni një komunë</option>
+              <option value="">Selektoni një komunë</option>
               {komunas.map((k) => (
-                <option key={k.id} value={k.id}>{k.name}</option>
+                <option key={k.id} value={k.id}>
+                  {k.name}
+                </option>
               ))}
             </select>
+
+            {errors.komunaId && (
+              <p className="text-sm text-red-500">{errors.komunaId}</p>
+            )}
           </div>
 
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-              <Building2 size={16} className="text-[#010694]" /> 
+              <Building2 size={16} className="text-[#010694]" />
               Emri i Drejtorisë
             </label>
+
             <input
               type="text"
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#010694]/5 focus:border-[#010694] transition-all text-sm"
+              name="name"
+              className={getInputClasses("name")}
               placeholder="Psh. Drejtoria e Urbanizmit"
               value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              required
+              onChange={handleChange}
             />
+
+            {errors.name && (
+              <p className="text-sm text-red-500">{errors.name}</p>
+            )}
           </div>
 
-       
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-              <AlignLeft size={16} className="text-[#010694]" /> 
+              <AlignLeft size={16} className="text-[#010694]" />
               Përshkrimi i shkurtër
             </label>
+
             <textarea
               rows="4"
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#010694]/5 focus:border-[#010694] transition-all text-sm resize-none"
+              name="description"
+              className={`${getInputClasses("description")} resize-none`}
               placeholder="Shpjegoni fushëveprimtarinë e kësaj drejtorie..."
               value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
-              required
+              onChange={handleChange}
             />
-          </div>
 
+            {errors.description && (
+              <p className="text-sm text-red-500">{errors.description}</p>
+            )}
+          </div>
 
           <div className="pt-4 flex items-center gap-3">
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="flex-1 px-4 py-2.5 border border-slate-200 text-slate-600 rounded-xl text-sm font-medium hover:bg-slate-50 transition-all"
+              disabled={loading}
+              className="flex-1 px-4 py-2.5 border border-slate-200 text-slate-600 rounded-xl text-sm font-medium hover:bg-slate-50 transition-all disabled:opacity-70"
             >
               Anulo
             </button>
+
             <button
               type="submit"
               disabled={loading}
@@ -159,10 +252,10 @@ export default function AddDepartment() {
         </form>
       </div>
 
-   
       <div className="p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
         <p className="text-xs text-blue-600 leading-relaxed">
-          <b>Shënim:</b> Pas ruajtjes, departamenti do të jetë i dukshëm për qytetarët dhe stafi do të ketë mundësi të caktohet në këtë drejtori.
+          <b>Shënim:</b> Pas ruajtjes, departamenti do të jetë i dukshëm për
+          qytetarët dhe stafi do të ketë mundësi të caktohet në këtë drejtori.
         </p>
       </div>
     </div>

@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 
 export default function AddStaff() {
-  const [form, setForm] = useState({
+  const initialForm = {
     firstName: "",
     lastName: "",
     email: "",
@@ -24,11 +24,23 @@ export default function AddStaff() {
     position: "",
     dateHired: "",
     departmentId: "",
-  });
+  };
 
+  const [form, setForm] = useState(initialForm);
+  const [errors, setErrors] = useState({});
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+
+  const showToast = (type, message) => {
+    toast.dismiss();
+
+    toast[type](message, {
+      toastId: "main-toast",
+      onClick: () => toast.dismiss("main-toast"),
+    });
+  };
 
   useEffect(() => {
     const fetchDepartments = async () => {
@@ -36,69 +48,115 @@ export default function AddStaff() {
         const res = await departmentService.getAll();
         setDepartments(res.data);
       } catch (err) {
-        toast.error("Gabim gjatë marrjes së departamenteve");
+        console.error("Gabim gjatë marrjes së departamenteve:", err);
       }
     };
+
     fetchDepartments();
   }, []);
+
+  const normalizeFieldName = (key) => {
+    const lowerKey = key.toLowerCase();
+
+    if (lowerKey.includes("firstname")) return "firstName";
+    if (lowerKey.includes("lastname")) return "lastName";
+    if (lowerKey.includes("email")) return "email";
+    if (lowerKey.includes("password")) return "password";
+    if (lowerKey.includes("position")) return "position";
+    if (lowerKey.includes("datehired")) return "dateHired";
+    if (lowerKey.includes("departmentid")) return "departmentId";
+
+    return key.charAt(0).toLowerCase() + key.slice(1);
+  };
+
+  const formatBackendErrors = (responseErrors) => {
+    const formattedErrors = {};
+
+    Object.keys(responseErrors).forEach((key) => {
+      const fieldName = normalizeFieldName(key);
+      const messages = responseErrors[key];
+
+      formattedErrors[fieldName] = Array.isArray(messages)
+        ? messages[0]
+        : messages;
+    });
+
+    return formattedErrors;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
- if (!form.firstName || form.firstName.length < 3 || form.firstName.length > 50) {
-  toast.error("Emri duhet të ketë 3 deri në 50 karaktere.");
-  return;
-}
+    if (loading) return;
 
-if (!form.lastName || form.lastName.length < 3 || form.lastName.length > 50) {
-  toast.error("Mbiemri duhet të ketë 3 deri në 50 karaktere.");
-  return;
-}
-
-
-const emailRegex = /\S+@\S+\.\S+/;
-if (!form.email || !emailRegex.test(form.email)) {
-  toast.error("Ju lutem jepni një email valid.");
-  return;
-}
-
-if (!form.password || form.password.length < 6 || form.password.length > 50) {
-  toast.error("Fjalëkalimi duhet të ketë 6 deri në 50 karaktere.");
-  return;
-}
-
-
-if (!form.position || form.position.length < 10 || form.position.length > 100) {
-  toast.error("Pozita duhet të ketë 10 deri në 100 karaktere.");
-  return;
-}
-
-    if (!form.departmentId) {
-      toast.error("Ju lutem zgjidhni një departament");
-      return;
-    }
-
+    setErrors({});
     setLoading(true);
+
+    const payload = {
+      firstName: form.firstName,
+      lastName: form.lastName,
+      email: form.email,
+      password: form.password,
+      position: form.position,
+      departmentId: Number(form.departmentId),
+      dateHired: form.dateHired
+        ? `${form.dateHired}T00:00:00.000Z`
+        : "0001-01-01T00:00:00.000Z",
+    };
+
     try {
-      const payload = {
-        ...form,
-        departmentId: parseInt(form.departmentId, 10),
-      };
       await staffService.create(payload);
-      toast.success("Stafi u shtua me sukses!");
+
+      showToast("success", "Stafi u shtua me sukses!");
+      setForm(initialForm);
       navigate("/manage-staff");
     } catch (err) {
-  console.log(err.response); // 🔥 shto këtë
-  toast.error(err.response?.data?.message || "Shtimi i stafit dështoi");
+      console.error(
+        "Gabim gjatë shtimit të stafit:",
+        err.response?.data || err,
+      );
 
+      const backendData = err.response?.data;
+
+      if (backendData?.errors) {
+        setErrors(formatBackendErrors(backendData.errors));
+        return;
+      }
+
+      const backendMessage =
+        backendData?.message ||
+        backendData?.title ||
+        "Shtimi i stafit dështoi.";
+
+      showToast("error", backendMessage);
     } finally {
       setLoading(false);
     }
   };
 
+  const getInputClasses = (fieldName) =>
+    `w-full px-4 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 transition-all text-sm ${
+      errors[fieldName]
+        ? "border-red-400 focus:ring-red-200 focus:border-red-500"
+        : "border-slate-200 focus:ring-[#010694]/5 focus:border-[#010694]"
+    }`;
+
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      {/* Header */}
       <div className="flex flex-col gap-2">
         <button
           onClick={() => navigate(-1)}
@@ -107,9 +165,11 @@ if (!form.position || form.position.length < 10 || form.position.length > 100) {
           <ArrowLeft size={18} />
           Kthehu mbrapa
         </button>
+
         <h1 className="text-2xl font-semibold text-slate-900">
           Shto Staf të ri
         </h1>
+
         <p className="text-sm text-slate-500">
           Plotësoni të dhënat e mëposhtme për të regjistruar një anëtar të ri të
           stafit.
@@ -117,139 +177,160 @@ if (!form.position || form.position.length < 10 || form.position.length > 100) {
       </div>
 
       <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-        <form onSubmit={handleSubmit} className="p-8 space-y-5">
+        <form onSubmit={handleSubmit} className="p-8 space-y-5" noValidate>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Emri */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
                 <User size={16} className="text-[#010694]" /> Emri
               </label>
+
               <input
                 type="text"
-                required
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#010694]/5 focus:border-[#010694] transition-all text-sm"
+                name="firstName"
+                className={getInputClasses("firstName")}
                 placeholder="Psh. Filan"
                 value={form.firstName}
-                onChange={(e) =>
-                  setForm({ ...form, firstName: e.target.value })
-                }
+                onChange={handleChange}
               />
+
+              {errors.firstName && (
+                <p className="text-sm text-red-500">{errors.firstName}</p>
+              )}
             </div>
 
-            {/* Mbiemri */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
                 <User size={16} className="text-[#010694]" /> Mbiemri
               </label>
+
               <input
                 type="text"
-                required
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#010694]/5 focus:border-[#010694] transition-all text-sm"
+                name="lastName"
+                className={getInputClasses("lastName")}
                 placeholder="Psh. Fisteku"
                 value={form.lastName}
-                onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+                onChange={handleChange}
               />
+
+              {errors.lastName && (
+                <p className="text-sm text-red-500">{errors.lastName}</p>
+              )}
             </div>
           </div>
 
-          {/* Email */}
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
               <Mail size={16} className="text-[#010694]" /> Email Adresa
             </label>
+
             <input
               type="email"
-              required
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#010694]/5 focus:border-[#010694] transition-all text-sm"
+              name="email"
+              className={getInputClasses("email")}
               placeholder="emri.mbiemri@email.com"
               value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              onChange={handleChange}
             />
+
+            {errors.email && (
+              <p className="text-sm text-red-500">{errors.email}</p>
+            )}
           </div>
 
-          {/* Password */}
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
               <Key size={16} className="text-[#010694]" /> Fjalëkalimi
             </label>
+
             <input
               type="password"
-              required
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#010694]/5 focus:border-[#010694] transition-all text-sm"
+              name="password"
+              className={getInputClasses("password")}
               placeholder="Së paku 6 karaktere"
               value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              onChange={handleChange}
             />
+
+            {errors.password && (
+              <p className="text-sm text-red-500">{errors.password}</p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Pozicioni */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
                 <Briefcase size={16} className="text-[#010694]" /> Pozicioni
               </label>
+
               <input
                 type="text"
-                required
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#010694]/5 focus:border-[#010694] transition-all text-sm"
+                name="position"
+                className={getInputClasses("position")}
                 placeholder="Psh. Zyrtar Ligjor"
                 value={form.position}
-                onChange={(e) => setForm({ ...form, position: e.target.value })}
+                onChange={handleChange}
               />
+
+              {errors.position && (
+                <p className="text-sm text-red-500">{errors.position}</p>
+              )}
             </div>
 
-            {/* Data e punësimit */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
                 <Calendar size={16} className="text-[#010694]" /> Data e
                 Punësimit
               </label>
+
               <input
                 type="date"
-                required
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#010694]/5 focus:border-[#010694] transition-all text-sm"
+                name="dateHired"
+                className={getInputClasses("dateHired")}
                 value={form.dateHired}
-                onChange={(e) =>
-                  setForm({ ...form, dateHired: e.target.value })
-                }
+                onChange={handleChange}
               />
+
+              {errors.dateHired && (
+                <p className="text-sm text-red-500">{errors.dateHired}</p>
+              )}
             </div>
           </div>
 
-          {/* Dropdown për Departament */}
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
               <Building2 size={16} className="text-[#010694]" /> Cakto në
               Departament
             </label>
+
             <select
-              required
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#010694]/5 focus:border-[#010694] transition-all text-sm"
+              name="departmentId"
+              className={getInputClasses("departmentId")}
               value={form.departmentId}
-              onChange={(e) =>
-                setForm({ ...form, departmentId: e.target.value })
-              }
+              onChange={handleChange}
             >
-              <option value="" disabled>
-                Selektoni një departament
-              </option>
+              <option value="">Selektoni një departament</option>
               {departments.map((d) => (
                 <option key={d.id} value={d.id}>
                   {d.name}
                 </option>
               ))}
             </select>
+
+            {errors.departmentId && (
+              <p className="text-sm text-red-500">{errors.departmentId}</p>
+            )}
           </div>
 
-          {/* Buttons */}
           <div className="pt-6 flex items-center gap-3">
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="flex-1 px-4 py-2.5 border border-slate-200 text-slate-600 rounded-xl text-sm font-medium hover:bg-slate-50 transition-all"
+              disabled={loading}
+              className="flex-1 px-4 py-2.5 border border-slate-200 text-slate-600 rounded-xl text-sm font-medium hover:bg-slate-50 transition-all disabled:opacity-70"
             >
               Anulo
             </button>
+
             <button
               type="submit"
               disabled={loading}
@@ -271,7 +352,6 @@ if (!form.position || form.position.length < 10 || form.position.length > 100) {
         </form>
       </div>
 
-      {/* Footer info */}
       <div className="p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
         <p className="text-xs text-blue-600 leading-relaxed">
           <b>Kujdes:</b> Pas krijimit të llogarisë, anëtari i stafit do të mund

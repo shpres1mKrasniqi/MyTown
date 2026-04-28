@@ -1,55 +1,30 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+
 import { IssueService } from "../services/IssueServices";
 import { komunaService } from "../services/komunaService";
 import { issueCategoryService } from "../services/issueCategoryService";
 
 function AddIssue() {
-  const [form, setForm] = useState({
+  const initialForm = {
     title: "",
     description: "",
     komunaId: "",
     issueCategoryId: "",
     files: [],
-  });
+  };
 
+  const [form, setForm] = useState(initialForm);
   const [komunat, setKomunat] = useState([]);
   const [kategorit, setKategorit] = useState([]);
   const [errors, setErrors] = useState({});
 
-  const titleRegex = /^[A-Za-z0-9\s.,!?'-]{5,80}$/;
-
-  const validateForm = () => {
-    let newErrors = {};
-
-    if (!form.title.trim()) {
-      newErrors.title = "Titulli është i detyrueshëm";
-    } else if (!titleRegex.test(form.title)) {
-      newErrors.title =
-        "Titulli duhet të ketë 5-80 karaktere (vetëm shenja bazike)";
-    }
-
-    if (!form.description.trim()) {
-      newErrors.description = "Përshkrimi është i detyrueshëm";
-    } else if (form.description.length < 10 || form.description.length > 500) {
-      newErrors.description =
-        "Përshkrimi duhet të jetë mes 10 dhe 500 karaktereve";
-    }
-
-    if (!form.komunaId) newErrors.komunaId = "Ju lutem zgjedhni komunën";
-    if (!form.issueCategoryId)
-      newErrors.issueCategoryId = "Ju lutem zgjedhni kategorinë";
-
-    if (form.files.length > 5) {
-      newErrors.files = "Mund të ngarkosh maksimum 5 foto";
-    }
-
-    const largeFile = form.files.find((file) => file.size > 10 * 1024 * 1024);
-    if (largeFile) {
-      newErrors.files = "Një prej skedarëve kalon madhësinë 10MB";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const showToast = (type, message) => {
+    toast.dismiss();
+    toast[type](message, {
+      toastId: "main-toast",
+      onClick: () => toast.dismiss("main-toast"),
+    });
   };
 
   useEffect(() => {
@@ -75,13 +50,45 @@ function AddIssue() {
     }
   };
 
+  const normalizeFieldName = (key) => {
+    const lowerKey = key.toLowerCase();
+
+    if (lowerKey.includes("title")) return "title";
+    if (lowerKey.includes("description")) return "description";
+    if (lowerKey.includes("komunaid")) return "komunaId";
+    if (lowerKey.includes("issuecategoryid")) return "issueCategoryId";
+    if (lowerKey.includes("files")) return "files";
+
+    return key.charAt(0).toLowerCase() + key.slice(1);
+  };
+
+  const formatBackendErrors = (responseErrors) => {
+    const formattedErrors = {};
+
+    Object.keys(responseErrors).forEach((key) => {
+      const fieldName = normalizeFieldName(key);
+      const messages = responseErrors[key];
+
+      formattedErrors[fieldName] = Array.isArray(messages)
+        ? messages[0]
+        : messages;
+    });
+
+    return formattedErrors;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
 
-    if (errors[name]) {
-      setErrors({ ...errors, [name]: null });
-    }
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
   };
 
   const handleFileChange = (e) => {
@@ -89,36 +96,69 @@ function AddIssue() {
 
     setForm((prev) => ({
       ...prev,
-      files: [...prev.files, ...selectedFiles].slice(0, 5),
+      files: [...prev.files, ...selectedFiles],
     }));
 
-    if (errors.files) setErrors({ ...errors, files: null });
+    setErrors((prev) => ({
+      ...prev,
+      files: "",
+    }));
+
+    e.target.value = "";
+  };
+
+  const removeFile = (index) => {
+    setForm((prev) => ({
+      ...prev,
+      files: prev.files.filter((_, i) => i !== index),
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      files: "",
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    setErrors({});
 
     const data = new FormData();
-    data.append("title", form.title);
-    data.append("description", form.description);
-    data.append("komunaId", form.komunaId);
-    data.append("issueCategoryId", form.issueCategoryId);
-    form.files.forEach((file) => data.append("files", file));
+    data.append("Title", form.title);
+    data.append("Description", form.description);
+    data.append("KomunaId", Number(form.komunaId));
+    data.append("IssueCategoryId", Number(form.issueCategoryId));
+
+    form.files.forEach((file) => {
+      data.append("Files", file);
+    });
 
     try {
       await IssueService.create(data);
-      alert("Postimi u krijua me sukses!");
-      setForm({
-        title: "",
-        description: "",
-        komunaId: "",
-        issueCategoryId: "",
-        files: [],
-      });
-      setErrors({});
+
+      showToast("success", "Postimi u krijua me sukses!");
+      setForm(initialForm);
     } catch (err) {
-      alert("Gabim gjatë krijimit!");
+      console.error("Gabim gjatë krijimit:", err.response?.data || err);
+
+      const backendData = err.response?.data;
+
+      if (backendData?.errors) {
+        setErrors(formatBackendErrors(backendData.errors));
+        return;
+      }
+
+      if (backendData?.message) {
+        showToast("error", backendData.message);
+        return;
+      }
+
+      if (backendData?.title) {
+        showToast("error", backendData.title);
+        return;
+      }
+
+      showToast("error", "Gabim gjatë krijimit të postimit.");
     }
   };
 
@@ -170,7 +210,7 @@ function AddIssue() {
                 onChange={handleChange}
                 className={getInputClasses("komunaId")}
               >
-                <option value="">Zgjedh...</option>
+                <option value="">Zgjedh komunën</option>
                 {komunat.map((k) => (
                   <option key={k.id} value={k.id}>
                     {k.name}
@@ -194,7 +234,7 @@ function AddIssue() {
                 onChange={handleChange}
                 className={getInputClasses("issueCategoryId")}
               >
-                <option value="">Zgjedh...</option>
+                <option value="">Zgjedh kategorinë</option>
                 {kategorit.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.title}
@@ -230,28 +270,32 @@ function AddIssue() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 ml-1">
-              Dokumentimi (Foto)
+              Dokumentimi
             </label>
+
             <div
-              className={`mt-1 border-2 border-dashed rounded-xl p-6 transition-colors bg-gray-50/50 
-            ${errors.files ? "border-red-400" : "border-gray-200 hover:border-blue-400"}`}
+              className={`mt-1 border-2 border-dashed rounded-xl p-6 transition-colors bg-gray-50/50 ${
+                errors.files
+                  ? "border-red-400"
+                  : "border-gray-200 hover:border-blue-400"
+              }`}
             >
               <div className="space-y-1 text-center">
-                <div className="flex text-sm text-gray-600 justify-center">
-                  <label className="relative cursor-pointer font-medium text-blue-600 hover:text-blue-500">
-                    <span>Ngarko foto të problemit</span>
-                    <input
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      className="sr-only"
-                    />
-                  </label>
-                </div>
+                <label className="relative cursor-pointer font-medium text-blue-600 hover:text-blue-500">
+                  <span>Ngarko foto ose PDF</span>
+                  <input
+                    type="file"
+                    multiple
+                    accept=".jpg,.jpeg,.png,.pdf,image/*,application/pdf"
+                    onChange={handleFileChange}
+                    className="sr-only"
+                  />
+                </label>
+
                 <p className="text-xs text-gray-400">
-                  PNG, JPG deri në 10MB (Maks. 5)
+                  Formatet lejohen nga backend: JPG, JPEG, PNG, PDF
                 </p>
+
                 {form.files.length > 0 && (
                   <p className="text-xs text-green-600 font-medium pt-1">
                     {form.files.length} skedarë u zgjodhën
@@ -262,20 +306,22 @@ function AddIssue() {
               {form.files.length > 0 && (
                 <div className="mt-4 flex flex-wrap gap-2 justify-center">
                   {form.files.map((file, index) => (
-                    <div key={index} className="relative h-14 w-14 group">
-                      <img
-                        src={URL.createObjectURL(file)}
-                        className="h-full w-full object-cover rounded-md border"
-                        alt="preview"
-                      />
+                    <div key={`${file.name}-${index}`} className="relative">
+                      {file.type.startsWith("image/") ? (
+                        <img
+                          src={URL.createObjectURL(file)}
+                          className="h-14 w-14 object-cover rounded-md border"
+                          alt="preview"
+                        />
+                      ) : (
+                        <div className="h-14 w-14 rounded-md border bg-white flex items-center justify-center text-[10px] font-semibold text-gray-600">
+                          PDF
+                        </div>
+                      )}
+
                       <button
                         type="button"
-                        onClick={() =>
-                          setForm({
-                            ...form,
-                            files: form.files.filter((_, i) => i !== index),
-                          })
-                        }
+                        onClick={() => removeFile(index)}
                         className="absolute -top-2 -right-2 bg-black/70 text-white text-[8px] w-5 h-5 flex items-center justify-center rounded-full cursor-pointer hover:bg-red-500 transition-colors"
                       >
                         ✕
@@ -285,6 +331,7 @@ function AddIssue() {
                 </div>
               )}
             </div>
+
             {errors.files && (
               <p className="text-red-500 text-xs mt-1 text-center">
                 {errors.files}

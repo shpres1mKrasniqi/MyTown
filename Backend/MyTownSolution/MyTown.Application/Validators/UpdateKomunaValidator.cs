@@ -13,8 +13,12 @@ namespace MyTown.Application.Validators
                 .MaximumLength(200).WithMessage("Emri i komunes duhet te kete maksimumi 200 karaktere.");
 
             RuleFor(k => k.Description)
-                .MaximumLength(1000).WithMessage("Pershkrimi duhet te kete maksimumi 1000 karaktere.")
-                .When(k => !string.IsNullOrEmpty(k.Description));
+                .NotEmpty()
+                .WithMessage("Pershkrimi nuk duhet te mbetet i zbrazet")
+                .MinimumLength(10)
+                .WithMessage("Pershkrimi duhet te kete minimumi 10 karaktere.")
+                .MaximumLength(1000).WithMessage("Pershkrimi duhet te kete maksimumi 1000 karaktere.");
+               
         }
     }
 }
