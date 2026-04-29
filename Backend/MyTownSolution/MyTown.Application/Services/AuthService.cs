@@ -23,14 +23,14 @@ namespace MyTown.Application.Services
         private readonly string _resetCodeSecretKey;
 
         public AuthService(
-                 IUserRepository userRepository,
-                 IRoleRepository roleRepository,
-                 ITokenService tokenService,
-                 IRefreshTokenRepository refreshTokenRepository,
-                 ICitizenRepository citizenRepository,
-                IPasswordResetTokenRepository passwordResetTokenRepository,
-                IEmailService emailService,
-                IOptions<EmailSettings> emailSettings)
+            IUserRepository userRepository,
+            IRoleRepository roleRepository,
+            ITokenService tokenService,
+            IRefreshTokenRepository refreshTokenRepository,
+            ICitizenRepository citizenRepository,
+            IPasswordResetTokenRepository passwordResetTokenRepository,
+            IEmailService emailService,
+            IOptions<EmailSettings> emailSettings)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
@@ -38,6 +38,13 @@ namespace MyTown.Application.Services
             _refreshTokenRepository = refreshTokenRepository;
             _citizenRepository = citizenRepository;
 
+            _passwordResetTokenRepository = passwordResetTokenRepository;
+            _emailService = emailService;
+            _emailSettings = emailSettings.Value;
+
+            _resetCodeSecretKey =
+                Environment.GetEnvironmentVariable("RESET_CODE_SECRET_KEY")
+                ?? throw new Exception("RESET_CODE_SECRET_KEY nuk u gjet në .env");
         }
 
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
