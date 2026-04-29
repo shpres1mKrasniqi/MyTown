@@ -147,6 +147,29 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IPostInteractionService, PostInteractionService>();
 builder.Services.AddScoped<IRealtimeInteractionNotifier, RealtimeInteractionNotifier>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
+builder.Services.AddScoped<IEmailService, SmtpEmailService>();
+
+var emailSettings = new EmailSettings
+{
+    SmtpHost = Environment.GetEnvironmentVariable("EMAIL_SMTP_HOST") ?? "smtp.gmail.com",
+    SmtpPort = int.Parse(Environment.GetEnvironmentVariable("EMAIL_SMTP_PORT") ?? "587"),
+    SenderEmail = Environment.GetEnvironmentVariable("EMAIL_SENDER") ?? throw new Exception("EMAIL_SENDER nuk u gjet"),
+    SenderName = Environment.GetEnvironmentVariable("EMAIL_SENDER_NAME") ?? "MyTown",
+    AppPassword = Environment.GetEnvironmentVariable("EMAIL_APP_PASSWORD") ?? throw new Exception("EMAIL_APP_PASSWORD nuk u gjet"),
+    ResetCodeExpirationMinutes = int.Parse(Environment.GetEnvironmentVariable("EMAIL_RESET_CODE_EXPIRATION_MINUTES") ?? "15")
+};
+
+builder.Services.Configure<EmailSettings>(options =>
+{
+    options.SmtpHost = emailSettings.SmtpHost;
+    options.SmtpPort = emailSettings.SmtpPort;
+    options.SenderEmail = emailSettings.SenderEmail;
+    options.SenderName = emailSettings.SenderName;
+    options.AppPassword = emailSettings.AppPassword;
+    options.ResetCodeExpirationMinutes = emailSettings.ResetCodeExpirationMinutes;
+});
+
 
 
 builder.Services.AddSingleton(sp =>

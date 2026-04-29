@@ -1,6 +1,8 @@
-﻿using MyTown.Application.DTOs.Authentication;
+﻿using Microsoft.Extensions.Options;
+using MyTown.Application.DTOs.Authentication;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Ports.OutboundPorts;
+using MyTown.Application.Settings;
 using MyTown.Domain.Entities;
 using System.Data;
 using System.Security.Cryptography;
@@ -15,12 +17,20 @@ namespace MyTown.Application.Services
         private readonly ITokenService _tokenService;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly ICitizenRepository _citizenRepository;
+        private readonly IPasswordResetTokenRepository _passwordResetTokenRepository;
+        private readonly IEmailService _emailService;
+        private readonly EmailSettings _emailSettings;
+        private readonly string _resetCodeSecretKey;
+
         public AuthService(
                  IUserRepository userRepository,
                  IRoleRepository roleRepository,
                  ITokenService tokenService,
                  IRefreshTokenRepository refreshTokenRepository,
-                 ICitizenRepository citizenRepository)
+                 ICitizenRepository citizenRepository,
+                IPasswordResetTokenRepository passwordResetTokenRepository,
+                IEmailService emailService,
+                IOptions<EmailSettings> emailSettings)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
@@ -232,6 +242,70 @@ namespace MyTown.Application.Services
                 token.RevokedAt = DateTime.UtcNow;
                 await _refreshTokenRepository.UpdateAsync(token);
             }
+        }
+        public async Task ForgotPasswordAsync(ForgotPasswordRequest request)
+        {
+            var user = await _userRepository.GetByEmailAsync(request.Email);
+
+            if (user == null || !user.IsActive)
+                return;
+
+            await _passwordResetTokenRepository.InvalidateAllForUserAsync(user.Id);
+
+            var code = GenerateNumericCode();
+            var codeHash = HashResetCode(code);
+
+            var resetToken = new PasswordResetToken(
+                user.Id,
+                codeHash,
+                DateTime.UtcNow.AddMinutes(_emailSettings.ResetCodeExpirationMinutes)
+            );
+
+            await _passwordResetTokenRepository.AddAsync(resetToken);
+            await _emailService.SendPasswordResetCodeAsync(user.Email, user.FirstName, code);
+        }
+
+        public async Task ResetPasswordAsync(ResetPasswordRequest request)
+        {
+            var user = await _userRepository.GetByEmailAsync(request.Email);
+
+            if (user == null || !user.IsActive)
+                throw new Exception("Kërkesa është e pavlefshme.");
+
+            var codeHash = HashResetCode(request.Code);
+            var resetToken = await _passwordResetTokenRepository.GetActiveByUserIdAsync(user.Id);
+
+            if (resetToken == null || !resetToken.CanBeUsed(codeHash))
+                throw new Exception("Kodi nuk është i vlefshëm ose ka skaduar.");
+
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+            user.UpdatedAt = DateTime.UtcNow;
+
+            await _userRepository.UpdateUserAsync(user);
+
+            resetToken.MarkAsUsed();
+            await _passwordResetTokenRepository.UpdateAsync(resetToken);
+
+            await _passwordResetTokenRepository.InvalidateAllForUserAsync(user.Id);
+            await RevokeAllTokensAsync(user.Id);
+        }
+
+        private static string GenerateNumericCode()
+        {
+            using var rng = RandomNumberGenerator.Create();
+            var bytes = new byte[4];
+            rng.GetBytes(bytes);
+            var value = BitConverter.ToUInt32(bytes, 0) % 1_000_000;
+            return value.ToString("D6");
+        }
+
+        private string HashResetCode(string code)
+        {
+            var keyBytes = Encoding.UTF8.GetBytes(_resetCodeSecretKey);
+            var codeBytes = Encoding.UTF8.GetBytes(code);
+
+            using var hmac = new HMACSHA256(keyBytes);
+            return Convert.ToBase64String(hmac.ComputeHash(codeBytes));
         }
 
     }

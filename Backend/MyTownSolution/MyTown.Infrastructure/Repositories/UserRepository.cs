@@ -55,5 +55,13 @@ namespace MyTown.Infrastructure.Repositories
             await _context.UserRoles.AddAsync(userRoli);
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateUserAsync(User user)
+        {
+            user.UpdatedAt = DateTime.UtcNow;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+        }
     }
+
 }

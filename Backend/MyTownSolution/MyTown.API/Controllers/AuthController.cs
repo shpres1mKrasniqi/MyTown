@@ -93,5 +93,35 @@ namespace MyTown.API.Controllers
 
             Response.Cookies.Append("refreshToken", refreshToken, refreshTokenCookieOptions);
         }
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+        {
+
+            try
+            {
+                await _authService.ForgotPasswordAsync(request);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
+            return Ok(new { message = "Nëse email-i ekziston, do të merrni një kod rivendosjeje." });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            try
+            {
+                await _authService.ResetPasswordAsync(request);
+                return Ok(new { message = "Fjalëkalimi u rivendos me sukses." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
     }
 }
