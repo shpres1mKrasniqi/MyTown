@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { login } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -79,6 +80,13 @@ export default function Login() {
             Regjistrohu
           </a>
         </p>
+
+        <Link
+          to="/forgot-password"
+          className="text-sm text-blue-600 hover:underline"
+        >
+          Keni harruar fjalëkalimin?
+        </Link>
       </form>
     </main>
   );

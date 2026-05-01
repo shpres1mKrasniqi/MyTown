@@ -24,7 +24,8 @@ const AddIssue = lazy(() => import("./pages/AddIssues"));
 const IssueList = lazy(() => import("./pages/IssueList"));
 const AddIssueCategory = lazy(() => import("./pages/AddIssueCategory"));
 const CreateCitizen = lazy(() => import("./pages/CreateCitizen"));
-
+const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -52,6 +53,8 @@ function App() {
         <Route path="/staff-dashboard" element={<StaffDashboard />} />
         <Route path="/citizen-dashboard" element={<CitizenDashboard />} />
         <Route path="/issues" element={<IssueList />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       </Routes>
 
       <ToastContainer
