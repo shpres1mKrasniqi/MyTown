@@ -133,6 +133,7 @@ builder.Services.AddScoped<IIssueCategoryRepository, IssueCategoryRepository>();
 builder.Services.AddScoped<IIssueRepository, IssueRepository>();
 builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
 
 // Servicet
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -149,6 +150,7 @@ builder.Services.AddScoped<IRealtimeInteractionNotifier, RealtimeInteractionNoti
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
+builder.Services.AddScoped<IEventService, EventService>();
 
 var emailSettings = new EmailSettings
 {
@@ -270,7 +272,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapHub<ProblemHub>("/hubs/problems");
+app.MapHub<EventHub>("/hubs/problems");
 app.MapHub<NotificationHub>("/hubs/notifications");
 app.UseStaticFiles();
 app.MapControllers();

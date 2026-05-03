@@ -30,7 +30,7 @@ namespace MyTown.Domain.Entities
         public Issue(string title, string description, int issueCategoryId, int citizenId, int komunaId, IssueStatus status, int createdBy)
         {
             if (string.IsNullOrWhiteSpace(title))
-                throw new ArgumentException("Titulli duhet plotesu");
+                throw new ArgumentException("Titulli duhet plotesuar");
 
             if (string.IsNullOrWhiteSpace(description))
                 throw new ArgumentException("Pershkrimi duhet plotesuar");

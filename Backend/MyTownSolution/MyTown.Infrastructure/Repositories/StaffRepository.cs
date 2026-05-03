@@ -35,6 +35,11 @@ namespace MyTown.Infrastructure.Repositories
                 .Include(s=>s.Department)
                 .FirstOrDefaultAsync(s => s.Id == id && s.IsDeleted == false);
         }
+        public async Task<StaffProfile?> GetByUserIdAsync(int userId)
+        {
+            return await _context.StaffProfiles
+                .FirstOrDefaultAsync(s => s.UserId == userId && s.IsDeleted == false);
+        }
         public async Task<List<StaffProfile>>GetByKomunaIdAsync(int komunaId)
         {
             return await _context.StaffProfiles

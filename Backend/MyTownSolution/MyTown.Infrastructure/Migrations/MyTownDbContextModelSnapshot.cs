@@ -167,6 +167,98 @@ namespace MyTown.Infrastructure.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.Entities.Event", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EventDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("KomunaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KomunaId");
+
+                    b.HasIndex("StaffId");
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.EventVote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CitizenId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CitizenId");
+
+                    b.HasIndex("EventId", "CitizenId")
+                        .IsUnique();
+
+                    b.ToTable("EventVotes");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.Issue", b =>
                 {
                     b.Property<int>("Id")
@@ -319,6 +411,9 @@ namespace MyTown.Infrastructure.Migrations
                     b.Property<int>("EntityId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("EventId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -337,6 +432,8 @@ namespace MyTown.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EventId");
 
                     b.HasIndex("IssueId");
 
@@ -687,7 +784,7 @@ namespace MyTown.Infrastructure.Migrations
                     b.HasOne("MyTown.Domain.Entities.User", "User")
                         .WithOne()
                         .HasForeignKey("MyTown.Domain.Entities.CitizenProfile", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Komuna");
@@ -704,6 +801,44 @@ namespace MyTown.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Komuna");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.Event", b =>
+                {
+                    b.HasOne("MyTown.Domain.Entities.Komuna", "Komuna")
+                        .WithMany()
+                        .HasForeignKey("KomunaId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MyTown.Domain.Entities.StaffProfile", "StaffProfile")
+                        .WithMany()
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Komuna");
+
+                    b.Navigation("StaffProfile");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.EventVote", b =>
+                {
+                    b.HasOne("MyTown.Domain.Entities.CitizenProfile", "Citizen")
+                        .WithMany()
+                        .HasForeignKey("CitizenId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MyTown.Domain.Entities.Event", "Event")
+                        .WithMany("Votes")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Citizen");
+
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.Issue", b =>
@@ -735,9 +870,15 @@ namespace MyTown.Infrastructure.Migrations
 
             modelBuilder.Entity("MyTown.Domain.Entities.MyTownFile", b =>
                 {
+                    b.HasOne("MyTown.Domain.Entities.Event", null)
+                        .WithMany("Files")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("MyTown.Domain.Entities.Issue", null)
                         .WithMany("Files")
-                        .HasForeignKey("IssueId");
+                        .HasForeignKey("IssueId")
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.PasswordResetToken", b =>
@@ -792,7 +933,7 @@ namespace MyTown.Infrastructure.Migrations
                     b.HasOne("MyTown.Domain.Entities.User", "User")
                         .WithOne()
                         .HasForeignKey("MyTown.Domain.Entities.StaffProfile", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Department");
@@ -838,6 +979,13 @@ namespace MyTown.Infrastructure.Migrations
             modelBuilder.Entity("MyTown.Domain.Entities.Department", b =>
                 {
                     b.Navigation("StaffProfiles");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.Event", b =>
+                {
+                    b.Navigation("Files");
+
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.Issue", b =>

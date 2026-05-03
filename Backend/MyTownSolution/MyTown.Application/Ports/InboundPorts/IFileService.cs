@@ -7,7 +7,7 @@ namespace MyTown.Application.Ports.InboundPorts
 {
     public interface IFileService
     {
-        Task<(string fileName, string path, long size)> SaveFileAsync(IFormFile file);
-       
+        Task<(string fileName, string path, long size)> SaveFileAsync(IFormFile file, string folder = "issues");
+
     }
 }

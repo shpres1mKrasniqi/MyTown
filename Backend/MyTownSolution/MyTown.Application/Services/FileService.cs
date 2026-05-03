@@ -13,22 +13,22 @@ namespace MyTown.Application.Services
             _env = env;
         }
 
-        public async Task<(string fileName, string path, long size)> SaveFileAsync(IFormFile file)
+        public async Task<(string fileName, string path, long size)> SaveFileAsync(IFormFile file, string folder = "issues")
         {
-            var folder = Path.Combine(_env.WebRootPath, "images", "issues");
+            var uploadFolder = Path.Combine(_env.WebRootPath, "images", folder);
 
-            if (!Directory.Exists(folder))
-                Directory.CreateDirectory(folder);
+            if (!Directory.Exists(uploadFolder))
+                Directory.CreateDirectory(uploadFolder);
 
             var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
-            var fullPath = Path.Combine(folder, fileName);
+            var fullPath = Path.Combine(uploadFolder, fileName);
 
             using (var stream = new FileStream(fullPath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
 
-            return (fileName, $"/images/issues/{fileName}", file.Length);
+            return (fileName, $"/images/{folder}/{fileName}", file.Length);
         }
     }
 }
