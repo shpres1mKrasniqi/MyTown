@@ -151,6 +151,7 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IEventReactionService, EventReactionService>();
 
 var emailSettings = new EmailSettings
 {
@@ -272,7 +273,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapHub<EventHub>("/hubs/problems");
+app.MapHub<EventHub>("/hubs/events");
 app.MapHub<NotificationHub>("/hubs/notifications");
 app.UseStaticFiles();
 app.MapControllers();

@@ -223,42 +223,6 @@ namespace MyTown.Infrastructure.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("MyTown.Domain.Entities.EventVote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CitizenId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("UpdatedBy")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CitizenId");
-
-                    b.HasIndex("EventId", "CitizenId")
-                        .IsUnique();
-
-                    b.ToTable("EventVotes");
-                });
-
             modelBuilder.Entity("MyTown.Domain.Entities.Issue", b =>
                 {
                     b.Property<int>("Id")
@@ -822,25 +786,6 @@ namespace MyTown.Infrastructure.Migrations
                     b.Navigation("StaffProfile");
                 });
 
-            modelBuilder.Entity("MyTown.Domain.Entities.EventVote", b =>
-                {
-                    b.HasOne("MyTown.Domain.Entities.CitizenProfile", "Citizen")
-                        .WithMany()
-                        .HasForeignKey("CitizenId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("MyTown.Domain.Entities.Event", "Event")
-                        .WithMany("Votes")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Citizen");
-
-                    b.Navigation("Event");
-                });
-
             modelBuilder.Entity("MyTown.Domain.Entities.Issue", b =>
                 {
                     b.HasOne("MyTown.Domain.Entities.CitizenProfile", "Citizen")
@@ -984,8 +929,6 @@ namespace MyTown.Infrastructure.Migrations
             modelBuilder.Entity("MyTown.Domain.Entities.Event", b =>
                 {
                     b.Navigation("Files");
-
-                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.Issue", b =>

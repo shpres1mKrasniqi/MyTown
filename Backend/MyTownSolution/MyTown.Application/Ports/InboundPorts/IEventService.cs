@@ -15,8 +15,7 @@ namespace MyTown.Application.Ports.InboundPorts
         Task DeleteAsync(int id, int userId, string ipAddress);
 
 
-        Task<EventResponseDto> VoteAsync(int eventId, int citizenId,int userId, string ipAddress);
-        Task<EventResponseDto> GetWinnerAsync(int komunaId);
+ 
 
 
     }

@@ -27,7 +27,7 @@ namespace MyTown.API.Controllers
         {
             try
             {
-                // ✅ Shto kete per debug
+               
                 Console.WriteLine($"Files nga Request.Form.Files: {Request.Form.Files.Count}");
                 Console.WriteLine($"Files nga dto: {dto.Files?.Count ?? 0}");
 
@@ -38,6 +38,13 @@ namespace MyTown.API.Controllers
                 if (!staffId.HasValue) return Unauthorized();
 
                 var result = await _eventService.CreateEventAsync(dto, staffId.Value, userId.Value, GetIpAddress());
+                await _hub.Clients
+            .Group("Citizens")  
+            .SendAsync("EventPublished", new
+            {
+                message = $"Event i ri u publikua: {result.Title}",
+                ev = result
+            });
                 return Ok(result);
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
@@ -93,12 +100,7 @@ namespace MyTown.API.Controllers
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
-        [HttpGet("debug-claims")]
-        public IActionResult DebugClaims()
-        {
-            var claims = User.Claims.Select(c => new { c.Type, c.Value }).ToList();
-            return Ok(claims);
-        }
+        
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateEventDto dto)
@@ -129,55 +131,10 @@ namespace MyTown.API.Controllers
         }
 
         
-        [HttpPost("{id}/vote")]
-        public async Task<IActionResult> Vote(int id)
-        {
-            try
-            {
-                var citizenId = GetCitizenId();
-                if (!citizenId.HasValue) return Unauthorized();
-
-                var userId = GetUserId();
-                if (!userId.HasValue) return Unauthorized();
-
-                var result = await _eventService.VoteAsync(id, citizenId.Value, userId.Value, GetIpAddress());
-
-                
-                await _hub.Clients
-                    .Group($"komuna-{result.KomunaId}")
-                    .SendAsync("EventVoteUpdated", new
-                    {
-                        eventId = result.Id,
-                        voteCount = result.VoteCount
-                    });
-
-                return Ok(result);
-            }
-            catch (Exception ex) { return BadRequest(ex.Message); }
-        }
+       
 
        
-        [HttpGet("winner/{komunaId}")]
-        public async Task<IActionResult> GetWinner(int komunaId)
-        {
-            try
-            {
-                var result = await _eventService.GetWinnerAsync(komunaId);
-                if (result == null) return NotFound(new { message = "Nuk ka fitues ende." });
-
-               
-                await _hub.Clients
-                    .Group($"komuna-{komunaId}")
-                    .SendAsync("EventWinnerAnnounced", new
-                    {
-                        message = $"🏆 Fitues: {result.Title} me {result.VoteCount} vota!",
-                        winner = result
-                    });
-
-                return Ok(result);
-            }
-            catch (Exception ex) { return BadRequest(ex.Message); }
-        }
+       
 
         private int? GetCitizenId()
         {

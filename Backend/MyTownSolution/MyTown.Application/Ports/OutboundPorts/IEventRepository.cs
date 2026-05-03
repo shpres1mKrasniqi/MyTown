@@ -8,10 +8,8 @@ namespace MyTown.Application.Ports.OutboundPorts
         Task<Event>? GetByIdAsync(int id);
         Task UpdateAsync( Event ev);
 
-        //voting
-        Task AddVoteAsync(EventVote vote);
-        Task<EventVote?> GetVoteAsync(int eventId, int citizenId);
-        Task<Event?> GetEventWithMostVotesAsync(int komunaId);
+
+       
 
 
     }

@@ -19,7 +19,7 @@ namespace MyTown.Domain.Entities
 
         public StaffProfile StaffProfile { get; private set; }
         public Komuna Komuna   { get; private set; }
-        public ICollection<EventVote> Votes { get; private set; } = new List<EventVote>();
+       
         public ICollection<MyTownFile> Files { get; private set; } = new List<MyTownFile>();
 
         protected Event() { }
@@ -37,7 +37,7 @@ namespace MyTown.Domain.Entities
             Location = location;
             KomunaId = komunaId;
             StaffId = staffId;
-            Status = EventStatus.Draft;
+            Status = EventStatus.Published;
             IsDeleted = false;
             SetCreated(createdBy);
 
@@ -67,6 +67,6 @@ namespace MyTown.Domain.Entities
             IsDeleted = true;
             SetUpdated(userId);
         }
-        public int VoteCount => Votes?.Count ?? 0;
+      
     }
 }

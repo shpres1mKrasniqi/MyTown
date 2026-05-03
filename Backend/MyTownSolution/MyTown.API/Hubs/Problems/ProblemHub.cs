@@ -14,5 +14,9 @@ namespace MyTown.API.Hubs.Problems
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"komuna-{komunaId}");
         }
+        public async Task JoinCitizenGroup()
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, "Citizens");
+        }
     }
 }

@@ -39,7 +39,7 @@ namespace MyTown.Infrastructure.Persistence.Data
 
         public DbSet<PasswordResetToken>PasswordResetTokens { get; set; }
         public DbSet<Event> Events { get; set; }
-        public DbSet<EventVote> EventVotes { get; set; }
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -149,31 +149,16 @@ namespace MyTown.Infrastructure.Persistence.Data
                 .HasForeignKey(e => e.KomunaId)
                 .OnDelete(DeleteBehavior.NoAction); 
            
-            modelBuilder.Entity<EventVote>()
-                .HasOne(v => v.Event)
-                .WithMany(e => e.Votes)
-                .HasForeignKey(v => v.EventId)
-                .OnDelete(DeleteBehavior.NoAction);
 
            
-            modelBuilder.Entity<EventVote>()
-            .HasOne(v => v.Citizen)
-                .WithMany()
-                .HasForeignKey(v => v.CitizenId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<EventVote>()
-            .HasIndex(v => new {v.EventId, v.CitizenId })
-                .IsUnique();
-
-            // Files -> Event
+            
+         
             modelBuilder.Entity<Event>()
                 .HasMany(e => e.Files)
                 .WithOne()
                 .HasForeignKey(f => f.EventId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // Files -> Issue  
             modelBuilder.Entity<Issue>()
                 .HasMany(i => i.Files)
                 .WithOne()

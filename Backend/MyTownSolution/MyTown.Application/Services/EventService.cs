@@ -134,31 +134,7 @@ namespace MyTown.Application.Services
 
             //audit logs ketu
         }
-        public async Task<EventResponseDto> VoteAsync(int eventId, int citizenId,int userId, string ippAddress)
-        {
-            var ev = await _eventRepository.GetByIdAsync(eventId)
-                ?? throw new Exception("Eventi nuk u gjet.");
-
-            if(ev.Status != Domain.Enums.EventStatus.Published) 
-                throw new Exception("Mund te votoni vetem per evente te publikuara.");
-
-            var existingVote = await _eventRepository.GetVoteAsync(eventId, citizenId);
-            if (existingVote != null)
-                throw new InvalidOperationException("Keni votuar tashme per kete event.");
-
-            var vote = new EventVote(eventId, citizenId, userId);
-            await _eventRepository.AddVoteAsync(vote);
-
-            await _unitOfWork.SaveChangesAsync();
-
-            var updated = await _eventRepository.GetByIdAsync(eventId);
-            return MapToDto(updated!, citizenId);
-        }
-        public async Task<EventResponseDto?> GetWinnerAsync(int komunaId)
-        {
-            var winner = await _eventRepository.GetEventWithMostVotesAsync(komunaId);
-            return winner == null ? null : MapToDto(winner);
-        }
+        
         private static EventResponseDto MapToDto(Event ev, int? citizenId = null)
         {
             return new EventResponseDto
@@ -173,8 +149,6 @@ namespace MyTown.Application.Services
                 StaffId = ev.StaffId,
                 StaffName = ev.StaffProfile?.User?.FirstName,  // ✅
                 Status = ev.Status,
-                VoteCount = ev.VoteCount,
-                HasVoted = citizenId.HasValue && (ev.Votes?.Any(v => v.CitizenId == citizenId.Value) ?? false),
                 Files = ev.Files?.Select(f => new MyTownFileResponseDto  // ✅
                 {
                     Id = f.Id,

@@ -21,7 +21,6 @@ namespace MyTown.Infrastructure.Repositories
         {
             return await _context.Events
                 .Include(e => e.Komuna)
-                .Include(e => e.Votes)
                 .Include(e => e.Files)
                 .Include(e => e.StaffProfile)
                    .ThenInclude(s => s.User)
@@ -33,7 +32,6 @@ namespace MyTown.Infrastructure.Repositories
         {
             return await _context.Events
                 .Include(e => e.Komuna)
-                .Include(e => e.Votes)
                 .Include(e => e.Files)
                 .Include(e => e.StaffProfile)
                 .FirstOrDefaultAsync(e => e.Id == id && !e.IsDeleted);
@@ -41,22 +39,7 @@ namespace MyTown.Infrastructure.Repositories
 
         public async Task UpdateAsync(Event ev) => _context.Events.Update(ev);
 
-        public async Task AddVoteAsync(EventVote vote) => await _context.EventVotes.AddAsync(vote);
-
-        public async Task<EventVote?> GetVoteAsync(int eventId, int citizenId)
-        {
-            return await _context.EventVotes
-                .FirstOrDefaultAsync(v => v.EventId == eventId && v.CitizenId == citizenId);
-        }
-        public async Task <Event?> GetEventWithMostVotesAsync(int komunaId)
-        {
-            return await _context.Events
-                .Include(e => e.Komuna)
-                .Include(e=> e.Votes)
-                .Where(e => e.KomunaId == komunaId && !e.IsDeleted && e.Status == EventStatus.Published)
-                .OrderByDescending(e => e.VoteCount)
-                .FirstOrDefaultAsync();
-        }
+       
 
 
     }
