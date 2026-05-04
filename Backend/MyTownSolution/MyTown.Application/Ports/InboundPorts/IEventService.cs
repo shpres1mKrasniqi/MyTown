@@ -8,7 +8,6 @@ namespace MyTown.Application.Ports.InboundPorts
     public interface IEventService
     {
         Task<EventResponseDto> CreateEventAsync(CreateEventDto createEventDto, int staffId,int userId, string ipAddress);
-        Task PublishEventAsync (int id, int userId, string ipAddress);
         Task<IEnumerable<EventResponseDto>> GetAllEventsAsync(int? citizenId = null);
         Task<EventResponseDto?> GetEventByIdAsync(int id, int? citizenId = null);
         Task UpdateAsync(int id, UpdateEventDto dto, int userId, string ipAddress);

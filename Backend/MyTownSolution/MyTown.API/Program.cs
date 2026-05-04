@@ -222,7 +222,17 @@ builder.Services.AddAuthorization(options =>
     Permissions.CanCreateIssueCategory,
     Permissions.CanEditIssueCategory,
     Permissions.CanDeleteIssueCategory,
-    Permissions.CanViewIssueCategory
+    Permissions.CanViewIssueCategory,
+
+    Permissions.CanCreateEvent,
+    Permissions.CanEditEvent,
+    Permissions.CanDeleteEvent,
+    Permissions.CanViewEvent,
+
+    Permissions.CanCreateIssue,
+    Permissions.CanEditIssue,
+    Permissions.CanDeleteIssue,
+    Permissions.CanViewIssue,
 };
     foreach (var premission in permissions)
     {

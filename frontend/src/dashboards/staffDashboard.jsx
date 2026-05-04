@@ -71,7 +71,7 @@ function NotificationPanel({ notifications, unreadCount, onMarkAsRead, onMarkAll
   );
 }
 
-// ─── Sidebar items ────────────────────────────────────────
+
 const MENU = [
   { key: "add-event",   label: "Krijo Event",   icon: Plus },
   { key: "event-list",  label: "Eventet",        icon: List },
@@ -106,21 +106,7 @@ export default function StaffDashboard() {
               <p className="text-gray-500 font-medium">Mirë se vini në Staff Dashboard</p>
               <p className="text-gray-400 text-sm mt-1">Zgjidh një seksion nga menuja</p>
             </div>
-            {/* Quick action cards */}
-            <div className="flex gap-4 mt-4">
-              {MENU.map(({ key, label, icon: Icon }) => (
-                <button
-                  key={key}
-                  onClick={() => setActivePage(key)}
-                  className="flex flex-col items-center gap-2 bg-white border border-gray-200 rounded-2xl px-8 py-6 shadow-sm hover:shadow-md hover:border-blue-300 transition-all group"
-                >
-                  <div className="w-12 h-12 bg-blue-50 group-hover:bg-blue-100 rounded-xl flex items-center justify-center transition-colors">
-                    <Icon size={22} className="text-blue-600" />
-                  </div>
-                  <span className="text-sm font-medium text-gray-700">{label}</span>
-                </button>
-              ))}
-            </div>
+        
           </div>
         );
     }

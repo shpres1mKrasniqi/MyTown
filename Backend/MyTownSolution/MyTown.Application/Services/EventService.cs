@@ -5,6 +5,7 @@ using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Domain.Common;
 using MyTown.Domain.Entities;
 using MyTown.Domain.Enums;
+using System.Runtime.Intrinsics.Arm;
 
 namespace MyTown.Application.Services
 {
@@ -75,31 +76,7 @@ namespace MyTown.Application.Services
             return MapToDto(created!);
         }
 
-        public async Task PublishEventAsync(int id, int userId, string ipAddress)
-        {
-            var ev = await _eventRepository.GetByIdAsync(id)
-            ?? throw new Exception("Eventi nuk u gjet.");
-
-            var oldValue = Serialize(ev);
-
-            ev.Publish(userId);
-
-            await _eventRepository.UpdateAsync(ev);
-
-        //auditlogs ketu
-
-
-            var staffMembers = await _staffRepository.GetByKomunaIdAsync(ev.KomunaId);
-            foreach (var staff in staffMembers)
-            {
-                await _notificationService.CreateNotificationAsync(
-                    staff.UserId,
-
-
-                    $"Eventi i ri u publikua: {ev.Title}"
-                    );
-            }
-        }
+      
         public async Task<IEnumerable<EventResponseDto>> GetAllEventsAsync(int? citizenId = null)
         {
             var events = await _eventRepository.GetAllAsync();
@@ -120,7 +97,21 @@ namespace MyTown.Application.Services
             ev.Update(dto.Title, dto.Description, dto.EventDate, dto.Location, dto.Status, userId);
             await _eventRepository.UpdateAsync(ev);
 
-            //audit logs ketu
+            var newValue = $"Title: {ev.Title}, Description: {ev.Description}, EventDate:{ ev.EventDate}, Location: {ev.Location}, Status: {ev.Status}"
+            ;
+
+            var log = new AuditLog(
+               userId,
+               "UPDATE",
+               "Event",
+               ev.Id,
+               oldValue,
+               newValue,
+               ipAddress
+           );
+
+            await _auditRepository.AddAsync(log);
+            await _unitOfWork.SaveChangesAsync();
         }
         public async Task DeleteAsync(int id, int userId, string ipAddress)
         {
@@ -132,7 +123,20 @@ namespace MyTown.Application.Services
 
             await _eventRepository.UpdateAsync(ev);
 
-            //audit logs ketu
+            var newValue = $"Title: {ev.Title}, IsActive: {ev.IsDeleted}";
+
+            var log = new AuditLog(
+               userId,
+                "SOFT_DELETE",
+                "Event",
+                ev.Id,
+                oldValue,
+                newValue,
+                ipAddress
+            );
+
+            await _auditRepository.AddAsync(log);
+            await _unitOfWork.SaveChangesAsync();
         }
         
         private static EventResponseDto MapToDto(Event ev, int? citizenId = null)

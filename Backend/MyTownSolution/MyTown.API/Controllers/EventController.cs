@@ -23,6 +23,7 @@ namespace MyTown.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CanCreateEvent")]
         public async Task<IActionResult> Create([FromForm] CreateEventDto dto)
         {
             try
@@ -50,33 +51,9 @@ namespace MyTown.API.Controllers
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
-        [HttpPost("{id}/publish")]
-        public async Task<IActionResult> Publish(int id)
-        {
-            try
-            {
-                var userId = GetUserId();
-                if (!userId.HasValue) return Unauthorized();
-
-                await _eventService.PublishEventAsync(id, userId.Value, GetIpAddress());
-
-                var ev = await _eventService.GetEventByIdAsync(id);
-
-               
-                await _hub.Clients
-                    .Group($"komuna-{ev!.KomunaId}")
-                    .SendAsync("EventPublished", new
-                    {
-                        message = $"Eventi i ri u publikua: {ev.Title}",
-                        ev
-                    });
-
-                return Ok(new { message = "Eventi u publikua me sukses." });
-            }
-            catch (Exception ex) { return BadRequest(ex.Message); }
-        }
 
         [HttpGet]
+        [Authorize(Policy = "CanViewEvent")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -89,6 +66,7 @@ namespace MyTown.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "CanViewEvent")]
         public async Task<IActionResult> GetById(int id)
         {
             try
@@ -103,6 +81,7 @@ namespace MyTown.API.Controllers
         
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "CanEditEvent")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateEventDto dto)
         {
             try
@@ -117,6 +96,7 @@ namespace MyTown.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "CanDeleteEvent")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -129,12 +109,6 @@ namespace MyTown.API.Controllers
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
-
-        
-       
-
-       
-       
 
         private int? GetCitizenId()
         {
