@@ -17,15 +17,16 @@ namespace MyTown.API.Controllers
     public class IssuesController : ControllerBase
     {
         private readonly IIssueService _issueService;
-        private readonly IHubContext<ProblemHub> _hub;
+        private readonly IHubContext<EventHub> _hub;
 
-        public IssuesController(IIssueService issueService, IHubContext<ProblemHub> hub)
+        public IssuesController(IIssueService issueService, IHubContext<EventHub> hub)
         {
             _issueService = issueService;
             _hub = hub;
         }
 
         [HttpPost]
+        [Authorize(Policy = "CanCreateIssue")]
         public async Task<IActionResult> CreateIssue([FromForm] CreateIssueDto createIssueDto)
         {
             try
@@ -61,6 +62,7 @@ namespace MyTown.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "CanViewIssue")]
         public async Task<IActionResult> GetIssues()
         {
             try
@@ -76,6 +78,7 @@ namespace MyTown.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "CanEditIssue")]
         public async Task<IActionResult> Update(int id, [FromForm] UpdateIssueDto dto)
         {
             try
@@ -98,6 +101,7 @@ namespace MyTown.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "CanViewIssue")]
         public async Task<IActionResult> GetById(int id)
         {
             try
@@ -116,6 +120,7 @@ namespace MyTown.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "CanDeleteIssue")]
         public async Task<IActionResult> Delete(int id)
         {
             try

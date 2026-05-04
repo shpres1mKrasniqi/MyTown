@@ -21,7 +21,7 @@ namespace MyTown.Api.Controllers
 
         
         [HttpPost]
-        [Authorize (Policy = Permissions.CanCreateCitizen)]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateCitizen([FromBody] CreateCitizenDto dto)
         {
             var adminId = GetAdminId();

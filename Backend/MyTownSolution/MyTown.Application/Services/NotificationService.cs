@@ -1,7 +1,10 @@
-﻿using MyTown.Application.Ports.OutboundPorts;
-using MyTown.Domain.Entities;
+﻿using Microsoft.AspNetCore.SignalR;
 using MyTown.Application.Ports.InboundPorts;
-using Microsoft.AspNetCore.SignalR;
+using MyTown.Application.Ports.OutboundPorts;
+using MyTown.Domain.Common;
+using MyTown.Domain.Entities;
+using System.Net;
+using System.Runtime.Intrinsics.Arm;
 
 
 
@@ -12,12 +15,14 @@ namespace MyTown.Application.Services
         private readonly INotificationRepository _notificationRepository;
         private readonly IUnitOfWork _unitRepository;
         private readonly INotificationSender _notificationSender;
+        private readonly IAuditRepository _auditRepository;
 
-        public NotificationService(INotificationRepository notificationRepository, IUnitOfWork unitRepository, INotificationSender notificationSender)
+        public NotificationService(INotificationRepository notificationRepository, IUnitOfWork unitRepository, INotificationSender notificationSender, IAuditRepository auditRepository)
         {
             _notificationRepository = notificationRepository;
             _unitRepository = unitRepository;
             _notificationSender = notificationSender;
+            _auditRepository = auditRepository;
         }
         public async Task CreateNotificationAsync(int userId, string message)
         {
@@ -34,6 +39,7 @@ namespace MyTown.Application.Services
                 createdAt = notification.CreatedAt,
                 isRead = notification.IsRead
             });
+         
         }
         public async Task<List<Notifications>> GetByUserIdAsync(int userId)
         {

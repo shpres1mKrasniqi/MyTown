@@ -133,6 +133,7 @@ builder.Services.AddScoped<IIssueCategoryRepository, IssueCategoryRepository>();
 builder.Services.AddScoped<IIssueRepository, IssueRepository>();
 builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
 
 // Servicet
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -149,6 +150,8 @@ builder.Services.AddScoped<IRealtimeInteractionNotifier, RealtimeInteractionNoti
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
+builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IEventReactionService, EventReactionService>();
 
 var emailSettings = new EmailSettings
 {
@@ -219,7 +222,17 @@ builder.Services.AddAuthorization(options =>
     Permissions.CanCreateIssueCategory,
     Permissions.CanEditIssueCategory,
     Permissions.CanDeleteIssueCategory,
-    Permissions.CanViewIssueCategory
+    Permissions.CanViewIssueCategory,
+
+    Permissions.CanCreateEvent,
+    Permissions.CanEditEvent,
+    Permissions.CanDeleteEvent,
+    Permissions.CanViewEvent,
+
+    Permissions.CanCreateIssue,
+    Permissions.CanEditIssue,
+    Permissions.CanDeleteIssue,
+    Permissions.CanViewIssue,
 };
     foreach (var premission in permissions)
     {
@@ -270,7 +283,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapHub<ProblemHub>("/hubs/problems");
+app.MapHub<EventHub>("/hubs/events");
 app.MapHub<NotificationHub>("/hubs/notifications");
 app.UseStaticFiles();
 app.MapControllers();

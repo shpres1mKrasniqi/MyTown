@@ -38,6 +38,8 @@ namespace MyTown.Infrastructure.Persistence.Data
         public DbSet<Notifications> Notifications { get; set; }
 
         public DbSet<PasswordResetToken>PasswordResetTokens { get; set; }
+        public DbSet<Event> Events { get; set; }
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -105,7 +107,8 @@ namespace MyTown.Infrastructure.Persistence.Data
             modelBuilder.Entity<StaffProfile>()
     .HasOne(s => s.User)
     .WithOne()
-    .HasForeignKey<StaffProfile>(s => s.UserId);
+    .HasForeignKey<StaffProfile>(s => s.UserId)
+    .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<StaffProfile>()
     .HasOne(sp => sp.Department)
@@ -116,7 +119,8 @@ namespace MyTown.Infrastructure.Persistence.Data
             modelBuilder.Entity<CitizenProfile>()
     .HasOne(s => s.User)
     .WithOne()
-    .HasForeignKey<CitizenProfile>(s => s.UserId);
+    .HasForeignKey<CitizenProfile>(s => s.UserId)
+    .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<CitizenProfile>()
     .HasOne(sp => sp.Komuna)
@@ -132,6 +136,34 @@ namespace MyTown.Infrastructure.Persistence.Data
             .HasOne(ws => ws.StaffProfile)
             .WithMany(s => s.WorkSchedules)
             .HasForeignKey(ws => ws.StaffId);
+
+            modelBuilder.Entity<Event>()
+    .HasOne(e => e.StaffProfile)
+    .WithMany()
+    .HasForeignKey(e => e.StaffId)
+    .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Event>()
+                .HasOne(e => e.Komuna)
+                .WithMany()
+                .HasForeignKey(e => e.KomunaId)
+                .OnDelete(DeleteBehavior.NoAction); 
+           
+
+           
+            
+         
+            modelBuilder.Entity<Event>()
+                .HasMany(e => e.Files)
+                .WithOne()
+                .HasForeignKey(f => f.EventId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Issue>()
+                .HasMany(i => i.Files)
+                .WithOne()
+                .HasForeignKey(f => f.IssueId)
+                .OnDelete(DeleteBehavior.NoAction);
 
         }
     }

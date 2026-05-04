@@ -18,6 +18,10 @@ namespace MyTown.Domain.Entities
 
         public DateTime CreatedAt { get; private set; }
 
+
+        public int? IssueId { get; set; }
+        public int? EventId { get; set; }
+
         protected MyTownFile() { }
 
         public MyTownFile(string entity, int entityId, string fileName, string filePath, long fileSize, int uploadedBy)

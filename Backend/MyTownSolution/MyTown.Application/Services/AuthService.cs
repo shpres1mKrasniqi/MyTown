@@ -17,6 +17,7 @@ namespace MyTown.Application.Services
         private readonly ITokenService _tokenService;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly ICitizenRepository _citizenRepository;
+        private readonly IStaffRepository _staffRepository;
         private readonly IPasswordResetTokenRepository _passwordResetTokenRepository;
         private readonly IEmailService _emailService;
         private readonly EmailSettings _emailSettings;
@@ -28,6 +29,7 @@ namespace MyTown.Application.Services
             ITokenService tokenService,
             IRefreshTokenRepository refreshTokenRepository,
             ICitizenRepository citizenRepository,
+             IStaffRepository staffRepository,
             IPasswordResetTokenRepository passwordResetTokenRepository,
             IEmailService emailService,
             IOptions<EmailSettings> emailSettings)
@@ -37,7 +39,7 @@ namespace MyTown.Application.Services
             _tokenService = tokenService;
             _refreshTokenRepository = refreshTokenRepository;
             _citizenRepository = citizenRepository;
-
+            _staffRepository = staffRepository;
             _passwordResetTokenRepository = passwordResetTokenRepository;
             _emailService = emailService;
             _emailSettings = emailSettings.Value;
@@ -126,6 +128,7 @@ namespace MyTown.Application.Services
                 throw new Exception("Kredenciale te pavlefshme");
             }
             var citizen = await _citizenRepository.GetByUserIdAsync(user.Id);
+            var staff = await _staffRepository.GetByUserIdAsync(user.Id);
 
             var roles = user.UserRoles.Select(ur => ur.Role.Name).Distinct().ToList();
 
@@ -139,6 +142,7 @@ namespace MyTown.Application.Services
             {
                 Id = user.Id,
                 CitizenId = citizen?.Id,
+                StaffId = staff?.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
@@ -186,6 +190,7 @@ namespace MyTown.Application.Services
             var user = existingToken.User;
 
             var citizenProfile = await _citizenRepository.GetByUserIdAsync(user.Id);
+            var staff = await _staffRepository.GetByUserIdAsync(user.Id);
 
             var roles = user.UserRoles.Select(ur => ur.Role.Name).Distinct().ToList();
 
@@ -200,6 +205,7 @@ namespace MyTown.Application.Services
             {
                 Id = user.Id,
                 CitizenId = citizenProfile?.Id,
+                StaffId = staff?.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,

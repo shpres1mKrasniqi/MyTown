@@ -26,6 +26,10 @@ const AddIssueCategory = lazy(() => import("./pages/AddIssueCategory"));
 const CreateCitizen = lazy(() => import("./pages/CreateCitizen"));
 const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
 const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
+const AddEvent = lazy (() => import("./pages/AddEvent"));
+const EventList = lazy (() =>import("./pages/EventList"));
+
+
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -46,6 +50,8 @@ function App() {
           <Route path="/manage-staff" element={<MenaxhoStaff />} />
           <Route path="/add-staff" element={<AddStaff />} />
           <Route path="/add-issueCategory" element={<AddIssueCategory />} />
+          <Route path = "/add-event" element = {<AddEvent/>}/>
+
         </Route>
 
         <Route path="/create-citizen" element={<CreateCitizen />} />
@@ -53,8 +59,11 @@ function App() {
         <Route path="/staff-dashboard" element={<StaffDashboard />} />
         <Route path="/citizen-dashboard" element={<CitizenDashboard />} />
         <Route path="/issues" element={<IssueList />} />
+
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+
+        <Route path = "/events" element={<EventList/>} />
       </Routes>
 
       <ToastContainer

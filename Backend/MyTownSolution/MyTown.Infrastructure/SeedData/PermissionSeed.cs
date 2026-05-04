@@ -49,6 +49,18 @@ namespace MyTown.Infrastructure.SeedData
      new Permission { Name = Permissions.CanDeleteWorkSchedule, Description = "Lejon fshirjen e orareve të punës" },
      new Permission { Name = Permissions.CanViewWorkSchedule, Description = "Lejon shikimin e orareve të punës" },
 
+     //Eventet
+     new Permission { Name = Permissions.CanCreateEvent, Description = "Lejon krijimin e eventeve" },
+     new Permission { Name = Permissions.CanEditEvent, Description = "Lejon editimin e eventeve" },
+     new Permission { Name = Permissions.CanDeleteEvent, Description = "Lejon fshirjen e eventeve" },
+     new Permission { Name = Permissions.CanViewEvent, Description = "Lejon shikimin e eventeve" },
+
+     //issues
+     new Permission { Name = Permissions.CanCreateIssue, Description = "Lejon postimin e problemeve" },
+     new Permission { Name = Permissions.CanEditIssue, Description = "Lejon editimin e problemeve" },
+     new Permission { Name = Permissions.CanDeleteIssue, Description = "Lejon fshirjen e problemeve" },
+     new Permission { Name = Permissions.CanViewIssue, Description = "Lejon shikimin e problemeve" },
+
  };
 
             foreach (var p in permissions)
@@ -90,8 +102,13 @@ namespace MyTown.Infrastructure.SeedData
                     Permissions.CanViewDepartments,
                     Permissions.CanViewKomuna,
                     Permissions.CanViewStaff,
-                    Permissions.CanViewCitizen
-    };
+                    Permissions.CanViewCitizen,
+                    Permissions.CanViewEvent,
+                    Permissions.CanViewIssue,
+                    Permissions.CanCreateIssue
+
+
+                };
 
                 foreach (var permName in permissionsToAdd)
                 {
@@ -114,6 +131,41 @@ namespace MyTown.Infrastructure.SeedData
                 await context.SaveChangesAsync();
         
             }
+            var staffRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == "Staff");
+
+            if (staffRole != null)
+            {
+                var permissionsToAdd = new List<string>
+    {
+                    Permissions.CanCreateEvent,
+                    Permissions.CanViewEvent,
+                    
+
+
+                };
+
+                foreach (var permName in permissionsToAdd)
+                {
+                    var perm = await context.Permissions.FirstOrDefaultAsync(p => p.Name == permName);
+                    if (perm != null)
+                    {
+                        var exists = await context.RolePermissions.AnyAsync(rp =>
+                            rp.RoleId == staffRole.Id && rp.PermissionId == perm.Id);
+                        if (!exists)
+                        {
+                            await context.RolePermissions.AddAsync(new RolePermission
+                            {
+                                RoleId = staffRole.Id,
+                                PermissionId = perm.Id
+                            });
+                        }
+                    }
+                }
+
+                await context.SaveChangesAsync();
+
+            }
         }
     }
+    
 }
