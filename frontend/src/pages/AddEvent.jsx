@@ -14,6 +14,7 @@ function AddEvent() {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
 
+
   const showToast = (type, message) => {
     toast.dismiss();
     toast[type](message, {
@@ -21,6 +22,15 @@ function AddEvent() {
       onClick: () => toast.dismiss("main-toast"),
     });
   };
+
+ const showToast = (type, message) => {
+  toast.dismiss();
+  toast[type](message, {
+    toastId: "main-toast",
+    onClick: () => toast.dismiss("main-toast"),
+  });
+};
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,6 +51,30 @@ function AddEvent() {
     }));
   };
 
+
+  const normalizeFieldName = (key) => {
+  const lowerKey = key.toLowerCase();
+  if (lowerKey.includes("title")) return "title";
+  if (lowerKey.includes("description")) return "description";
+  if (lowerKey.includes("location")) return "location";
+  if (lowerKey.includes("eventdate")) return "eventDate";
+  if (lowerKey.includes("files")) return "files";
+  return key.charAt(0).toLowerCase() + key.slice(1);
+};
+
+const formatBackendErrors = (responseErrors) => {
+  const formattedErrors = {};
+  Object.keys(responseErrors).forEach((key) => {
+    const fieldName = normalizeFieldName(key);
+    const messages = responseErrors[key];
+    formattedErrors[fieldName] = Array.isArray(messages)
+      ? messages[0]
+      : messages;
+  });
+  return formattedErrors;
+};
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
@@ -57,6 +91,7 @@ function AddEvent() {
       showToast("success", "Eventi u krijua me sukses!");
       setForm(initialForm);
     } catch (err) {
+
       const backendData = err.response?.data;
       if (backendData?.errors) {
         const formatted = {};
@@ -78,6 +113,39 @@ function AddEvent() {
       : "border-gray-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
     }
   `;
+
+  console.error("Gabim gjatë krijimit:", err.response?.data || err);
+  
+  const backendData = err.response?.data;
+
+  if (backendData?.errors) {
+    setErrors(formatBackendErrors(backendData.errors)); 
+    return;
+  }
+
+  if (backendData?.message) {
+    showToast("error", backendData.message);
+    return;
+  }
+
+  if (backendData?.title) {
+    showToast("error", backendData.title);
+    return;
+  }
+
+  showToast("error", "Gabim gjatë krijimit të eventit.");
+}
+  
+
+const getInputClasses = (fieldName) => `
+  w-full px-4 py-3 bg-gray-50 border rounded-xl outline-none transition-all duration-200
+  ${
+    errors[fieldName]
+      ? "border-red-500 focus:ring-2 focus:ring-red-500/20"
+      : "border-gray-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+  }
+`;
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
@@ -217,6 +285,6 @@ function AddEvent() {
       </div>
     </div>
   );
-}
+
 
 export default AddEvent;
