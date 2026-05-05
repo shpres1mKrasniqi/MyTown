@@ -17,9 +17,9 @@ namespace MyTown.API.Controllers
     public class IssuesController : ControllerBase
     {
         private readonly IIssueService _issueService;
-        private readonly IHubContext<EventHub> _hub;
+        private readonly IHubContext<ProblemHub> _hub;
 
-        public IssuesController(IIssueService issueService, IHubContext<EventHub> hub)
+        public IssuesController(IIssueService issueService, IHubContext<ProblemHub> hub)
         {
             _issueService = issueService;
             _hub = hub;

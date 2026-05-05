@@ -32,7 +32,7 @@ export function useCitizenNotifications() {
             .build();
 
        connection.start().then(() => {
-    // ✅ Njejte si stafi - JoinCitizenGroup
+   
     connection.invoke("JoinCitizenGroup")
         .catch(err => console.error(err));
 

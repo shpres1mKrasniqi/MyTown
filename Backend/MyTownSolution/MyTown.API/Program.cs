@@ -283,15 +283,9 @@ app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
-<<<<<<< HEAD
+
 app.MapHub<EventHub>("/hubs/events");
-=======
-<<<<<<< Updated upstream
-=======
-app.MapHub<EventHub>("/hubs/events");
->>>>>>> Stashed changes
 app.MapHub<ProblemHub>("/hubs/problems");
->>>>>>> e43f6f4 (Implementimi i valdimit per Events duke perdorur fluent-validation)
 app.MapHub<NotificationHub>("/hubs/notifications");
 app.UseStaticFiles();
 app.MapControllers();

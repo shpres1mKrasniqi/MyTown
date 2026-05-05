@@ -98,9 +98,7 @@ const loadReactions = async (eventsList) => {
       .withAutomaticReconnect()
       .build();
 
-    connection
-      .start()
-      .then(() => {
+    connection.start().then(() => {
         console.log("SignalR Events u lidh");
 
         const komunaId = localStorage.getItem("komunaId");
@@ -108,25 +106,19 @@ const loadReactions = async (eventsList) => {
           connection.invoke("JoinKomunaGroup", komunaId);
         }
 
-        connection.on("EventPublished", (data) => {
-          console.log("Event i ri u publikua:", data);
-          fetchEvents();
-        });
+        // ✅ Shto kete - join Citizens group
+        connection.invoke("JoinCitizenGroup").catch(err => console.error(err));
 
-        connection.on("EventVoteUpdated", (data) => {
-          setEvents((prev) =>
-            prev.map((ev) =>
-              ev.id === data.eventId ? { ...ev, voteCount: data.voteCount } : ev
-            )
-          );
+        connection.on("EventPublished", () => {
+          // ✅ Thirr direkt API, jo fetchEvents
+          eventService.getAll().then((res) => {
+            const published = res.data.filter((e) => e.status === 1);
+            setEvents(published);
+            loadReactions(published);
+          });
         });
-
-        connection.on("EventWinnerAnnounced", (data) => {
-          alert(`🏆 ${data.message}`);
-          fetchEvents();
-        });
-      })
-      .catch((err) => console.error("SignalR error:", err));
+    })
+    .catch((err) => console.error("SignalR error:", err));
 
     return () => connection.stop();
   }, []);
