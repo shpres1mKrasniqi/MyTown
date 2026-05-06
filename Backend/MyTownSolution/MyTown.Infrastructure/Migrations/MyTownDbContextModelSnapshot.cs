@@ -392,6 +392,9 @@ namespace MyTown.Infrastructure.Migrations
                     b.Property<int?>("IssueId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ProjectProposalId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UploadedBy")
                         .HasColumnType("int");
 
@@ -400,6 +403,8 @@ namespace MyTown.Infrastructure.Migrations
                     b.HasIndex("EventId");
 
                     b.HasIndex("IssueId");
+
+                    b.HasIndex("ProjectProposalId");
 
                     b.ToTable("Files");
                 });
@@ -489,6 +494,65 @@ namespace MyTown.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Permissions");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.ProjectProposal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Budget")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("KomunaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("PlannedEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("PlannedStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TenderWinnerCompany")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("VotingDeadline")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KomunaId");
+
+                    b.ToTable("ProjectProposals");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.RefreshToken", b =>
@@ -824,6 +888,11 @@ namespace MyTown.Infrastructure.Migrations
                         .WithMany("Files")
                         .HasForeignKey("IssueId")
                         .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("MyTown.Domain.Entities.ProjectProposal", null)
+                        .WithMany("Files")
+                        .HasForeignKey("ProjectProposalId")
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.PasswordResetToken", b =>
@@ -835,6 +904,17 @@ namespace MyTown.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.ProjectProposal", b =>
+                {
+                    b.HasOne("MyTown.Domain.Entities.Komuna", "Komuna")
+                        .WithMany("ProjectProposals")
+                        .HasForeignKey("KomunaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Komuna");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.RefreshToken", b =>
@@ -946,11 +1026,18 @@ namespace MyTown.Infrastructure.Migrations
                     b.Navigation("CitizenProfiles");
 
                     b.Navigation("Departments");
+
+                    b.Navigation("ProjectProposals");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.Permission", b =>
                 {
                     b.Navigation("RolePermissions");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.Entities.ProjectProposal", b =>
+                {
+                    b.Navigation("Files");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.Role", b =>

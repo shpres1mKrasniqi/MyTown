@@ -13,6 +13,8 @@ namespace MyTown.Domain.Entities
 
         public ICollection<CitizenProfile> CitizenProfiles { get; private set; } = new List<CitizenProfile>();
 
+        public ICollection<ProjectProposal> ProjectProposals { get; private set; } = new List<ProjectProposal>();
+
         protected Komuna() { }
 
         public Komuna(string name, string? description)

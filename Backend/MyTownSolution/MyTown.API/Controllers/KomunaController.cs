@@ -9,7 +9,7 @@ namespace MyTown.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+
     public class KomunaController : ControllerBase
     {
         private readonly IKomunaService _komunaService;
@@ -22,7 +22,7 @@ namespace MyTown.API.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Policy = Permissions.CanViewKomuna)] Komentuar per shkak qe me u lexu nga Citizens
+       
         public async Task<IActionResult> GetAll()
         {
             
@@ -39,7 +39,6 @@ namespace MyTown.API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        //[Authorize(Policy = Permissions.CanViewKomuna)]
         public async Task<IActionResult> GetById(int id)
         {
             

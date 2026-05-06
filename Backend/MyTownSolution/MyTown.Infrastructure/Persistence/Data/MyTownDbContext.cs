@@ -39,6 +39,7 @@ namespace MyTown.Infrastructure.Persistence.Data
 
         public DbSet<PasswordResetToken>PasswordResetTokens { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<ProjectProposal> ProjectProposals { get; set; }
        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -98,8 +99,7 @@ namespace MyTown.Infrastructure.Persistence.Data
                 .HasForeignKey(rp => rp.PermissionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-           
-            // Nje rol nuk mund ta ketë të njëjtën leje dy herë
+
             modelBuilder.Entity<RolePermission>()
                 .HasIndex(rp => new { rp.RoleId, rp.PermissionId })
                 .IsUnique();
@@ -149,9 +149,6 @@ namespace MyTown.Infrastructure.Persistence.Data
                 .HasForeignKey(e => e.KomunaId)
                 .OnDelete(DeleteBehavior.NoAction); 
            
-
-           
-            
          
             modelBuilder.Entity<Event>()
                 .HasMany(e => e.Files)
@@ -164,6 +161,17 @@ namespace MyTown.Infrastructure.Persistence.Data
                 .WithOne()
                 .HasForeignKey(f => f.IssueId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ProjectProposal>()
+             .HasMany(e => e.Files)
+             .WithOne()
+             .HasForeignKey(f => f.ProjectProposalId)
+             .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ProjectProposal>()
+            .HasOne(ps => ps.Komuna)
+            .WithMany(s => s.ProjectProposals)
+            .HasForeignKey(ps => ps.KomunaId);
 
         }
     }

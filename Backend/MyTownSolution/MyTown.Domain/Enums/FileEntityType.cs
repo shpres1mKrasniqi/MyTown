@@ -8,6 +8,7 @@ namespace MyTown.Domain.Enums
         User = 2,
         Product = 3,
         Document = 4,
-        Event = 5
+        Event = 5,
+        ProjectProposal = 6
     }
 }

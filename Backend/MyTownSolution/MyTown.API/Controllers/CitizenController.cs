@@ -9,7 +9,7 @@ namespace MyTown.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+ 
     public class CitizenController : ControllerBase
     {
         private readonly ICitizenService _citizenService;

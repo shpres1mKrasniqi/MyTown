@@ -134,7 +134,7 @@ builder.Services.AddScoped<IIssueRepository, IssueRepository>();
 builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
-
+builder.Services.AddScoped<IProjectProposalRepository, ProjectProposalRepository>();
 // Servicet
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -152,6 +152,7 @@ builder.Services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepo
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventReactionService, EventReactionService>();
+builder.Services.AddScoped<IProjectProposalService, ProjectProposalService>();
 
 var emailSettings = new EmailSettings
 {
