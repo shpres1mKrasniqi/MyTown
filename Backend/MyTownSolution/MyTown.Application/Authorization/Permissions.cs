@@ -55,5 +55,10 @@ namespace MyTown.Application.Authorization
         public const string CanEditIssue = "CanEditIssue";
         public const string CanDeleteIssue = "CanDeleteIssue";
         public const string CanViewIssue = "CanViewIssue";
+
+        public const string CanCreateProjectProposal = "CanCreateProjectProposal";
+        public const string CanEditProjectProposal = "CanEditProjectProposal";
+        public const string CanDeleteProjectProposal = "CanDeleteProjectProposal";
+        public const string CanViewProjectProposal = "CanViewProjectProposal";
     }
 }

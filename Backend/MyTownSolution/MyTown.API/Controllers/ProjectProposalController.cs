@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyTown.Application.Authorization;
 using MyTown.Application.DTOs.ProjectProposals;
 using MyTown.Application.Ports.InboundPorts;
 using System.Security.Claims;
@@ -8,6 +9,7 @@ namespace MyTown.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class ProjectProposalController : ControllerBase
     {
         private readonly IProjectProposalService _projectProposalService;
@@ -19,7 +21,7 @@ namespace MyTown.API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Policy = Permissions.CanCreateProjectProposal)]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> CreateProjectProposal([FromForm] CreateProposal request)
         {

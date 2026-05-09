@@ -55,8 +55,8 @@ var jwtSettings = new JwtSettings
     SecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") ?? throw new Exception("JWT_SECRET_KEY nuk u gjet"),
     Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? throw new Exception("JWT_ISSUER nuk u gjet"),
     Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? throw new Exception("JWT_AUDIENCE nuk u gjet"),
-    AccessTokenExpirationMinutes = int.Parse(Environment.GetEnvironmentVariable("JWT_ACCESS_TOKEN_MINUTES") ?? "15"),
-    RefreshTokenExpirationDays = int.Parse(Environment.GetEnvironmentVariable("JWT_REFRESH_TOKEN_DAYS") ?? "7")
+    AccessTokenExpirationMinutes = int.Parse(Environment.GetEnvironmentVariable("JWT_ACCESS_TOKEN_MINUTES") ?? throw new Exception("JWT_ACCESS_TOKEN_MINUTES nuk u gjet")),
+    RefreshTokenExpirationDays = int.Parse(Environment.GetEnvironmentVariable("JWT_REFRESH_TOKEN_DAYS") ?? throw new Exception("JWT_REFRESH_TOKEN_DAYS nuk u gjet"))
 };
 
 builder.Services.Configure<JwtSettings>(options =>
@@ -106,16 +106,16 @@ builder.Services.AddAuthentication(options =>
         }
     };
 });
-
-// CORS
+//CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        policy
+            .SetIsOriginAllowed(_ => true)  // allow any origin in dev
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
@@ -234,6 +234,11 @@ builder.Services.AddAuthorization(options =>
     Permissions.CanEditIssue,
     Permissions.CanDeleteIssue,
     Permissions.CanViewIssue,
+
+    Permissions.CanDeleteProjectProposal,
+    Permissions.CanCreateProjectProposal,
+    Permissions.CanEditProjectProposal,
+    Permissions.CanViewProjectProposal
 };
     foreach (var premission in permissions)
     {
@@ -280,7 +285,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+app.UseRouting();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();

@@ -118,12 +118,8 @@ function AddEvent() {
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-lg mx-auto bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
         <div className="mb-8 text-center sm:text-left">
-          <h2 className="text-2xl font-semibold text-gray-800">
-            Krijo Event
-          </h2>
-          <p className="text-gray-500 mt-1">
-            Plotësoni të dhënat më poshtë.
-          </p>
+          <h2 className="text-2xl font-semibold text-gray-800">Krijo Event</h2>
+          <p className="text-gray-500 mt-1">Plotësoni të dhënat më poshtë.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -140,9 +136,7 @@ function AddEvent() {
               className={getInputClasses("title")}
             />
             {errors.title && (
-              <p className="text-red-500 text-xs mt-1 ml-1">
-                {errors.title}
-              </p>
+              <p className="text-red-500 text-xs mt-1 ml-1">{errors.title}</p>
             )}
           </div>
 

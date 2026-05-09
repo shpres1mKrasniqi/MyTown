@@ -27,6 +27,7 @@ namespace MyTown.Infrastructure.Repositories
             return await _context.ProjectProposals
                 .AsNoTracking()
                 .Include(pp => pp.Komuna)
+                .Include(pp=> pp.Files)
                 .Where(pp => !pp.IsDeleted)
                 .OrderByDescending(pp => pp.CreatedAt)
                 .ToListAsync();

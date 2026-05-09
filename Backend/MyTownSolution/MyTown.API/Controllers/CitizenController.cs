@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using MyTown.Application.Authorization;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyTown.Application.DTOs.Citizens;
 using MyTown.Application.Ports.InboundPorts;
 using System.Security.Claims;
@@ -21,7 +19,7 @@ namespace MyTown.Api.Controllers
 
         
         [HttpPost]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<IActionResult> CreateCitizen([FromBody] CreateCitizenDto dto)
         {
             var adminId = GetAdminId();
@@ -47,7 +45,7 @@ namespace MyTown.Api.Controllers
 
       
         [HttpGet]
-        [Authorize(Policy = Permissions.CanViewCitizen)]
+        //[Authorize(Policy = Permissions.CanViewCitizen)]
         public async Task<IActionResult> GetAllCitizens()
         {
             var citizens = await _citizenService.GetAllCitizensAsync();
@@ -57,7 +55,7 @@ namespace MyTown.Api.Controllers
 
      
         [HttpGet("{id}")]
-        [Authorize(Policy = Permissions.CanViewCitizen)]
+        //[Authorize(Policy = Permissions.CanViewCitizen)]
         public async Task<IActionResult> GetCitizenById(int id)
         {
             try
@@ -74,7 +72,7 @@ namespace MyTown.Api.Controllers
 
     
         [HttpPut("{id}")]
-        [Authorize(Policy = Permissions.CanEditCitizen)]
+        //[Authorize(Policy = Permissions.CanEditCitizen)]
         public async Task<IActionResult> UpdateCitizen(int id, [FromBody] UpdateCitizenDto dto)
         {
             var adminId = GetAdminId();
@@ -100,7 +98,7 @@ namespace MyTown.Api.Controllers
 
         
         [HttpDelete("{id}")]
-        [Authorize(Policy = Permissions.CanDeleteCitizen)]
+        //[Authorize(Policy = Permissions.CanDeleteCitizen)]
         public async Task<IActionResult> DeleteCitizen(int id)
         {
             try

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { eventService } from "../services/eventService";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import * as signalR from "@microsoft/signalr";
-
+import { MapPin } from "lucide-react";
 function ImageCarousel({ files }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -18,13 +18,17 @@ function ImageCarousel({ files }) {
       {files.length > 1 && (
         <>
           <button
-            onClick={() => setCurrentIndex((p) => (p === 0 ? files.length - 1 : p - 1))}
+            onClick={() =>
+              setCurrentIndex((p) => (p === 0 ? files.length - 1 : p - 1))
+            }
             className="absolute left-2 p-1 rounded-full bg-white/80 hover:bg-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
           >
             <ChevronLeft size={20} />
           </button>
           <button
-            onClick={() => setCurrentIndex((p) => (p === files.length - 1 ? 0 : p + 1))}
+            onClick={() =>
+              setCurrentIndex((p) => (p === files.length - 1 ? 0 : p + 1))
+            }
             className="absolute right-2 p-1 rounded-full bg-white/80 hover:bg-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
           >
             <ChevronRight size={20} />
@@ -40,7 +44,7 @@ function ImageCarousel({ files }) {
 
 const REACTIONS = [
   { type: 1, emoji: "🎉", label: "Emocionues", key: "Exciting" },
-  { type: 2, emoji: "❤️", label: "Pelqej",     key: "Love" },
+  { type: 2, emoji: "❤️", label: "Pelqej", key: "Love" },
   { type: 3, emoji: "👍", label: "Mbeshtetes", key: "Support" },
   { type: 4, emoji: "🔥", label: "Shume mire", key: "Fire" },
 ];
@@ -50,22 +54,29 @@ function EventList() {
   const [loading, setLoading] = useState(true);
   const [reactions, setReactions] = useState({});
 
-const loadReactions = async (eventsList) => {
-  const map = {};
-  await Promise.all(
-    eventsList.map(async (ev) => {
-      try {
-        const res = await eventService.getReactions(ev.id);
-        // ✅ Shto kete per me pa keys saktesisht
-        console.log("ReactionCounts keys:", Object.keys(res.data.reactionCounts));
-        map[ev.id] = res.data;
-      } catch {
-        map[ev.id] = { totalReactions: 0, myReaction: null, reactionCounts: {} };
-      }
-    })
-  );
-  setReactions(map);
-};
+  const loadReactions = async (eventsList) => {
+    const map = {};
+    await Promise.all(
+      eventsList.map(async (ev) => {
+        try {
+          const res = await eventService.getReactions(ev.id);
+          // ✅ Shto kete per me pa keys saktesisht
+          console.log(
+            "ReactionCounts keys:",
+            Object.keys(res.data.reactionCounts),
+          );
+          map[ev.id] = res.data;
+        } catch {
+          map[ev.id] = {
+            totalReactions: 0,
+            myReaction: null,
+            reactionCounts: {},
+          };
+        }
+      }),
+    );
+    setReactions(map);
+  };
 
   const fetchEvents = async () => {
     try {
@@ -98,7 +109,9 @@ const loadReactions = async (eventsList) => {
       .withAutomaticReconnect()
       .build();
 
-    connection.start().then(() => {
+    connection
+      .start()
+      .then(() => {
         console.log("SignalR Events u lidh");
 
         const komunaId = localStorage.getItem("komunaId");
@@ -107,7 +120,9 @@ const loadReactions = async (eventsList) => {
         }
 
         // ✅ Shto kete - join Citizens group
-        connection.invoke("JoinCitizenGroup").catch(err => console.error(err));
+        connection
+          .invoke("JoinCitizenGroup")
+          .catch((err) => console.error(err));
 
         connection.on("EventPublished", () => {
           // ✅ Thirr direkt API, jo fetchEvents
@@ -117,8 +132,8 @@ const loadReactions = async (eventsList) => {
             loadReactions(published);
           });
         });
-    })
-    .catch((err) => console.error("SignalR error:", err));
+      })
+      .catch((err) => console.error("SignalR error:", err));
 
     return () => connection.stop();
   }, []);
@@ -154,7 +169,10 @@ const loadReactions = async (eventsList) => {
                   <h2 className="text-sm font-semibold leading-tight">
                     {event.komunaName}
                   </h2>
-                  <p className="text-[11px] text-gray-500">{event.location}</p>
+                  <div className="flex items-center gap-1 text-[11px] text-gray-500">
+                    <MapPin size={12} />
+                    <p>{event.location}</p>
+                  </div>
                 </div>
               </div>
               <span className="text-[11px] text-gray-400">
@@ -192,8 +210,8 @@ const loadReactions = async (eventsList) => {
                   >
                     <span>{r.emoji}</span>
                     <span>
-  {reactions[event.id]?.reactionCounts?.[r.key] ?? 0}
-</span>
+                      {reactions[event.id]?.reactionCounts?.[r.key] ?? 0}
+                    </span>
                   </button>
                 ))}
               </div>

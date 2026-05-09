@@ -26,9 +26,9 @@ const AddIssueCategory = lazy(() => import("./pages/AddIssueCategory"));
 const CreateCitizen = lazy(() => import("./pages/CreateCitizen"));
 const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
 const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
-const AddEvent = lazy (() => import("./pages/AddEvent"));
-const EventList = lazy (() =>import("./pages/EventList"));
-
+const AddEvent = lazy(() => import("./pages/AddEvent"));
+const EventList = lazy(() => import("./pages/EventList"));
+const AddProjectProposal = lazy(() => import("./pages/AddProjectProposal"));
 
 function App() {
   return (
@@ -50,8 +50,7 @@ function App() {
           <Route path="/manage-staff" element={<MenaxhoStaff />} />
           <Route path="/add-staff" element={<AddStaff />} />
           <Route path="/add-issueCategory" element={<AddIssueCategory />} />
-          <Route path = "/add-event" element = {<AddEvent/>}/>
-
+          <Route path="/add-event" element={<AddEvent />} />
         </Route>
 
         <Route path="/create-citizen" element={<CreateCitizen />} />
@@ -63,7 +62,8 @@ function App() {
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-        <Route path = "/events" element={<EventList/>} />
+        <Route path="/events" element={<EventList />} />
+        <Route path="/add-projectProposal" element={<AddProjectProposal />} />
       </Routes>
 
       <ToastContainer

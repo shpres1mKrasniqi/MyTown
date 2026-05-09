@@ -73,9 +73,13 @@ namespace MyTown.Application.Services
 
                     uploadedFiles.Add(new MyTownFileResponseDto
                     {
+                        Entity = fileEntity.Entity,
+                        EntityId = fileEntity.EntityId,
                         FileName = fileEntity.FileName,
                         FileUrl = $"https://localhost:7214{fileEntity.FilePath}",
-                        FileSize = fileEntity.FileSize
+                        FileSize = fileEntity.FileSize,
+                        UploadedBy = fileEntity.UploadedBy,
+                        CreatedAt = fileEntity.CreatedAt
                     });
                 }
 

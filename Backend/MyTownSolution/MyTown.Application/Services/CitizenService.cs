@@ -98,6 +98,7 @@ namespace MyTown.Application.Services
 
             return citizens.Select(c => new CitizenResponseDto
             {
+              
                 FirstName = c.User.FirstName,
                 LastName = c.User.LastName,
                 Address = c.Address,

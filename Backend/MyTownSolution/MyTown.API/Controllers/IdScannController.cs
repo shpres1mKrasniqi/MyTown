@@ -50,6 +50,11 @@ namespace MyTown.API.Controllers
         }
 
         private static bool IsAllowedMimeType(string contentType) =>
-            contentType is "image/jpeg" or "image/png" or "application/pdf";
+     contentType is "image/jpeg"
+     or "image/jpg"
+     or "image/png"
+     or "image/heic"
+     or "image/heif"
+     or "application/pdf";
     }
 }

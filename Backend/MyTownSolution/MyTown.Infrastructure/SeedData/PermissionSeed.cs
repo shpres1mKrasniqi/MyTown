@@ -61,6 +61,12 @@ namespace MyTown.Infrastructure.SeedData
      new Permission { Name = Permissions.CanDeleteIssue, Description = "Lejon fshirjen e problemeve" },
      new Permission { Name = Permissions.CanViewIssue, Description = "Lejon shikimin e problemeve" },
 
+     new Permission { Name = Permissions.CanCreateProjectProposal, Description = "Lejon krijimin e propozimeve të projekteve" },
+     new Permission { Name = Permissions.CanEditProjectProposal, Description = "Lejon editimin e propozimeve të projekteve" },
+     new Permission { Name = Permissions.CanDeleteProjectProposal, Description = "Lejon fshirjen e propozimeve të projekteve" },
+     new Permission { Name = Permissions.CanViewProjectProposal, Description = "Lejon shikimin e propozimeve të projekteve" },
+
+
  };
 
             foreach (var p in permissions)
@@ -105,7 +111,9 @@ namespace MyTown.Infrastructure.SeedData
                     Permissions.CanViewCitizen,
                     Permissions.CanViewEvent,
                     Permissions.CanViewIssue,
-                    Permissions.CanCreateIssue
+                    Permissions.CanCreateIssue,
+                    Permissions.CanDeleteIssue,
+                    Permissions.CanViewProjectProposal,
 
 
                 };
@@ -139,7 +147,10 @@ namespace MyTown.Infrastructure.SeedData
     {
                     Permissions.CanCreateEvent,
                     Permissions.CanViewEvent,
-                    
+                    Permissions.CanCreateProjectProposal,
+                    Permissions.CanViewProjectProposal,
+                    Permissions.CanEditProjectProposal,
+                    Permissions.CanDeleteProjectProposal,
 
 
                 };
