@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using MyTown.API.Hubs.Problems;
 using MyTown.API.Hubs.Votat;
+using MyTown.Application.Authorization;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Domain.Enums;
 
@@ -22,11 +24,11 @@ namespace MyTown.API.Controllers
         }
 
         [HttpPost("{projectProposalId}/vote")]
-        
+        [Authorize(Policy = Permissions.CanVote)]
         public async Task<IActionResult> Voto(
-    int projectProposalId,
-    [FromBody] ProposalVoteType llojiVotes,
-    CancellationToken cancellationToken)
+        int projectProposalId,
+        [FromBody] ProposalVoteType llojiVotes,
+        CancellationToken cancellationToken)
         {
             try
             {

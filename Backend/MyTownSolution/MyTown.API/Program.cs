@@ -243,7 +243,9 @@ builder.Services.AddAuthorization(options =>
     Permissions.CanDeleteProjectProposal,
     Permissions.CanCreateProjectProposal,
     Permissions.CanEditProjectProposal,
-    Permissions.CanViewProjectProposal
+    Permissions.CanViewProjectProposal,
+
+    Permissions.CanVote
 };
     foreach (var premission in permissions)
     {

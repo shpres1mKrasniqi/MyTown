@@ -28,7 +28,9 @@ namespace MyTown.Infrastructure.Services
 
             if (existingVote != null)
             {
-                throw new InvalidOperationException("Ju tashme keni votuar kete projekt-propozim.");
+                throw new InvalidOperationException(
+                    $"Vota juaj tashme ekziston -> ProposalId: {existingVote.ProjectProposalId}, CitizenId: {existingVote.CitizenId}"
+                );
             }
 
             var vote = new ProjectProposalVoteDocument
@@ -46,11 +48,12 @@ namespace MyTown.Infrastructure.Services
                     vote,
                     cancellationToken: cancellationToken);
             }
-            catch (MongoWriteException ex) when (ex.WriteError.Category == ServerErrorCategory.DuplicateKey)
+            catch (MongoWriteException ex)
             {
-                throw new InvalidOperationException("Ju tashme keni votuar kete projekt-propozim.");
+                throw new InvalidOperationException(
+                    $"MONGO DUPLICATE ERROR: {ex.WriteError.Message}"
+                );
             }
-
             return new ToggleVoteDto
             {
                 ProjectProposalId = projectProposalId,

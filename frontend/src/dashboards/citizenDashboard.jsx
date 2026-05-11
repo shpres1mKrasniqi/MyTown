@@ -1,11 +1,29 @@
 import { useRef, useState, useEffect } from "react";
-import { Bell, CheckCheck, X, Building2, FileText, Clock, CheckCircle, Calendar } from "lucide-react";
+import {
+  Bell,
+  CheckCheck,
+  X,
+  Building2,
+  FileText,
+  Clock,
+  CheckCircle,
+  Calendar,
+} from "lucide-react";
 import { useCitizenNotifications } from "../pages/useCitizenNotifications";
 import ShikoDepartments from "../pages/ShikoDepartments";
 import EventList from "../pages/EventList";
 import { departmentService } from "../services/departmentService";
+import { logout } from "../services/authService";
+import { Navigate, useNavigate } from "react-router-dom";
+import { currentUser } from "../services/authService";
 
-function NotificationPanel({ notifications, unreadCount, onMarkAsRead, onMarkAllAsRead, onClose }) {
+function NotificationPanel({
+  notifications,
+  unreadCount,
+  onMarkAsRead,
+  onMarkAllAsRead,
+  onClose,
+}) {
   return (
     <div className="absolute right-0 top-12 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden">
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
@@ -17,6 +35,7 @@ function NotificationPanel({ notifications, unreadCount, onMarkAsRead, onMarkAll
             </span>
           )}
         </div>
+
         <div className="flex items-center gap-2">
           {unreadCount > 0 && (
             <button
@@ -27,7 +46,11 @@ function NotificationPanel({ notifications, unreadCount, onMarkAsRead, onMarkAll
               Lexo të gjitha
             </button>
           )}
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+          >
             <X size={16} />
           </button>
         </div>
@@ -45,19 +68,33 @@ function NotificationPanel({ notifications, unreadCount, onMarkAsRead, onMarkAll
               key={n.id}
               onClick={() => !n.isRead && onMarkAsRead(n.id)}
               className={`flex items-start gap-3 px-4 py-3 cursor-pointer transition-colors ${
-                n.isRead ? "bg-white hover:bg-gray-50" : "bg-blue-50 hover:bg-blue-100"
+                n.isRead
+                  ? "bg-white hover:bg-gray-50"
+                  : "bg-blue-50 hover:bg-blue-100"
               }`}
             >
-              <span className={`block w-2 h-2 rounded-full mt-2 flex-shrink-0 ${!n.isRead ? "bg-blue-500" : "bg-transparent"}`} />
+              <span
+                className={`block w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                  !n.isRead ? "bg-blue-500" : "bg-transparent"
+                }`}
+              />
+
               <div className="flex-1 min-w-0">
-                <p className={`text-[13px] leading-snug ${n.isRead ? "text-gray-500" : "text-gray-800 font-medium"}`}>
+                <p
+                  className={`text-[13px] leading-snug ${
+                    n.isRead ? "text-gray-500" : "text-gray-800 font-medium"
+                  }`}
+                >
                   {n.message}
                 </p>
+
                 <p className="text-[10px] text-gray-400 mt-1">
                   {n.createdAt
                     ? new Date(n.createdAt).toLocaleString("sq-AL", {
-                        day: "numeric", month: "short",
-                        hour: "2-digit", minute: "2-digit",
+                        day: "numeric",
+                        month: "short",
+                        hour: "2-digit",
+                        minute: "2-digit",
                       })
                     : ""}
                 </p>
@@ -76,8 +113,32 @@ export default function CitizenDashboard() {
   const [showEvents, setShowEvents] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
   const panelRef = useRef(null);
+  const navigate = useNavigate();
+  const { notifications, unreadCount, markAsRead, markAllAsRead } =
+    useCitizenNotifications();
 
-  const { notifications, unreadCount, markAsRead, markAllAsRead } = useCitizenNotifications();
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    const testUser = async () => {
+      try {
+        const user = await currentUser();
+
+        console.log(user);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    testUser();
+  }, []);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -85,9 +146,10 @@ export default function CitizenDashboard() {
         const res = await departmentService.getAll();
         setDeptCount(res.data.length);
       } catch (err) {
-        console.error("Gabim gjate marrjes se statistikave");
+        console.error("Gabim gjate marrjes se statistikave", err);
       }
     };
+
     fetchStats();
 
     function handleClickOutside(e) {
@@ -95,54 +157,83 @@ export default function CitizenDashboard() {
         setPanelOpen(false);
       }
     }
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   return (
     <div className="space-y-8">
-      {/* HEADER me Bell */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900">Citizen Dashboard</h1>
-          <p className="text-sm text-slate-500">Mirë se vini, këtu mund të menaxhoni shërbimet tuaja.</p>
+          <h1 className="text-2xl font-semibold text-slate-900">
+            Citizen Dashboard
+          </h1>
+          <p className="text-sm text-slate-500">
+            Mirë se vini, këtu mund të menaxhoni shërbimet tuaja.
+          </p>
         </div>
 
-        {/* ✅ Bell */}
-        <div className="relative" ref={panelRef}>
-          <button
-            onClick={() => setPanelOpen((prev) => !prev)}
-            className="relative p-2 rounded-full hover:bg-gray-100 transition-colors"
-          >
-            <Bell size={22} className="text-gray-600" />
-            {unreadCount > 0 && (
-              <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-                {unreadCount > 9 ? "9+" : unreadCount}
-              </span>
+        <div className="flex items-center gap-3">
+          <div className="relative" ref={panelRef}>
+            <button
+              onClick={() => setPanelOpen((prev) => !prev)}
+              className="relative p-2 rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <Bell size={22} className="text-gray-600" />
+
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              )}
+            </button>
+
+            {panelOpen && (
+              <NotificationPanel
+                notifications={notifications}
+                unreadCount={unreadCount}
+                onMarkAsRead={markAsRead}
+                onMarkAllAsRead={markAllAsRead}
+                onClose={() => setPanelOpen(false)}
+              />
             )}
-          </button>
+          </div>
 
-          {panelOpen && (
-            <NotificationPanel
-              notifications={notifications}
-              unreadCount={unreadCount}
-              onMarkAsRead={markAsRead}
-              onMarkAllAsRead={markAllAsRead}
-              onClose={() => setPanelOpen(false)}
-            />
-          )}
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 rounded-xl bg-red-50 text-red-600 text-sm font-medium hover:bg-red-100 transition"
+          >
+            Çkyçu
+          </button>
         </div>
       </div>
 
-      {/* STAT CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Drejtoritë" value={deptCount} icon={<Building2 size={18} />} />
-        <StatCard label="Kërkesat e mia" value="3" icon={<FileText size={18} />} />
+        <StatCard
+          label="Drejtoritë"
+          value={deptCount}
+          icon={<Building2 size={18} />}
+        />
+
+        <StatCard
+          label="Kërkesat e mia"
+          value="3"
+          icon={<FileText size={18} />}
+        />
+
         <StatCard label="Në pritje" value="1" icon={<Clock size={18} />} />
-        <StatCard label="Të përfunduara" value="2" icon={<CheckCircle size={18} />} />
+
+        <StatCard
+          label="Të përfunduara"
+          value="2"
+          icon={<CheckCircle size={18} />}
+        />
       </div>
 
-      {/* BUTTONS */}
       <div className="flex gap-3 flex-wrap">
         <button
           onClick={() => setShowDepartments(!showDepartments)}
@@ -161,8 +252,17 @@ export default function CitizenDashboard() {
         </button>
       </div>
 
-      {showDepartments && <div className="mt-6"><ShikoDepartments /></div>}
-      {showEvents && <div className="mt-6"><EventList /></div>}
+      {showDepartments && (
+        <div className="mt-6">
+          <ShikoDepartments />
+        </div>
+      )}
+
+      {showEvents && (
+        <div className="mt-6">
+          <EventList />
+        </div>
+      )}
     </div>
   );
 }
@@ -174,6 +274,7 @@ function StatCard({ label, value, icon }) {
         <p className="text-xs text-slate-500">{label}</p>
         <h3 className="text-2xl font-semibold text-slate-900 mt-2">{value}</h3>
       </div>
+
       <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-[#eff0ff] text-[#010694]">
         {icon}
       </div>

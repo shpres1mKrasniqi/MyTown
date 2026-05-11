@@ -18,9 +18,17 @@ namespace MyTown.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMyNotifications()
         {
-            var userId = GetUserId();
-            var notifications = await _notificationService.GetByUserIdAsync(userId);
-            return Ok (notifications);
+            try
+            {
+                var userId = GetUserId();
+                var notifications = await _notificationService.GetByUserIdAsync(userId);
+                return Ok(notifications);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new {e.Message });
+            }
+           
         }
         [HttpPut("{id}/read")]
         public async Task<IActionResult> MarkAsRead(int id)
@@ -31,11 +39,19 @@ namespace MyTown.API.Controllers
         [HttpPut("read-all")]
         public async Task<IActionResult> MarkAllAsRead()
         {
-            var userId = GetUserId();
+            try
+            {
+                var userId = GetUserId();
 
-            await _notificationService.MarkAllAsReadAsync(userId);
+                await _notificationService.MarkAllAsReadAsync(userId);
 
-            return Ok(new { message = "Të gjitha notifications u lexuan" });
+                return Ok(new { message = "Të gjitha notifications u lexuan" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { e.Message});
+            }
+           
         }
 
    

@@ -1,7 +1,10 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyTown.Application.DTOs.Authentication;
 using MyTown.Application.Ports.InboundPorts;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace MyTown.API.Controllers
 {
@@ -123,5 +126,34 @@ namespace MyTown.API.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet("me")]
+        public IActionResult Me()
+        {
+            return Ok(new
+            {
+                UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                Email = User.FindFirst(JwtRegisteredClaimNames.Email)?.Value,
+                Roles = User.FindAll(ClaimTypes.Role).Select(x => x.Value).ToList(),
+                CitizenId = User.FindFirst("CitizenId")?.Value,
+                StaffId = User.FindFirst("StaffId")?.Value
+            });
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            };
+
+            Response.Cookies.Delete("accessToken", cookieOptions);
+            Response.Cookies.Delete("refreshToken", cookieOptions);
+
+            return Ok(new { message = "Logout me sukses." });
+        }
     }
 }
