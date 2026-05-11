@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using MyTown.API.Hubs.Proposals;
 using MyTown.Application.Authorization;
 using MyTown.Application.DTOs.ProjectProposals;
 using MyTown.Application.Ports.InboundPorts;
@@ -14,10 +16,12 @@ namespace MyTown.API.Controllers
     {
         private readonly IProjectProposalService _projectProposalService;
 
-
-        public ProjectProposalController(IProjectProposalService projectProposalService)
+        private readonly IHubContext<ProposalsHub> _proposalsHub;
+        public ProjectProposalController(IProjectProposalService projectProposalService,
+            IHubContext<ProposalsHub> proposalsHub)
         {
             _projectProposalService = projectProposalService;
+            _proposalsHub = proposalsHub;
         }
 
         [HttpPost]
@@ -39,6 +43,12 @@ namespace MyTown.API.Controllers
                     userId.Value,
                     ipAddress
                 );
+                await _proposalsHub.Clients.All.SendAsync("PropozimiPublikohet", new
+                {
+                    message = "Nje projekt propozim i ri u publikua",
+                    vota = result
+                });
+
 
                 return Ok(result);
             }
@@ -48,17 +58,44 @@ namespace MyTown.API.Controllers
             }
         }
 
+        [HttpGet("{proposalId}")]
+        public async Task<IActionResult> GetProjectProposalById(int proposalId)
+        {
+            try
+            {
+                var result = await _projectProposalService.GetProjectProposalByIdAsync(proposalId);
+
+                if (result == null)
+                    return NotFound();
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { e.Message });   
+            }
+           
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllProposals()
+        {
+            try
+            {
+                var result = await _projectProposalService.GetAllProjectProposalsAsync();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { e.Message});
+            }
+        }
+
         private int? GetUserId()
         {
             var claim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             return string.IsNullOrEmpty(claim) ? null : int.Parse(claim);
         }
-        private int? GetStaffId()
-        {
-            var claim = User.FindFirst("StaffId")?.Value;
-            return int.TryParse(claim, out int id) ? id : null;
-        }
-
         private string GetIpAddress() =>
             HttpContext.Connection.RemoteIpAddress?.ToString() ?? "IP Address e panjohur";
     }

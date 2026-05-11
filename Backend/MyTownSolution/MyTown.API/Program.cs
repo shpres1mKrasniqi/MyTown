@@ -6,8 +6,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MyTown.API.Hubs.Problems;
+using MyTown.API.Hubs.Proposals;
+using MyTown.API.Hubs.Votat;
 using MyTown.API.Services;
 using MyTown.Application.Authorization;
+using MyTown.Application.DTOs.ProjectProposals;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Application.Services;
@@ -153,6 +156,8 @@ builder.Services.AddScoped<IEmailService, SmtpEmailService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventReactionService, EventReactionService>();
 builder.Services.AddScoped<IProjectProposalService, ProjectProposalService>();
+builder.Services.AddScoped<IProposalVotes, ProposalVotesService>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateProposalValidator>();
 
 var emailSettings = new EmailSettings
 {
@@ -294,6 +299,8 @@ app.UseAuthorization();
 app.MapHub<EventHub>("/hubs/events");
 app.MapHub<ProblemHub>("/hubs/problems");
 app.MapHub<NotificationHub>("/hubs/notifications");
+app.MapHub<VotatHub>("/hubs/votat");
+app.MapHub<ProposalsHub>("/hubs/proposals");
 app.UseStaticFiles();
 app.MapControllers();
 

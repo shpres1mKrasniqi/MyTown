@@ -8,6 +8,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import * as signalR from "@microsoft/signalr";
+import api from "../api/axios";
 
 function ImageCarousel({ files }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -335,7 +336,10 @@ function IssueList() {
 
               <div className="space-y-2 max-h-36 overflow-y-auto">
                 {(socialByIssue[issue.id]?.comments || []).map((c) => (
-                  <div key={c.id} className="text-xs text-gray-800 leading-snug">
+                  <div
+                    key={c.id}
+                    className="text-xs text-gray-800 leading-snug"
+                  >
                     <span className="font-semibold text-gray-900">
                       {c.authorName}
                     </span>

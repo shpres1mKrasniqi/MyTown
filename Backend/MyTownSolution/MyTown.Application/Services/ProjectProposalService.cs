@@ -133,5 +133,67 @@ namespace MyTown.Application.Services
 
 
         }
+
+        public async Task<ProjectProposalResponseDto> GetProjectProposalByIdAsync(int proposalId)
+        {
+            var projPropozimi = await _projectPropRepo.GetProjectProposalsByIdAsync(proposalId);
+
+            if (projPropozimi == null)
+            {
+               return null;
+            }
+
+            return new ProjectProposalResponseDto
+            {
+                Id = projPropozimi.Id,
+                Title = projPropozimi.Title,
+                Description = projPropozimi.Description,
+                Budget = projPropozimi.Budget,
+                PlannedStartDate = projPropozimi.PlannedStartDate,
+                PlannedEndDate = projPropozimi.PlannedEndDate,
+                TenderWinnerCompany = projPropozimi.TenderWinnerCompany,
+                VotingDeadline = projPropozimi.VotingDeadline,
+                Status = projPropozimi.Status,
+                KomunaId = projPropozimi.KomunaId,
+                Files = projPropozimi.Files?.Select(f => new MyTownFileResponseDto
+                {
+                    Id = f.Id,
+                    FileName = f.FileName,
+                    FileUrl = $"https://localhost:7214{f.FilePath}",
+                    FileSize = f.FileSize,
+                }).ToList() ?? new()
+            };
+        }
+
+        public async Task<IEnumerable<ProjectProposalResponseDto>> GetAllProjectProposalsAsync()
+        {
+            var proposals = await _projectPropRepo.GetAllProposalsAsync();
+
+            if (proposals == null || !proposals.Any())
+            {
+                return Enumerable.Empty<ProjectProposalResponseDto>();
+            }
+
+            return proposals.Select(projPropozimi => new ProjectProposalResponseDto
+            {
+                Id = projPropozimi.Id,
+                Title = projPropozimi.Title,
+                Description = projPropozimi.Description,
+                Budget = projPropozimi.Budget,
+                PlannedStartDate = projPropozimi.PlannedStartDate,
+                PlannedEndDate = projPropozimi.PlannedEndDate,
+                TenderWinnerCompany = projPropozimi.TenderWinnerCompany,
+                VotingDeadline = projPropozimi.VotingDeadline,
+                Status = projPropozimi.Status,
+                KomunaId = projPropozimi.KomunaId,
+                Files = projPropozimi.Files?.Select(f => new MyTownFileResponseDto
+                {
+                    Id = f.Id,
+                    FileName = f.FileName,
+                    FileUrl = $"https://localhost:7214{f.FilePath}",
+                    FileSize = f.FileSize,
+                }).ToList() ?? new()
+            }); 
+        }
     }
 }

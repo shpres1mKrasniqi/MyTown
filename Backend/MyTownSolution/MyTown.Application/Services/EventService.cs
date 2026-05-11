@@ -5,7 +5,6 @@ using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Domain.Common;
 using MyTown.Domain.Entities;
 using MyTown.Domain.Enums;
-using System.Runtime.Intrinsics.Arm;
 
 namespace MyTown.Application.Services
 {

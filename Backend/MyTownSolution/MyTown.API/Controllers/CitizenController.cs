@@ -22,14 +22,14 @@ namespace MyTown.Api.Controllers
         //[AllowAnonymous]
         public async Task<IActionResult> CreateCitizen([FromBody] CreateCitizenDto dto)
         {
-            var adminId = GetAdminId();
-            if (adminId == null) return Unauthorized();
+            //var adminId = GetAdminId();
+            //if (adminId == null) return Unauthorized();
 
-            string ipAddress = GetIpAddress();
+            //string ipAddress = GetIpAddress();
 
             try
             {
-                var response = await _citizenService.CreateCitizenAsync(dto, adminId.Value, ipAddress);
+                var response = await _citizenService.CreateCitizenAsync(dto);
 
                 return Ok(new
                 {
@@ -75,14 +75,14 @@ namespace MyTown.Api.Controllers
         //[Authorize(Policy = Permissions.CanEditCitizen)]
         public async Task<IActionResult> UpdateCitizen(int id, [FromBody] UpdateCitizenDto dto)
         {
-            var adminId = GetAdminId();
-            if (adminId == null) return Unauthorized();
+            //var adminId = GetAdminId();
+            //if (adminId == null) return Unauthorized();
 
-            string ipAddress = GetIpAddress();
+            //string ipAddress = GetIpAddress();
 
             try
             {
-                var response = await _citizenService.UpdateCitizenAsync(id, dto, adminId.Value, ipAddress);
+                var response = await _citizenService.UpdateCitizenAsync(id, dto);
 
                 return Ok(new
                 {
@@ -114,17 +114,17 @@ namespace MyTown.Api.Controllers
         }
 
         //per me ba clean coding dhe me mos e perserit kodin per me marr adminId dhe ipAddress ne secilin endpoint, i kam vendos ne metoda private
-        private int? GetAdminId()
-        {
-            var claim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(claim)) return null;
+        //private int? GetAdminId()
+        //{
+        //    var claim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //    if (string.IsNullOrEmpty(claim)) return null;
 
-            return int.Parse(claim);
-        }
+        //    return int.Parse(claim);
+        //}
 
-        private string GetIpAddress()
-        {
-            return HttpContext.Connection.RemoteIpAddress?.ToString() ?? "I panjohur";
-        }
+        //private string GetIpAddress()
+        //{
+        //    return HttpContext.Connection.RemoteIpAddress?.ToString() ?? "I panjohur";
+        //}
     }
 }

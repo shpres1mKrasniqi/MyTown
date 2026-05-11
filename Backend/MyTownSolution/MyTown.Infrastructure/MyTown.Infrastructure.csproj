@@ -22,4 +22,8 @@
     <ProjectReference Include="..\MyTown.Domain\MyTown.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MongoRepos\" />
+  </ItemGroup>
+
 </Project>

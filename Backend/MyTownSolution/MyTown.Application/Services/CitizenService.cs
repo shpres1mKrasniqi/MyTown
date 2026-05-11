@@ -22,7 +22,7 @@ namespace MyTown.Application.Services
             _auditRepository = auditRepository;
         }
 
-        public async Task<CitizenResponseDto> CreateCitizenAsync(CreateCitizenDto createCitizen, int adminId, string ipAddress)
+        public async Task<CitizenResponseDto> CreateCitizenAsync(CreateCitizenDto createCitizen)
         {
 
             if (await _citizenRepository.ExistsByPersonalNumberAsync(createCitizen.PersonalNumber))
@@ -68,17 +68,17 @@ namespace MyTown.Application.Services
             await _citizenRepository.AddCitizenAsync(citizen);
             await _unitOfWork.SaveChangesAsync();
 
-            var log = new AuditLog(
-                adminId,
-                "CREATE",
-                "CitizenProfile",
-                citizen.Id,
-                null,
-                $"Profili i Qytetarit u kriju: {user.Email}",
-                ipAddress
-            );
+            //var log = new AuditLog(
+            //    adminId,
+            //    "CREATE",
+            //    "CitizenProfile",
+            //    citizen.Id,
+            //    null,
+            //    $"Profili i Qytetarit u kriju: {user.Email}",
+            //    ipAddress
+            //);
 
-            await _auditRepository.AddAsync(log);
+            //await _auditRepository.AddAsync(log);
 
             await _unitOfWork.SaveChangesAsync();
 
@@ -121,7 +121,7 @@ namespace MyTown.Application.Services
                 PhoneNumber = citizen.PhoneNumber
             };
         }
-        public async Task<CitizenResponseDto> UpdateCitizenAsync(int id, UpdateCitizenDto dto, int adminId, string ipAddress)
+        public async Task<CitizenResponseDto> UpdateCitizenAsync(int id, UpdateCitizenDto dto)
         {
             var citizen = await _citizenRepository.GetById(id);
 
@@ -139,24 +139,24 @@ namespace MyTown.Application.Services
             
             citizen.Update(dto.KomunaId, dto.PhoneNumber, dto.Address);
 
-            citizen.SetUpdated(adminId);
+            //citizen.SetUpdated(adminId);
 
             await _unitOfWork.SaveChangesAsync();
 
             var newValue = $"FirstName: {citizen.User.FirstName}, LastName: {citizen.User.LastName}, Email: {citizen.User.Email}, " +
                            $"Address: {citizen.Address}, Phone: {citizen.PhoneNumber}";
 
-            var log = new AuditLog(
-                adminId,
-                "UPDATE",
-                "CitizenProfile",
-                citizen.Id,
-                oldValue,
-                newValue,
-                ipAddress
-            );
+            //var log = new AuditLog(
+            //    adminId,
+            //    "UPDATE",
+            //    "CitizenProfile",
+            //    citizen.Id,
+            //    oldValue,
+            //    newValue,
+            //    ipAddress
+            //);
 
-            await _auditRepository.AddAsync(log);
+            //await _auditRepository.AddAsync(log);
             await _unitOfWork.SaveChangesAsync();
 
             return new CitizenResponseDto

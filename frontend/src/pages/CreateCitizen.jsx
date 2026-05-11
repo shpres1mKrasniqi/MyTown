@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import { idScanService } from "../services/idScanService";
 import { citizenService } from "../services/citizenService";
@@ -26,7 +27,7 @@ export default function CreateCitizen() {
   const [komunat, setKomunat] = useState([]);
   const [errors, setErrors] = useState({});
   const [form, setForm] = useState(initialForm);
-
+  const navigate = useNavigate();
   const showToast = (type, message) => {
     toast.dismiss();
 
@@ -105,6 +106,7 @@ export default function CreateCitizen() {
       showToast("success", "Qytetari u krijua me sukses!");
       setForm(initialForm);
       setFile(null);
+      navigate("/");
     } catch (err) {
       console.error("Create citizen error:", err);
 

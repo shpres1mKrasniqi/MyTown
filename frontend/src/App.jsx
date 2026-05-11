@@ -29,6 +29,7 @@ const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
 const AddEvent = lazy(() => import("./pages/AddEvent"));
 const EventList = lazy(() => import("./pages/EventList"));
 const AddProjectProposal = lazy(() => import("./pages/AddProjectProposal"));
+const ProposalsList = lazy(() => import("./pages/ProposalsList"));
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function App() {
         <Route path="/staff-dashboard" element={<StaffDashboard />} />
         <Route path="/citizen-dashboard" element={<CitizenDashboard />} />
         <Route path="/issues" element={<IssueList />} />
+        <Route path="/lista-propozimeve" element={<ProposalsList />} />
 
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />

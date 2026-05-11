@@ -25,9 +25,9 @@ namespace MyTown.Infrastructure.Persistence.Mongo
         public IMongoCollection<EventReactionDocument> EventReactions =>
     _database.GetCollection<EventReactionDocument>("event_reactions");
 
+
         public IMongoCollection<ProjectProposalVoteDocument> ProjectProposalVotes =>
             _database.GetCollection<ProjectProposalVoteDocument>("project_proposal_votes");
-
         public async Task EnsureIndexesAsync(CancellationToken cancellationToken = default)
         {
 
@@ -51,16 +51,24 @@ namespace MyTown.Infrastructure.Persistence.Mongo
                     new CreateIndexOptions { Unique = true }),
                 cancellationToken: cancellationToken);
 
-            //project proposals
+            //votat
+            var proposalVoteKeys = Builders<ProjectProposalVoteDocument>
+                .IndexKeys
+                .Ascending(x => x.ProjectProposalId)
+                .Ascending(x => x.CitizenId);
 
-            var projektPropozimet = Builders<ProjectProposalVoteDocument>.IndexKeys
-                .Ascending(pv => pv.ProjectProposalId)
-                .Ascending(pv => pv.UserId);
+            var proposalVoteOptions = new CreateIndexOptions
+            {
+                Unique = true,
+                Name = "ux_project_proposal_citizen_vote"
+            };
 
             await ProjectProposalVotes.Indexes.CreateOneAsync(
-                new CreateIndexModel<ProjectProposalVoteDocument>(projektPropozimet,
-                new CreateIndexOptions { Unique = true }),
-                cancellationToken: cancellationToken);
+                new CreateIndexModel<ProjectProposalVoteDocument>(proposalVoteKeys, proposalVoteOptions),
+                cancellationToken: cancellationToken
+            );
+
+
 
         }
     }

@@ -4,10 +4,10 @@ namespace MyTown.Application.Ports.InboundPorts
 {
     public interface ICitizenService
     {
-        Task<CitizenResponseDto> CreateCitizenAsync(CreateCitizenDto createCitizen, int adminId, string ipAddress);
+        Task<CitizenResponseDto> CreateCitizenAsync(CreateCitizenDto createCitizen);
         Task<IEnumerable<CitizenResponseDto>> GetAllCitizensAsync();
         Task<CitizenResponseDto> GetCitizenByIdAsync(int id);
-        Task<CitizenResponseDto> UpdateCitizenAsync(int id, UpdateCitizenDto updateCitizen, int adminId, string ipAddress);
+        Task<CitizenResponseDto> UpdateCitizenAsync(int id, UpdateCitizenDto updateCitizen);
         Task DeleteCitizenAsync(int id);
 
     }

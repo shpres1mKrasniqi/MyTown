@@ -2,10 +2,10 @@
 
 namespace MyTown.Domain.Entities
 {
-    public class CitizenProfile : BaseEntity
+    public class CitizenProfile
     {
         
-
+        public int Id { get; private set; }
         public int UserId { get; private set; }
 
         public User User { get; private set; }
@@ -23,6 +23,10 @@ namespace MyTown.Domain.Entities
         public string? Nationality { get; private set; }
         public string? PlaceOfBirth { get; private set; } = null!;
         public bool IsDeleted { get; private set; }
+
+        public DateTime CreatedAt { get; private set; } 
+
+        public DateTime? UpdatedAt { get; private set; } 
 
         public ICollection<Issue> Issues { get; private set; } = new List<Issue>();
         protected CitizenProfile() { }
@@ -52,6 +56,7 @@ namespace MyTown.Domain.Entities
             PlaceOfBirth = placeOfBirth;
 
             IsDeleted = false;
+            CreatedAt = DateTime.UtcNow;
         }
 
         public void Update(int komunaId, string phoneNumber, string address)
