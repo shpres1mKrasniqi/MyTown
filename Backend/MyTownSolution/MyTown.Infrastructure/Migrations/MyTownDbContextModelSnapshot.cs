@@ -383,11 +383,17 @@ namespace MyTown.Infrastructure.Migrations
                     b.Property<long>("FileSize")
                         .HasColumnType("bigint");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("IssueId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ProjectProposalId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("UploadedBy")
                         .HasColumnType("int");

@@ -62,5 +62,6 @@ namespace MyTown.Application.Authorization
         public const string CanViewProjectProposal = "CanViewProjectProposal";
 
         public const string CanVote = "CanVoteForProjectProposals"; 
+       
     }
 }

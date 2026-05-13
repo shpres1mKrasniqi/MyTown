@@ -118,7 +118,8 @@ namespace MyTown.Infrastructure.SeedData
                     Permissions.CanCreateIssue,
                     Permissions.CanDeleteIssue,
                     Permissions.CanViewProjectProposal,
-                    Permissions.CanVote
+                    Permissions.CanVote,
+                   
 
 
                 };

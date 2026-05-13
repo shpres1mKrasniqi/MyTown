@@ -15,9 +15,11 @@ namespace MyTown.Domain.Entities
         public long FileSize { get; private set; }
 
         public int UploadedBy { get; private set; }
+        public bool IsDeleted { get; private set; }
 
         public DateTime CreatedAt { get; private set; }
 
+        public DateTime UpdatedAt { get; private set; }
 
         public int? IssueId { get; set; }
         public int? EventId { get; set; }
@@ -34,8 +36,13 @@ namespace MyTown.Domain.Entities
             FileSize = fileSize;
             UploadedBy = uploadedBy;
             CreatedAt = DateTime.UtcNow;
+            IsDeleted = false;
         }
 
-
+        public void Delete()
+        {
+            IsDeleted = true;
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 }

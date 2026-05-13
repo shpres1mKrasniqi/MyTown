@@ -5,6 +5,7 @@ using MyTown.API.Hubs.Proposals;
 using MyTown.Application.Authorization;
 using MyTown.Application.DTOs.ProjectProposals;
 using MyTown.Application.Ports.InboundPorts;
+using MyTown.Application.Services;
 using System.Security.Claims;
 
 namespace MyTown.API.Controllers
@@ -91,6 +92,53 @@ namespace MyTown.API.Controllers
             }
         }
 
+        [HttpDelete("{proposalId}")]
+        [Authorize(Policy = Permissions.CanDeleteProjectProposal)]
+        public async Task<IActionResult> Delete(int proposalId)
+        {
+            try
+            {
+                var staffId = GetStaffId();
+
+                if (!staffId.HasValue)
+                    return Unauthorized();
+
+                string ipAddress = GetIpAddress();
+
+                await _projectProposalService.SoftDeleteProposalAsync(
+                    proposalId,
+                    staffId.Value,
+                    ipAddress
+                );
+
+                return Ok(new { message = "Projekt-propozimi u fshi me sukses" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPut("{proposalId}")]
+        public async Task<IActionResult> Update(int proposalId, [FromForm] UpdateProjectProposalDto dto)
+        {
+            try
+            {
+                var staffId = GetStaffId();
+                if (!staffId.HasValue)
+                    return Unauthorized();
+
+                string ipAddress = GetIpAddress();
+
+                await _projectProposalService.UpdateAsync(proposalId, dto, staffId.Value, ipAddress);
+                return Ok(new { message = "Projekt-propozimi u përditësua me sukses" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         private int? GetUserId()
         {
             var claim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -98,6 +146,12 @@ namespace MyTown.API.Controllers
         }
         private string GetIpAddress() =>
             HttpContext.Connection.RemoteIpAddress?.ToString() ?? "IP Address e panjohur";
+
+        private int? GetStaffId()
+        {
+            var claim = User.FindFirst("StaffId")?.Value;
+            return int.TryParse(claim, out int id) ? id : null;
+        }
     }
 }
 

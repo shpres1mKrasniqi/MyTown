@@ -30,6 +30,7 @@ const AddEvent = lazy(() => import("./pages/AddEvent"));
 const EventList = lazy(() => import("./pages/EventList"));
 const AddProjectProposal = lazy(() => import("./pages/AddProjectProposal"));
 const ProposalsList = lazy(() => import("./pages/ProposalsList"));
+const EditProjectProposal = lazy(() => import("./pages/EditProjectProposal"));
 
 function App() {
   return (
@@ -66,6 +67,10 @@ function App() {
 
         <Route path="/events" element={<EventList />} />
         <Route path="/add-projectProposal" element={<AddProjectProposal />} />
+        <Route
+          path="/project-proposals/edit/:id"
+          element={<EditProjectProposal />}
+        />
       </Routes>
 
       <ToastContainer

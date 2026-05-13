@@ -38,7 +38,18 @@ namespace MyTown.Infrastructure.Repositories
             return await _context.ProjectProposals
                 .AsNoTracking()
                 .Include(pp => pp.Komuna)
+                .Include(pp=>pp.Files)
                 .FirstOrDefaultAsync(pp => pp.Id == proposalId && !pp.IsDeleted);
+        }
+
+        public void DeleteProposalAsync(ProjectProposal projectProposal)
+        {
+             _context.ProjectProposals.Update(projectProposal);
+        }
+
+        public void UpdateProposalAsync(ProjectProposal projectProposal)
+        {
+            _context.ProjectProposals.Update(projectProposal);
         }
     }
 }

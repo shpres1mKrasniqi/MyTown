@@ -1,18 +1,24 @@
 import { useEffect, useState, useCallback } from "react"; //
 import * as signalR from "@microsoft/signalr";
-import { ThumbsUp, ThumbsDown } from "lucide-react";
+import { ThumbsUp, ThumbsDown, Edit2Icon, EditIcon } from "lucide-react";
 import { ProposalService } from "../services/proposalService";
 import { ProposalVoteService } from "../services/voteService";
 import { currentUser } from "../services/authService";
+import { MoreHorizontal, Trash2 } from "lucide-react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function ProposalsList() {
   const [proposals, setProposals] = useState([]);
   const [votesByProposal, setVotesByProposal] = useState({});
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const navigate = useNavigate();
 
   const isCitizen =
     user?.role === "Citizen" || user?.roles?.includes("Citizen");
+
+  const isStaff = user?.role === "Staff" || user?.roles?.includes("Staff");
 
   useEffect(() => {
     const testUser = async () => {
@@ -87,6 +93,16 @@ function ProposalsList() {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await ProposalService.delete(id);
+
+      setProposals((prev) => prev.filter((proposal) => proposal.id !== id));
+    } catch (err) {
+      console.log(err.response?.data || err.message);
+    }
+  };
+
   const loadVotesForProposals = useCallback(async (proposalList) => {
     const map = {};
     await Promise.all(
@@ -140,25 +156,66 @@ function ProposalsList() {
           return (
             <div
               key={proposal.id}
-              className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden"
+              className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-visible relative"
             >
               {proposal.files?.length > 0 && (
                 <img
                   src={proposal.files[0].fileUrl}
                   alt="proposal"
-                  className="w-full h-[300px] object-cover"
+                  className="w-full h-[300px] object-cover rounded-t-2xl"
                 />
               )}
 
               <div className="p-5 space-y-4">
-                <div className="flex items-center justify-between">
+                <div className="flex items-start justify-between gap-3 relative">
                   <h2 className="text-2xl font-bold text-gray-800">
                     {proposal.title}
                   </h2>
 
-                  <span className="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-medium">
-                    {proposal.status}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-medium">
+                      {proposal.status}
+                    </span>
+
+                    {!isCitizen && (
+                      <div className="relative">
+                        <button
+                          onClick={() =>
+                            setOpenMenuId(
+                              openMenuId === proposal.id ? null : proposal.id,
+                            )
+                          }
+                          className="p-2 rounded-full hover:bg-gray-100 transition"
+                        >
+                          <MoreHorizontal size={22} className="text-gray-700" />
+                        </button>
+
+                        {openMenuId === proposal.id && isStaff && (
+                          <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
+                            <button
+                              onClick={() => handleDelete(proposal.id)}
+                              className="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition"
+                            >
+                              <Trash2 size={16} />
+                              Fshij
+                            </button>
+
+                            <button
+                              onClick={() =>
+                                navigate(
+                                  `/project-proposals/edit/${proposal.id}`,
+                                )
+                              }
+                              className="w-full flex items-center gap-2 px-4 py-3 text-sm text-blue-600 hover:bg-blue-50 transition"
+                            >
+                              <EditIcon size={16} />
+                              Perditeso
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <p className="text-gray-600 text-sm leading-relaxed">
@@ -192,17 +249,17 @@ function ProposalsList() {
                         onClick={() => handleVote(proposal.id, 1)}
                         disabled={voteInfo?.hasVoted}
                         className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition
-                          ${
-                            voteInfo?.myVote === 1
-                              ? "bg-green-100 text-green-700"
-                              : "bg-gray-100 text-gray-700 hover:bg-green-50 hover:text-green-700"
-                          }
-                          ${
-                            voteInfo?.hasVoted
-                              ? "cursor-not-allowed opacity-70"
-                              : ""
-                          }
-                        `}
+                        ${
+                          voteInfo?.myVote === 1
+                            ? "bg-green-100 text-green-700"
+                            : "bg-gray-100 text-gray-700 hover:bg-green-50 hover:text-green-700"
+                        }
+                        ${
+                          voteInfo?.hasVoted
+                            ? "cursor-not-allowed opacity-70"
+                            : ""
+                        }
+                      `}
                       >
                         <ThumbsUp size={18} />
                         Pro
@@ -213,17 +270,17 @@ function ProposalsList() {
                         onClick={() => handleVote(proposal.id, 2)}
                         disabled={voteInfo?.hasVoted}
                         className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition
-                          ${
-                            voteInfo?.myVote === 2
-                              ? "bg-red-100 text-red-700"
-                              : "bg-gray-100 text-gray-700 hover:bg-red-50 hover:text-red-700"
-                          }
-                          ${
-                            voteInfo?.hasVoted
-                              ? "cursor-not-allowed opacity-70"
-                              : ""
-                          }
-                        `}
+                        ${
+                          voteInfo?.myVote === 2
+                            ? "bg-red-100 text-red-700"
+                            : "bg-gray-100 text-gray-700 hover:bg-red-50 hover:text-red-700"
+                        }
+                        ${
+                          voteInfo?.hasVoted
+                            ? "cursor-not-allowed opacity-70"
+                            : ""
+                        }
+                      `}
                       >
                         <ThumbsDown size={18} />
                         Kundër

@@ -1,5 +1,6 @@
 ﻿
 
+using Microsoft.IdentityModel.Tokens;
 using MyTown.Application.DTOs.Files;
 using MyTown.Application.DTOs.ProjectProposals;
 using MyTown.Application.Ports.InboundPorts;
@@ -122,7 +123,7 @@ namespace MyTown.Application.Services
                 VotingDeadline = projektPropozimi.VotingDeadline,
                 Status = projektPropozimi.Status,
                 KomunaId = projektPropozimi.KomunaId,
-                Files = projektPropozimi.Files?.Select(f => new MyTownFileResponseDto  
+                Files = projektPropozimi.Files?.Where(f => !f.IsDeleted).Select(f => new MyTownFileResponseDto
                 {
                     Id = f.Id,
                     FileName = f.FileName,
@@ -140,7 +141,7 @@ namespace MyTown.Application.Services
 
             if (projPropozimi == null)
             {
-               return null;
+                return null;
             }
 
             return new ProjectProposalResponseDto
@@ -155,7 +156,7 @@ namespace MyTown.Application.Services
                 VotingDeadline = projPropozimi.VotingDeadline,
                 Status = projPropozimi.Status,
                 KomunaId = projPropozimi.KomunaId,
-                Files = projPropozimi.Files?.Select(f => new MyTownFileResponseDto
+                Files = projPropozimi.Files?.Where(f => !f.IsDeleted).Select(f => new MyTownFileResponseDto
                 {
                     Id = f.Id,
                     FileName = f.FileName,
@@ -186,14 +187,118 @@ namespace MyTown.Application.Services
                 VotingDeadline = projPropozimi.VotingDeadline,
                 Status = projPropozimi.Status,
                 KomunaId = projPropozimi.KomunaId,
-                Files = projPropozimi.Files?.Select(f => new MyTownFileResponseDto
+                Files = projPropozimi.Files?.Where(f => !f.IsDeleted).Select(f => new MyTownFileResponseDto
                 {
                     Id = f.Id,
                     FileName = f.FileName,
                     FileUrl = $"https://localhost:7214{f.FilePath}",
                     FileSize = f.FileSize,
                 }).ToList() ?? new()
-            }); 
+            });
+        }
+
+        public async Task SoftDeleteProposalAsync(int id, int staffId, string ipAddress)
+        {
+            var propozimi = await _projectPropRepo.GetProjectProposalsByIdAsync(id);
+
+            if (propozimi == null || propozimi.IsDeleted)
+            {
+                throw new Exception("ID e projekt-propozimit nuk u gjet");
+            }
+
+            propozimi.Delete(staffId);
+
+            _projectPropRepo.DeleteProposalAsync(propozimi);
+
+            await _auditRepo.AddAsync(new AuditLog(
+                staffId,
+                "SoftDelete",
+                "ProjectProposal",
+                propozimi.Id,
+                null,
+                $"ProjectProposal me ID {propozimi.Id} u fshi.",
+                ipAddress
+                ));
+
+            await _unitOfWork.SaveChangesAsync();
+
+        }
+
+        public async Task UpdateAsync(int id, UpdateProjectProposalDto dto, int staffId, string ipAddress)
+        {
+
+            var projektPropozimi = await _projectPropRepo.GetProjectProposalsByIdAsync(id);
+
+            if (projektPropozimi == null || projektPropozimi.IsDeleted)
+            {
+                throw new Exception("ID e projekt-propozimit nuk u gjet");
+            }
+
+            projektPropozimi.Update(
+            dto.Title,
+            dto.Description,
+            dto.Budget,
+            dto.PlannedStartDate,
+            dto.PlannedEndDate,
+            dto.TenderWinnerCompany,
+            dto.VotingDeadline,
+            dto.KomunaId,
+                    staffId
+            );
+
+             _projectPropRepo.UpdateProposalAsync(projektPropozimi);
+
+            if (dto.Files != null && dto.Files.Count > 0)
+            {
+                foreach (var file in dto.Files)
+                {
+                    var result = await _fileService.SaveFileAsync(file, "project-proposals");
+
+                    var fileEntity = new MyTownFile(
+                        ((int)FileEntityType.ProjectProposal).ToString(),
+                        projektPropozimi.Id,
+                        result.fileName,
+                        result.path,
+                        result.size,
+                        staffId
+                    );
+
+                    fileEntity.ProjectProposalId = projektPropozimi.Id;
+
+                    await _fileRepo.AddFileAsync(fileEntity);
+                }
+            }
+
+            if (dto.DeletedFileIds != null && dto.DeletedFileIds.Count > 0)
+            {
+                foreach (var fileId in dto.DeletedFileIds)
+                {
+                    var file = projektPropozimi.Files
+                        .FirstOrDefault(x => x.Id == fileId);
+
+                    if (file != null)
+                    {
+                        file.Delete();
+                        _fileRepo.DeleteFile(file);
+                    }
+                }
+            }
+
+            
+
+            await _auditRepo.AddAsync(new AuditLog(
+               staffId,
+               "Update",
+               "ProjectProposal",
+               projektPropozimi.Id,
+               null,
+               $"ProjectProposal me ID {projektPropozimi.Id} u perditesua.",
+               ipAddress
+               ));
+
+           
+            await _unitOfWork.SaveChangesAsync();
+
         }
     }
 }

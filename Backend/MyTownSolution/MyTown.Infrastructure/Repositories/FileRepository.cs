@@ -22,7 +22,13 @@ namespace MyTown.Infrastructure.Repositories
 
         public async Task<IEnumerable<MyTownFile>> ReadFilesAsync()
         {
-            return await _context.Files.ToArrayAsync();
+            return await _context.Files.Where(f => !f.IsDeleted).ToArrayAsync();
+              
+        }
+
+        public void DeleteFile(MyTownFile file)
+        {
+            _context.Files.Update(file);
         }
     }
 }

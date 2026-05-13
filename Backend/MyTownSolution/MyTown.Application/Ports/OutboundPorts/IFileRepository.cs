@@ -8,5 +8,7 @@ namespace MyTown.Application.Ports.OutboundPorts
     {
         Task AddFileAsync(MyTownFile file);
         Task <IEnumerable<MyTownFile>> ReadFilesAsync();
+
+        void DeleteFile(MyTownFile file);
     }
 }

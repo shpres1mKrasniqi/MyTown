@@ -9,5 +9,11 @@ namespace MyTown.Application.Ports.OutboundPorts
         Task AddProjectProposalAsync(ProjectProposal proposal);
         Task<IEnumerable<ProjectProposal>> GetAllProposalsAsync();
         Task<ProjectProposal?> GetProjectProposalsByIdAsync(int proposalId);
+
+        void DeleteProposalAsync(ProjectProposal proposal);
+
+        void UpdateProposalAsync(ProjectProposal projectProposal);
+
+     
     }
 }
