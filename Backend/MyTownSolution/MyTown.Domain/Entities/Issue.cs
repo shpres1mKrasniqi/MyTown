@@ -45,13 +45,25 @@ namespace MyTown.Domain.Entities
             SetCreated(createdBy);
         }
 
-        public void Update(string title, string description, int issueCategoryId, IssueStatus status, int userId)
+        public void UpdateDetails(string title, string description, int issueCategoryId, int userId)
         {
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException("Titulli duhet plotesuar");
+
+            if (string.IsNullOrWhiteSpace(description))
+                throw new ArgumentException("Pershkrimi duhet plotesuar");
+
             Title = title;
             Description = description;
             IssueCategoryId = issueCategoryId;
+
+            SetUpdated(userId);
+        }
+
+
+        public void UpdateStatus(IssueStatus status, int userId)
+        {
             Status = status;
-            UpdatedAt = DateTime.UtcNow;
             SetUpdated(userId);
         }
 

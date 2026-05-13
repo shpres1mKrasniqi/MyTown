@@ -147,64 +147,53 @@ namespace MyTown.Application.Services
             });
         }
 
-        public async Task<IssueCategoryResponseDto?> GetByIdAsync(int id)
+        public async Task<IssueResponseDto?> GetByIdAsync(int id)
         {
-            var category = await _issueRepository.GetIssueByIdAsync(id);
+            var issue = await _issueRepository.GetIssueByIdAsync(id);
+            var files = await _fileRepository.ReadFilesAsync();
 
-            if (category == null)
+            if (issue == null)
                 return null;
 
-            return new IssueCategoryResponseDto
+            return new IssueResponseDto
             {
-                Id = category.Id,
-                Title = category.Title,
-                Description = category.Description
+                Id = issue.Id,
+                Title = issue.Title,
+                Description = issue.Description,
+                KomunaId = issue.KomunaId,
+                KomunaName = issue.Komuna?.Name,
+                IssueCategoryId = issue.IssueCategoryId,
+                CategoryName = issue.IssueCategory?.Title,
+                Status = issue.Status,
+
+                Files = files
+                    .Where(f => f.Entity == ((int)FileEntityType.Issue).ToString()
+                             && f.EntityId == issue.Id)
+                    .Select(f => new MyTownFileResponseDto
+                    {
+                        Id = f.Id,
+                        Entity = f.Entity,
+                        EntityId = f.EntityId,
+                        FileName = f.FileName,
+                        FileUrl = $"https://localhost:7214{f.FilePath}",
+                        FileSize = f.FileSize,
+                        UploadedBy = f.UploadedBy,
+                        CreatedAt = f.CreatedAt
+                    }).ToList()
             };
         }
-
-        public async Task UpdateIssueAsync(int id, UpdateIssueDto dto, int userId, string ipAddress)
+        public async Task UpdateIssueDetailsAsync(int id, UpdateIssueDto dto, int userId, string ipAddress)
         {
             var issue = await _issueRepository.GetIssueByIdAsync(id);
 
             if (issue == null)
                 throw new Exception("Issue nuk u gjet.");
 
-            var oldValue = System.Text.Json.JsonSerializer.Serialize(new
-            {
-                issue.Title,
-                issue.Description,
-                issue.KomunaId,
-                issue.IssueCategoryId
-            });
-
-
-            issue.Update(dto.Title,dto.Description,dto.IssueCategoryId, dto.Status, userId);
+            issue.UpdateDetails(dto.Title, dto.Description, dto.IssueCategoryId, userId);
 
             await _issueRepository.Update(issue);
-
-            var newValue = System.Text.Json.JsonSerializer.Serialize(new
-            {
-                issue.Title,
-                issue.Description,
-                issue.KomunaId,
-                issue.IssueCategoryId
-            });
-
-            var audit = new AuditLog(
-                userId,
-                "UPDATE",
-                nameof(Issue),
-                issue.Id,
-                oldValue,
-                newValue,
-                ipAddress ?? "Unknown"
-            );
-
-            await _auditRepository.AddAsync(audit);
-
             await _unitOfWork.SaveChangesAsync();
 
-           
             if (dto.Files != null && dto.Files.Count > 0)
             {
                 foreach (var file in dto.Files)
@@ -225,8 +214,19 @@ namespace MyTown.Application.Services
 
                 await _unitOfWork.SaveChangesAsync();
             }
+        }
 
+        public async Task UpdateIssueStatusAsync(int id, UpdateIssueStatusDto dto, int userId, string ipAddress)
+        {
+            var issue = await _issueRepository.GetIssueByIdAsync(id);
 
+            if (issue == null || issue.IsDeleted)
+                throw new Exception("Issue nuk u gjet.");
+
+            issue.UpdateStatus(dto.Status, userId);
+
+            await _issueRepository.Update(issue);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id, int userId, string ipAddress)

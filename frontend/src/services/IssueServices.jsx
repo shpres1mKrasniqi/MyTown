@@ -20,4 +20,17 @@ export const IssueService = {
       { content },
       { withCredentials: true },
     ),
+
+  updateDetails: (id, formData) =>
+    api.put(`/Issues/${id}/details`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      withCredentials: true,
+    }),
+
+  updateStatus: (id, data) =>
+    api.patch(`/Issues/${id}/status`, data, {
+      withCredentials: true,
+    }),
 };

@@ -7,9 +7,10 @@ namespace MyTown.Application.Ports.InboundPorts
     {
         Task<IssueResponseDto> CreateIssueAsync(CreateIssueDto createIssueDto, int citizenId, int userId, string ipAddress);
         Task<IEnumerable<IssueResponseDto>> GetAllAsync();
-        Task<IssueCategoryResponseDto?> GetByIdAsync(int id);
+        Task<IssueResponseDto?> GetByIdAsync(int id);
+        Task UpdateIssueDetailsAsync(int id, UpdateIssueDto dto, int citizenId, string ipAddress);
 
-        Task UpdateIssueAsync(int id, UpdateIssueDto updateIssueDto, int userId, string ipAddress);
+        Task UpdateIssueStatusAsync(int id, UpdateIssueStatusDto dto, int staffId, string ipAddress);
         Task DeleteAsync(int id, int userId, string ipAddress);
     }
 }

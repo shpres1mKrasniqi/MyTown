@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { IssueService } from "../services/IssueServices";
+import { useNavigate } from "react-router-dom";
+import { currentUser } from "../services/authService"; // ndrysho path nëse e ke ndryshe
 import {
   ChevronLeft,
   ChevronRight,
@@ -73,9 +75,35 @@ function IssueList() {
   /** @type {Record<number, { likeCount: number, likedByMe: boolean, comments: Array<{ id: string, authorName: string, content: string, createdAt: string }> }>} */
   const [socialByIssue, setSocialByIssue] = useState({});
   const [commentDraft, setCommentDraft] = useState({});
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const isCitizen = user?.roles?.includes("Citizen");
+  const isStaff = user?.roles?.includes("Staff");
+
+  const fetchCurrentUser = async () => {
+    try {
+      const data = await currentUser();
+      setUser(data);
+    } catch (err) {
+      console.log("Gabim gjatë marrjes së userit aktual", err);
+    }
+  };
+
+  const fetchIssues = async () => {
+    try {
+      const res = await IssueService.getAll();
+      setIssues(res.data);
+      await loadSocialForIssues(res.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchIssues();
+    fetchCurrentUser();
     const connection = new signalR.HubConnectionBuilder()
       .withUrl("https://localhost:7214/hubs/problems")
       .withAutomaticReconnect()
@@ -161,18 +189,6 @@ function IssueList() {
     setSocialByIssue(map);
   };
 
-  const fetchIssues = async () => {
-    try {
-      const res = await IssueService.getAll();
-      setIssues(res.data);
-      await loadSocialForIssues(res.data);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleToggleLike = async (issueId) => {
     try {
       const res = await IssueService.toggleLike(issueId);
@@ -235,6 +251,12 @@ function IssueList() {
   return (
     <div className="min-h-screen bg-white md:bg-gray-50 pb-10">
       <div className="max-w-[470px] mx-auto pt-4 space-y-4">
+        {issues.length === 0 && (
+          <p className="text-center text-gray-500 mt-10">
+            Nuk ka issues për momentin.
+          </p>
+        )}
+
         {issues.map((issue) => (
           <div
             key={issue.id}
@@ -266,22 +288,34 @@ function IssueList() {
                     setOpenMenuId(openMenuId === issue.id ? null : issue.id)
                   }
                 />
-
                 {openMenuId === issue.id && (
-                  <div className="absolute right-0 mt-2 w-28 bg-white border rounded-lg shadow-md z-10">
-                    {/* <button
-                      onClick={() => handleEdit(issue.id)}
-                      className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
-                    >
-                      Edit
-                    </button> */}
+                  <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-md z-10 overflow-hidden">
+                    {isCitizen && (
+                      <button
+                        onClick={() => navigate(`/issues/${issue.id}/edit`)}
+                        className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
+                      >
+                        Përditëso
+                      </button>
+                    )}
 
-                    <button
-                      onClick={() => handleDelete(issue.id)}
-                      className="block w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50"
-                    >
-                      Delete
-                    </button>
+                    {isStaff && (
+                      <button
+                        onClick={() => navigate(`/issues/${issue.id}/status`)}
+                        className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
+                      >
+                        Përditëso statusin
+                      </button>
+                    )}
+
+                    {isCitizen && (
+                      <button
+                        onClick={() => handleDelete(issue.id)}
+                        className="block w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+                      >
+                        Delete
+                      </button>
+                    )}
                   </div>
                 )}
               </div>

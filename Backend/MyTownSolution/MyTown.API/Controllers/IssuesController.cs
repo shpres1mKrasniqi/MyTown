@@ -62,7 +62,7 @@ namespace MyTown.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "CanViewIssue")]
+        //[Authorize(Policy = "CanViewIssue")]
         public async Task<IActionResult> GetIssues()
         {
             try
@@ -77,31 +77,36 @@ namespace MyTown.API.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        [Authorize(Policy = "CanEditIssue")]
-        public async Task<IActionResult> Update(int id, [FromForm] UpdateIssueDto dto)
+        [HttpPut("{id}/details")]
+        //[Authorize(Policy = "CanEditOwnIssue")]
+        public async Task<IActionResult> UpdateDetails(int id, [FromForm] UpdateIssueDto dto)
         {
-            try
-            {
-                var citizenId = GetUserId();
+            var citizenId = GetCitizenId();
 
-                if (!citizenId.HasValue)
-                    return Unauthorized();
+            if (!citizenId.HasValue)
+                return Unauthorized();
 
-                string ipAddress = GetIpAddress();
+            await _issueService.UpdateIssueDetailsAsync(id, dto, citizenId.Value, GetIpAddress());
 
-                await _issueService.UpdateIssueAsync(id, dto, citizenId.Value, ipAddress);
+            return Ok(new { message = "Issue u përditësua me sukses." });
+        }
 
-                return Ok(new { message = "Postimi u rregullua me sukses" });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+        [HttpPatch("{id}/status")]
+        //[Authorize(Policy = "CanUpdateIssueStatus")]
+        public async Task<IActionResult> UpdateStatus(int id, [FromBody] UpdateIssueStatusDto dto)
+        {
+            var staffId = GetStaffId();
+
+            if (!staffId.HasValue)
+                return Unauthorized();
+
+            await _issueService.UpdateIssueStatusAsync(id, dto, staffId.Value, GetIpAddress());
+
+            return Ok(new { message = "Statusi u përditësua me sukses." });
         }
 
         [HttpGet("{id}")]
-        [Authorize(Policy = "CanViewIssue")]
+        //[Authorize(Policy = "CanViewIssue")]
         public async Task<IActionResult> GetById(int id)
         {
             try
@@ -159,6 +164,12 @@ namespace MyTown.API.Controllers
         private string GetIpAddress()
         {
             return HttpContext.Connection.RemoteIpAddress?.ToString() ?? "I panjohur";
+        }
+
+        private int? GetStaffId()
+        {
+            var claim = User.FindFirst("StaffId")?.Value;
+            return int.TryParse(claim, out int id) ? id : null;
         }
     }
 }

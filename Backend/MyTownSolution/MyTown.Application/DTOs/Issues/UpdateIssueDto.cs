@@ -9,10 +9,7 @@ namespace MyTown.Application.DTOs.Issues
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public int KomunaId { get; set; }
         public int IssueCategoryId { get; set; }
-
-        public IssueStatus Status { get; set; }
-        public List<IFormFile> Files { get; set; }
+        public List<IFormFile>? Files { get; set; } = new();
     }
 }
