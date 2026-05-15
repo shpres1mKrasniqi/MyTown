@@ -1,4 +1,4 @@
-﻿
+
 using System.Data;
 
 namespace MyTown.Domain.Entities
@@ -22,5 +22,6 @@ namespace MyTown.Domain.Entities
 
         public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
+        public UserLockout? UserLockout { get; set; }
     }
 }
