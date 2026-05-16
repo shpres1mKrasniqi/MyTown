@@ -40,6 +40,8 @@ namespace MyTown.Infrastructure.Persistence.Data
         public DbSet<PasswordResetToken>PasswordResetTokens { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<ProjectProposal> ProjectProposals { get; set; }
+        public DbSet<Setting> Settings { get; set; }
+        public DbSet<UserLockout> UserLockouts { get; set; }
        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -173,6 +175,15 @@ namespace MyTown.Infrastructure.Persistence.Data
             .WithMany(s => s.ProjectProposals)
             .HasForeignKey(ps => ps.KomunaId);
 
+            modelBuilder.Entity<UserLockout>()
+                .HasOne(ul => ul.User)
+                .WithOne(u => u.UserLockout)
+                .HasForeignKey<UserLockout>(ul => ul.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Setting>()
+                .HasIndex(s => s.Key)
+                .IsUnique();
         }
     }
 }
