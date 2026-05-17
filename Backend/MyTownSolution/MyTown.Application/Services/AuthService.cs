@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using MyTown.Application.DTOs.Authentication;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Ports.OutboundPorts;
@@ -22,6 +22,8 @@ namespace MyTown.Application.Services
         private readonly IEmailService _emailService;
         private readonly EmailSettings _emailSettings;
         private readonly string _resetCodeSecretKey;
+        private readonly ISettingRepository _settingRepository;
+        private readonly IUserLockoutRepository _userLockoutRepository;
 
         public AuthService(
             IUserRepository userRepository,
@@ -32,7 +34,9 @@ namespace MyTown.Application.Services
              IStaffRepository staffRepository,
             IPasswordResetTokenRepository passwordResetTokenRepository,
             IEmailService emailService,
-            IOptions<EmailSettings> emailSettings)
+            IOptions<EmailSettings> emailSettings,
+            ISettingRepository settingRepository,
+            IUserLockoutRepository userLockoutRepository)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
@@ -43,6 +47,8 @@ namespace MyTown.Application.Services
             _passwordResetTokenRepository = passwordResetTokenRepository;
             _emailService = emailService;
             _emailSettings = emailSettings.Value;
+            _settingRepository = settingRepository;
+            _userLockoutRepository = userLockoutRepository;
 
             _resetCodeSecretKey =
                 Environment.GetEnvironmentVariable("RESET_CODE_SECRET_KEY")
@@ -122,11 +128,59 @@ namespace MyTown.Application.Services
                 throw new Exception("Kredenciale te pavlefshme");
             }
 
+            var lockout = await _userLockoutRepository.GetByUserIdAsync(user.Id);
+            if (lockout != null && lockout.LockoutEnd.HasValue && lockout.LockoutEnd.Value > DateTime.UtcNow)
+            {
+                var remainingMinutes = (int)(lockout.LockoutEnd.Value - DateTime.UtcNow).TotalMinutes + 1;
+                throw new Exception($"Llogaria juaj është bllokuar përkohësisht. Provoni përsëri pas {remainingMinutes} minutash.");
+            }
+
             var isValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
             if (!isValid)
             {
+                var maxAttemptsSetting = await _settingRepository.GetByKeyAsync("LOGIN_MAX_FAILED_ATTEMPTS");
+                var lockoutMinutesSetting = await _settingRepository.GetByKeyAsync("LOGIN_LOCKOUT_MINUTES");
+                
+                int maxAttempts = maxAttemptsSetting != null ? int.Parse(maxAttemptsSetting.Value) : 5;
+                int lockoutMinutes = lockoutMinutesSetting != null ? int.Parse(lockoutMinutesSetting.Value) : 10;
+
+                if (lockout == null)
+                {
+                    lockout = new UserLockout
+                    {
+                        UserId = user.Id,
+                        FailedAttempts = 1,
+                        LastFailedAttemptAt = DateTime.UtcNow
+                    };
+                    await _userLockoutRepository.AddAsync(lockout);
+                }
+                else
+                {
+                    lockout.FailedAttempts += 1;
+                    lockout.LastFailedAttemptAt = DateTime.UtcNow;
+
+                    if (lockout.FailedAttempts >= maxAttempts)
+                    {
+                        lockout.LockoutEnd = DateTime.UtcNow.AddMinutes(lockoutMinutes);
+                    }
+                    await _userLockoutRepository.UpdateAsync(lockout);
+                }
+
+                if (lockout.FailedAttempts >= maxAttempts)
+                {
+                    throw new Exception($"Llogaria juaj është bllokuar përkohësisht. Provoni përsëri pas {lockoutMinutes} minutash.");
+                }
+
                 throw new Exception("Kredenciale te pavlefshme");
             }
+
+            if (lockout != null && lockout.FailedAttempts > 0)
+            {
+                lockout.FailedAttempts = 0;
+                lockout.LockoutEnd = null;
+                await _userLockoutRepository.UpdateAsync(lockout);
+            }
+            
             var citizen = await _citizenRepository.GetByUserIdAsync(user.Id);
             var staff = await _staffRepository.GetByUserIdAsync(user.Id);
 

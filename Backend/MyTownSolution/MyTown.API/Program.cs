@@ -138,6 +138,8 @@ builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IProjectProposalRepository, ProjectProposalRepository>();
+builder.Services.AddScoped<ISettingRepository, SettingRepository>();
+builder.Services.AddScoped<IUserLockoutRepository, UserLockoutRepository>();
 // Servicet
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -264,6 +266,7 @@ if (app.Environment.IsDevelopment())
     await RoleSeed.SeedRoleAsync(dbContext);
     await PermissionSeed.SeedPermissionsAsync(dbContext);
     await AdminSeed.SeedAdminAsync(dbContext);
+    await SettingsSeed.SeedSettingsAsync(dbContext);
 }
 
 //Kontrollojna a u lidh mongo apo jo:
