@@ -8,6 +8,7 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -15,6 +16,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
+      setError(null);
       const res = await login(form);
 
       const role = res.roles[0];
@@ -28,7 +30,13 @@ export default function Login() {
       }
     } catch (err) {
       console.error(err);
-      alert("Login deshtoi");
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else if (err.message) {
+        setError(err.message);
+      } else {
+        setError("Login dështoi. Ju lutem provoni përsëri.");
+      }
     }
   };
 
@@ -40,6 +48,12 @@ export default function Login() {
         <p className="mt-4 text-base text-gray-500/90">
           Vendosni te dhenat tuaja per te vazhduar...
         </p>
+
+        {error && (
+          <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
+            {error}
+          </div>
+        )}
 
         <div className="mt-10">
           <label className="font-medium">Email</label>
