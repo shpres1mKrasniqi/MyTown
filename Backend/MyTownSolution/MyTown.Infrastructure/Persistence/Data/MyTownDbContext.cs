@@ -26,6 +26,7 @@ namespace MyTown.Infrastructure.Persistence.Data
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<StaffProfile> StaffProfiles { get; set; }
 
+        public DbSet<MeetingRequest> MeetingRequests { get; set; }
         public DbSet<CitizenProfile> CitizenProfiles { get; set; }
 
         public DbSet<IssueCategory> IssueCategories { get; set; }
@@ -49,6 +50,13 @@ namespace MyTown.Infrastructure.Persistence.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(MyTownDbContext).Assembly);
+
+
+            modelBuilder.Entity<MeetingRequest>()
+               .HasOne(mr => mr.Citizen)
+               .WithMany(c => c.MeetingRequests)
+               .HasForeignKey(mr => mr.CitizenId)
+               .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<RefreshToken>()
                .HasOne(t => t.User)

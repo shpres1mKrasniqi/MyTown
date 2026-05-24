@@ -140,6 +140,7 @@ builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IProjectProposalRepository, ProjectProposalRepository>();
 builder.Services.AddScoped<ISettingRepository, SettingRepository>();
 builder.Services.AddScoped<IUserLockoutRepository, UserLockoutRepository>();
+builder.Services.AddScoped<IMeetingRequestRepository, MeetingRequestRepository>();
 // Servicet
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -160,6 +161,7 @@ builder.Services.AddScoped<IEventReactionService, EventReactionService>();
 builder.Services.AddScoped<IProjectProposalService, ProjectProposalService>();
 builder.Services.AddScoped<IProposalVotes, ProposalVotesService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateProposalValidator>();
+builder.Services.AddScoped<IMeetingRequestService, MeetingRequestService>();
 
 var emailSettings = new EmailSettings
 {

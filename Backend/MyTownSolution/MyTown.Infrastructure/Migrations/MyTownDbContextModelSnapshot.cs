@@ -351,6 +351,53 @@ namespace MyTown.Infrastructure.Migrations
                     b.ToTable("Komunas");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.Entities.MeetingRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CitizenId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("DateOfMeeting")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CitizenId");
+
+                    b.ToTable("MeetingRequests");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.MyTownFile", b =>
                 {
                     b.Property<int>("Id")
@@ -941,6 +988,17 @@ namespace MyTown.Infrastructure.Migrations
                     b.Navigation("Komuna");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.Entities.MeetingRequest", b =>
+                {
+                    b.HasOne("MyTown.Domain.Entities.CitizenProfile", "Citizen")
+                        .WithMany("MeetingRequests")
+                        .HasForeignKey("CitizenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Citizen");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.MyTownFile", b =>
                 {
                     b.HasOne("MyTown.Domain.Entities.Event", null)
@@ -1074,6 +1132,8 @@ namespace MyTown.Infrastructure.Migrations
             modelBuilder.Entity("MyTown.Domain.Entities.CitizenProfile", b =>
                 {
                     b.Navigation("Issues");
+
+                    b.Navigation("MeetingRequests");
                 });
 
             modelBuilder.Entity("MyTown.Domain.Entities.Department", b =>

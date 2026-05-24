@@ -29,6 +29,7 @@ namespace MyTown.Domain.Entities
         public DateTime? UpdatedAt { get; private set; } 
 
         public ICollection<Issue> Issues { get; private set; } = new List<Issue>();
+        public ICollection<MeetingRequest> MeetingRequests { get; private set; } = new List<MeetingRequest>();
         protected CitizenProfile() { }
 
         public CitizenProfile(
