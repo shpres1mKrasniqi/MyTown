@@ -20,7 +20,9 @@ export const resetPassword = async (data) => {
 };
 
 export const currentUser = async () => {
-  const response = await api.get("/auth/me");
+  const response = await api.get("/auth/me", {
+    withCredentials: true,
+  });
   return response.data;
 };
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IssueService } from "../services/IssueServices";
 import { useNavigate } from "react-router-dom";
-import { currentUser } from "../services/authService"; // ndrysho path nëse e ke ndryshe
+import { currentUser } from "../services/authService"; 
 import {
   ChevronLeft,
   ChevronRight,

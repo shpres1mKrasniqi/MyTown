@@ -33,7 +33,8 @@ const ProposalsList = lazy(() => import("./pages/ProposalsList"));
 const EditProjectProposal = lazy(() => import("./pages/EditProjectProposal"));
 const EditIssueDetails = lazy(() => import("./pages/EditIssueDetails"));
 const UpdateIssueStatus = lazy(() => import("./pages/UpdateIssueStatus"));
-
+const AddMeetingRequest = lazy(() => import("./pages/AddMeetingRequest"));
+const MeetingsList = lazy(() => import("./pages/MeetingRequestsList"));
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -65,6 +66,9 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/events" element={<EventList />} />
         <Route path="/add-projectProposal" element={<AddProjectProposal />} />
+
+        <Route path="/add-meeting-request" element={<AddMeetingRequest />} />
+        <Route path="/meeting-requests" element={<MeetingsList />} />
         <Route
           path="/project-proposals/edit/:id"
           element={<EditProjectProposal />}

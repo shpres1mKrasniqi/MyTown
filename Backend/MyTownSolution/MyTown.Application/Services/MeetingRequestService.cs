@@ -36,6 +36,7 @@ namespace MyTown.Application.Services
                 dto.DateOfMeeting);
 
                 await _meetingRequestRepository.AddMeetingRequestAsync(meetingRequest);
+            await _unitOfWork.SaveChangesAsync();
 
             var newValue = System.Text.Json.JsonSerializer.Serialize(new
             {
@@ -118,7 +119,7 @@ namespace MyTown.Application.Services
             meetingRequest.DeleteRequest(citizenId);
 
              _meetingRequestRepository.DeleteMeetingRequest(meetingRequest);
-
+            await _unitOfWork.SaveChangesAsync();
             var auditLog = new AuditLog
                 (
                    citizenId,
@@ -149,6 +150,7 @@ namespace MyTown.Application.Services
             meetingRequest.UpdateStatus(dto.Status, staffId);
 
             _meetingRequestRepository.Update(meetingRequest);
+            await _unitOfWork.SaveChangesAsync();
 
             var newValue = System.Text.Json.JsonSerializer.Serialize(new
             {

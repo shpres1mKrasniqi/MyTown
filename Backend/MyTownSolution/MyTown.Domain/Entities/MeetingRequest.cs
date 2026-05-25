@@ -17,7 +17,7 @@ namespace MyTown.Domain.Entities
 
         public MeetingRequestStatus Status { get; private set; }
 
-        public DateOnly DateOfMeeting {  get; private set; }
+        public DateTime DateOfMeeting { get; private set; }
 
         public bool IsDeleted { get; private set; }
 
@@ -25,12 +25,12 @@ namespace MyTown.Domain.Entities
         private MeetingRequest() { }
 
 
-        public MeetingRequest(int citizenId, string title, string reason,DateOnly dateOfMeeting)
+        public MeetingRequest(int citizenId, string title, string reason, DateTime dateOfMeeting)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Titulli është i nevojshëm");
 
-            if (dateOfMeeting < DateOnly.FromDateTime(DateTime.Now))
+            if (dateOfMeeting < DateTime.Now)
                 throw new ArgumentException("Data e takimit nuk mund të jetë në të kaluarën");
 
             if (string.IsNullOrWhiteSpace(reason))

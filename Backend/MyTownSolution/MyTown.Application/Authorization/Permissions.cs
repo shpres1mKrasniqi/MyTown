@@ -61,7 +61,12 @@ namespace MyTown.Application.Authorization
         public const string CanDeleteProjectProposal = "CanDeleteProjectProposal";
         public const string CanViewProjectProposal = "CanViewProjectProposal";
 
-        public const string CanVote = "CanVoteForProjectProposals"; 
+        public const string CanVote = "CanVoteForProjectProposals";
+
+        public const string CanCreateMeetingRequest = "CanCreateMeetingRequest";
+        public const string CanEditMeetingRequestStatus = "CanEditMeetingStatus";
+        public const string CanDeleteMeetingRequest = "CanDeleteMeetingRequest";
+        public const string CanViewMeetingRequests = "CanViewMeetingRequests";
        
     }
 }

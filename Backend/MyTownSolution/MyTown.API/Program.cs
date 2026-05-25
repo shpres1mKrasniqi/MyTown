@@ -249,7 +249,12 @@ builder.Services.AddAuthorization(options =>
     Permissions.CanEditProjectProposal,
     Permissions.CanViewProjectProposal,
 
-    Permissions.CanVote
+    Permissions.CanVote,
+
+    Permissions.CanCreateMeetingRequest,
+    Permissions.CanEditMeetingRequestStatus,
+    Permissions.CanDeleteMeetingRequest,
+    Permissions.CanViewMeetingRequests
 };
     foreach (var premission in permissions)
     {

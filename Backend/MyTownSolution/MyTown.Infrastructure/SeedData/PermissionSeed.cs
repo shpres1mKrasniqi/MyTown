@@ -69,7 +69,14 @@ namespace MyTown.Infrastructure.SeedData
 
      //VOtimet per projekte:
 
-     new Permission {Name = Permissions.CanVote, Description = "Lejon votimin për propozimet e projekteve"}
+     new Permission {Name = Permissions.CanVote, Description = "Lejon votimin për propozimet e projekteve"},
+
+     //Meeting Requests
+
+     new Permission{Name = Permissions.CanCreateMeetingRequest, Description="Lejon Krijimin e kerkesave per takime me kryetarin"},
+     new Permission{ Name=Permissions.CanEditMeetingRequestStatus, Description="Lejon perditesimin e statusit te kerkeses per takim me kryetarin"},
+     new Permission{Name=Permissions.CanDeleteMeetingRequest, Description="Lejon Largimin e kerkesave per takim me kryetarin"},
+     new Permission{ Name=Permissions.CanViewMeetingRequests, Description="Lejon SHIKIMIN e kerkesave per takime me kryetarin"}
 
  };
 
@@ -119,7 +126,10 @@ namespace MyTown.Infrastructure.SeedData
                     Permissions.CanDeleteIssue,
                     Permissions.CanViewProjectProposal,
                     Permissions.CanVote,
-                   
+                    Permissions.CanCreateMeetingRequest,
+                    Permissions.CanViewMeetingRequests,
+                    Permissions.CanDeleteMeetingRequest
+
 
 
                 };
@@ -157,6 +167,8 @@ namespace MyTown.Infrastructure.SeedData
                     Permissions.CanViewProjectProposal,
                     Permissions.CanEditProjectProposal,
                     Permissions.CanDeleteProjectProposal,
+                     Permissions.CanViewMeetingRequests,
+                      Permissions.CanEditMeetingRequestStatus,
                 };
 
                 foreach (var permName in permissionsToAdd)

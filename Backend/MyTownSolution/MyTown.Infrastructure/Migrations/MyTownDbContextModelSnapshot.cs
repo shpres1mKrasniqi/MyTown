@@ -368,8 +368,8 @@ namespace MyTown.Infrastructure.Migrations
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly>("DateOfMeeting")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateOfMeeting")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
