@@ -62,6 +62,8 @@ namespace MyTown.Api.Controllers
             {
                 var citizen = await _citizenService.GetCitizenByIdAsync(id);
 
+              
+
                 return Ok(citizen);
             }
             catch (Exception ex)

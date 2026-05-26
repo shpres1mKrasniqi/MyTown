@@ -62,6 +62,94 @@ namespace MyTown.Infrastructure.Migrations
                     b.ToTable("AuditLogs");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.ConstructionDocument", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ConstructionPermitRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConstructionPermitRequestId");
+
+                    b.ToTable("ConstructionDocuments");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.ConstructionPermitRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CitizenId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CitizenId");
+
+                    b.ToTable("ConstructionPermitRequests");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.CitizenProfile", b =>
                 {
                     b.Property<int>("Id")
@@ -912,6 +1000,28 @@ namespace MyTown.Infrastructure.Migrations
                     b.ToTable("WorkSchedules");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.ConstructionDocument", b =>
+                {
+                    b.HasOne("MyTown.Domain.ConstructionPermitRequest", "ConstructionPermitRequest")
+                        .WithMany("ConstructionDocuments")
+                        .HasForeignKey("ConstructionPermitRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ConstructionPermitRequest");
+                });
+
+            modelBuilder.Entity("MyTown.Domain.ConstructionPermitRequest", b =>
+                {
+                    b.HasOne("MyTown.Domain.Entities.CitizenProfile", "Citizen")
+                        .WithMany("ConstructionPermitRequests")
+                        .HasForeignKey("CitizenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Citizen");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.CitizenProfile", b =>
                 {
                     b.HasOne("MyTown.Domain.Entities.Komuna", "Komuna")
@@ -1129,8 +1239,15 @@ namespace MyTown.Infrastructure.Migrations
                     b.Navigation("StaffProfile");
                 });
 
+            modelBuilder.Entity("MyTown.Domain.ConstructionPermitRequest", b =>
+                {
+                    b.Navigation("ConstructionDocuments");
+                });
+
             modelBuilder.Entity("MyTown.Domain.Entities.CitizenProfile", b =>
                 {
+                    b.Navigation("ConstructionPermitRequests");
+
                     b.Navigation("Issues");
 
                     b.Navigation("MeetingRequests");

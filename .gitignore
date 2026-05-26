@@ -127,3 +127,6 @@ docker-compose.override.yml
 #Pjesa per imazhet
 #==========================
 **/wwwroot/images/**
+Backend/MyTownSolution/MyTown.API/uploads/construction-permits/422f092f-c7f0-4e26-8bd2-d9e26168dca6.pdf
+Backend/MyTownSolution/MyTown.API/uploads/construction-permits/048c6283-e172-4926-ae5d-0b7fdc5c4f4c.pdf
+Backend/MyTownSolution/MyTown.API/uploads/*

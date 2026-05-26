@@ -9,6 +9,7 @@ using MyTown.API.Hubs.Problems;
 using MyTown.API.Hubs.Proposals;
 using MyTown.API.Hubs.Votat;
 using MyTown.API.Services;
+using MyTown.Application;
 using MyTown.Application.Authorization;
 using MyTown.Application.DTOs.ProjectProposals;
 using MyTown.Application.Ports.InboundPorts;
@@ -16,6 +17,7 @@ using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Application.Services;
 using MyTown.Application.Settings;
 using MyTown.Application.Validators;
+using MyTown.Infrastructure;
 using MyTown.Infrastructure.Hubs;
 using MyTown.Infrastructure.Persistence.Data;
 using MyTown.Infrastructure.Persistence.Mongo;
@@ -141,6 +143,8 @@ builder.Services.AddScoped<IProjectProposalRepository, ProjectProposalRepository
 builder.Services.AddScoped<ISettingRepository, SettingRepository>();
 builder.Services.AddScoped<IUserLockoutRepository, UserLockoutRepository>();
 builder.Services.AddScoped<IMeetingRequestRepository, MeetingRequestRepository>();
+builder.Services.AddScoped<IConstructionPermitRequestRepository, ConstructionPermitRequestRepository>();
+
 // Servicet
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -162,6 +166,8 @@ builder.Services.AddScoped<IProjectProposalService, ProjectProposalService>();
 builder.Services.AddScoped<IProposalVotes, ProposalVotesService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateProposalValidator>();
 builder.Services.AddScoped<IMeetingRequestService, MeetingRequestService>();
+builder.Services.AddScoped<IConstructionPermitRequestService, ConstructionPermitRequestService>();
+builder.Services.AddScoped<IDocumentFileService, DocumentFileService>();
 
 var emailSettings = new EmailSettings
 {

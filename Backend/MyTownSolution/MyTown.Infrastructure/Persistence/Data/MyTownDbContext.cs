@@ -1,6 +1,7 @@
 
 
 using Microsoft.EntityFrameworkCore;
+using MyTown.Domain;
 using MyTown.Domain.Common;
 using MyTown.Domain.Entities;
 
@@ -10,10 +11,10 @@ namespace MyTown.Infrastructure.Persistence.Data
     {
 
         public MyTownDbContext(DbContextOptions<MyTownDbContext> options) : base(options) { }
-        
-        
-       public DbSet<User> Users { get; set; }
-        
+
+
+        public DbSet<User> Users { get; set; }
+
         public DbSet<Role> Roles { get; set; }
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
@@ -21,7 +22,7 @@ namespace MyTown.Infrastructure.Persistence.Data
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Komuna> Komunas { get; set; }
         public DbSet<Department> Departments { get; set; }
-        public DbSet<Permission> Permissions { get; set; }  
+        public DbSet<Permission> Permissions { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<StaffProfile> StaffProfiles { get; set; }
@@ -31,19 +32,24 @@ namespace MyTown.Infrastructure.Persistence.Data
 
         public DbSet<IssueCategory> IssueCategories { get; set; }
 
-        public DbSet<Issue> Issues { get; set; }    
+        public DbSet<Issue> Issues { get; set; }
 
         public DbSet<MyTownFile> Files { get; set; }
 
         public DbSet<WorkSchedule> WorkSchedules { get; set; }
         public DbSet<Notifications> Notifications { get; set; }
 
-        public DbSet<PasswordResetToken>PasswordResetTokens { get; set; }
+        public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<ProjectProposal> ProjectProposals { get; set; }
         public DbSet<Setting> Settings { get; set; }
         public DbSet<UserLockout> UserLockouts { get; set; }
-       
+
+        public DbSet<ConstructionPermitRequest> ConstructionPermitRequests { get; set; }
+
+        public DbSet<ConstructionDocument> ConstructionDocuments { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -64,6 +70,19 @@ namespace MyTown.Infrastructure.Persistence.Data
                .HasForeignKey(t => t.UserId)
                .OnDelete(DeleteBehavior.Cascade);
 
+
+            modelBuilder.Entity<ConstructionDocument>()
+           .HasOne(cD => cD.ConstructionPermitRequest)
+           .WithMany(cP => cP.ConstructionDocuments)
+           .HasForeignKey(cD => cD.ConstructionPermitRequestId)
+           .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ConstructionPermitRequest>()
+           .HasOne(cP => cP.Citizen)
+           .WithMany(c => c.ConstructionPermitRequests)
+           .HasForeignKey(cP => cP.CitizenId)
+           .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Issue>()
             .HasOne(i => i.Citizen)
              .WithMany(c => c.Issues)
@@ -78,13 +97,13 @@ namespace MyTown.Infrastructure.Persistence.Data
 
             modelBuilder.Entity<UserRole>()
                 .HasIndex(ur => new { ur.UserId, ur.RoleId })
-                .IsUnique(); 
+                .IsUnique();
 
             modelBuilder.Entity<UserRole>()
                 .Property(ur => ur.Id)
                 .ValueGeneratedOnAdd();
 
-         
+
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.User)
                 .WithMany(u => u.UserRoles)
@@ -98,14 +117,14 @@ namespace MyTown.Infrastructure.Persistence.Data
             //  Konfigurimi i lidhjes Role -> RolePermissions (Nje me Shume)
             modelBuilder.Entity<RolePermission>()
                 .HasOne(rp => rp.Role)
-                .WithMany(r => r.RolePermissions) 
+                .WithMany(r => r.RolePermissions)
                 .HasForeignKey(rp => rp.RoleId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Konfigurimi i lidhjes Permission -> RolePermissions (Nje me Shume)
             modelBuilder.Entity<RolePermission>()
                 .HasOne(rp => rp.Permission)
-                .WithMany(p => p.RolePermissions) 
+                .WithMany(p => p.RolePermissions)
                 .HasForeignKey(rp => rp.PermissionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -157,9 +176,9 @@ namespace MyTown.Infrastructure.Persistence.Data
                 .HasOne(e => e.Komuna)
                 .WithMany()
                 .HasForeignKey(e => e.KomunaId)
-                .OnDelete(DeleteBehavior.NoAction); 
-           
-         
+                .OnDelete(DeleteBehavior.NoAction);
+
+
             modelBuilder.Entity<Event>()
                 .HasMany(e => e.Files)
                 .WithOne()

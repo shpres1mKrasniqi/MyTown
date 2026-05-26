@@ -4,7 +4,7 @@ namespace MyTown.Domain.Entities
 {
     public class CitizenProfile
     {
-        
+
         public int Id { get; private set; }
         public int UserId { get; private set; }
 
@@ -24,12 +24,14 @@ namespace MyTown.Domain.Entities
         public string? PlaceOfBirth { get; private set; } = null!;
         public bool IsDeleted { get; private set; }
 
-        public DateTime CreatedAt { get; private set; } 
+        public DateTime CreatedAt { get; private set; }
 
-        public DateTime? UpdatedAt { get; private set; } 
+        public DateTime? UpdatedAt { get; private set; }
 
         public ICollection<Issue> Issues { get; private set; } = new List<Issue>();
         public ICollection<MeetingRequest> MeetingRequests { get; private set; } = new List<MeetingRequest>();
+
+        public ICollection<ConstructionPermitRequest> ConstructionPermitRequests { get; private set; } = new List<ConstructionPermitRequest>();
         protected CitizenProfile() { }
 
         public CitizenProfile(
