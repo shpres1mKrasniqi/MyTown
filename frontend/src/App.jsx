@@ -35,6 +35,9 @@ const EditIssueDetails = lazy(() => import("./pages/EditIssueDetails"));
 const UpdateIssueStatus = lazy(() => import("./pages/UpdateIssueStatus"));
 const AddMeetingRequest = lazy(() => import("./pages/AddMeetingRequest"));
 const MeetingsList = lazy(() => import("./pages/MeetingRequestsList"));
+const AddConstructionPermitRequest = lazy(
+  () => import("./pages/AddConstructionPermitRequest"),
+);
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -69,6 +72,10 @@ function App() {
 
         <Route path="/add-meeting-request" element={<AddMeetingRequest />} />
         <Route path="/meeting-requests" element={<MeetingsList />} />
+        <Route
+          path="/add-construction-permit-request"
+          element={<AddConstructionPermitRequest />}
+        />
         <Route
           path="/project-proposals/edit/:id"
           element={<EditProjectProposal />}
