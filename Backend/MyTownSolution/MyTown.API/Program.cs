@@ -176,6 +176,7 @@ builder.Services.AddScoped<IMeetingRequestService, MeetingRequestService>();
 builder.Services.AddScoped<IConstructionPermitRequestService, ConstructionPermitRequestService>();
 builder.Services.AddScoped<IDocumentFileService, DocumentFileService>();
 builder.Services.AddScoped<IHistoryService, HistoryService>();
+builder.Services.AddScoped<IDataExchangeService, MyTown.API.Services.DataExchangeService>();
 
 var emailSettings = new EmailSettings
 {
