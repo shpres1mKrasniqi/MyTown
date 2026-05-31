@@ -74,6 +74,21 @@ namespace MyTown.Application.Services
                 Location = null,
             }));
 
+            var issues = await _historyRepository.GetIssuesAsync();
+
+            history.AddRange(issues.Select(x =>
+            new MunicipalityHistoryDto
+            {
+                Id = x.Id,
+                EntityType = "Issue",
+                Title = x.Title,
+                Description = x.Description,
+                Date = x.CreatedAt,
+                Location = null,
+
+            }));
+            
+
             if (!string.IsNullOrWhiteSpace(type))
             {
                 history = history

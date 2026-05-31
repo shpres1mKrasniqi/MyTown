@@ -38,5 +38,11 @@ namespace MyTown.Infrastructure.Repositories
                 .Where(x => !x.IsDeleted)
                 .ToListAsync();
         }
+        public async Task<IEnumerable<Issue>> GetIssuesAsync()
+        {
+            return await _context.Issues
+                .Where(x => !x.IsDeleted)
+                .ToListAsync();
+        }
     }
 }

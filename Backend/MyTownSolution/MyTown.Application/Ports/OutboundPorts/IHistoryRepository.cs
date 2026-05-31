@@ -10,5 +10,6 @@ namespace MyTown.Application.Ports.OutboundPorts
         Task<IEnumerable<ProjectProposal>> GetProjectsAsync();
         Task<IEnumerable<MeetingRequest>> GetMeetingsAsync();
         Task<IEnumerable<ConstructionPermitRequest>> GetConstructionPermitsAsync();
+        Task<IEnumerable<Issue>> GetIssuesAsync();
     }
 }
