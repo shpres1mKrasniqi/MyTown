@@ -76,7 +76,11 @@ namespace MyTown.Infrastructure.SeedData
      new Permission{Name = Permissions.CanCreateMeetingRequest, Description="Lejon Krijimin e kerkesave per takime me kryetarin"},
      new Permission{ Name=Permissions.CanEditMeetingRequestStatus, Description="Lejon perditesimin e statusit te kerkeses per takim me kryetarin"},
      new Permission{Name=Permissions.CanDeleteMeetingRequest, Description="Lejon Largimin e kerkesave per takim me kryetarin"},
-     new Permission{ Name=Permissions.CanViewMeetingRequests, Description="Lejon SHIKIMIN e kerkesave per takime me kryetarin"}
+     new Permission{ Name=Permissions.CanViewMeetingRequests, Description="Lejon SHIKIMIN e kerkesave per takime me kryetarin"},
+
+     //Exporting PDF Historiku i Komunes
+     new Permission {Name = Permissions.CanExportHistoryPdf, Description = "Lejon eksportimin e historikut të komunës në format PDF"},
+     new Permission {Name = Permissions.CanViewHistory, Description = "Lejon shikimin e historikut të komunës"},
 
  };
 
@@ -169,6 +173,8 @@ namespace MyTown.Infrastructure.SeedData
                     Permissions.CanDeleteProjectProposal,
                      Permissions.CanViewMeetingRequests,
                       Permissions.CanEditMeetingRequestStatus,
+                      Permissions.CanExportHistoryPdf,
+                      Permissions.CanViewHistory
                 };
 
                 foreach (var permName in permissionsToAdd)

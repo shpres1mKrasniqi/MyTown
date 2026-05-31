@@ -26,11 +26,16 @@ using MyTown.Infrastructure.SeedData;
 using MyTown.Infrastructure.Services;
 using System.Security.Claims;
 using System.Text;
+using QuestPDF.Infrastructure;
 
 
 DotNetEnv.Env.Load(".env");
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Quest PDF
+QuestPDF.Settings.License = LicenseType.Community;
+
 
 // Add services to the container
 builder.Services.AddControllers();
@@ -144,6 +149,8 @@ builder.Services.AddScoped<ISettingRepository, SettingRepository>();
 builder.Services.AddScoped<IUserLockoutRepository, UserLockoutRepository>();
 builder.Services.AddScoped<IMeetingRequestRepository, MeetingRequestRepository>();
 builder.Services.AddScoped<IConstructionPermitRequestRepository, ConstructionPermitRequestRepository>();
+builder.Services.AddScoped<IHistoryRepository, HistoryRepository>();
+
 
 // Servicet
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -168,6 +175,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateProposalValidator>();
 builder.Services.AddScoped<IMeetingRequestService, MeetingRequestService>();
 builder.Services.AddScoped<IConstructionPermitRequestService, ConstructionPermitRequestService>();
 builder.Services.AddScoped<IDocumentFileService, DocumentFileService>();
+builder.Services.AddScoped<IHistoryService, HistoryService>();
 
 var emailSettings = new EmailSettings
 {
@@ -260,7 +268,10 @@ builder.Services.AddAuthorization(options =>
     Permissions.CanCreateMeetingRequest,
     Permissions.CanEditMeetingRequestStatus,
     Permissions.CanDeleteMeetingRequest,
-    Permissions.CanViewMeetingRequests
+    Permissions.CanViewMeetingRequests,
+
+    Permissions.CanExportHistoryPdf,
+    Permissions.CanViewHistory
 };
     foreach (var premission in permissions)
     {
