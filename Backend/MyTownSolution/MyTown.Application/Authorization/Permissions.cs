@@ -67,6 +67,9 @@ namespace MyTown.Application.Authorization
         public const string CanEditMeetingRequestStatus = "CanEditMeetingStatus";
         public const string CanDeleteMeetingRequest = "CanDeleteMeetingRequest";
         public const string CanViewMeetingRequests = "CanViewMeetingRequests";
-       
+
+        public const string CanExportHistoryPdf = "CanExportHistoryPdf";
+        public const string CanViewHistory = "CanViewHistory";
+
     }
 }
