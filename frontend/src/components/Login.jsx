@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { login } from "../services/authService";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -9,7 +8,7 @@ export default function Login() {
     password: "",
   });
   const [error, setError] = useState(null);
-
+  const [showMore, setShowMore] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -21,19 +20,13 @@ export default function Login() {
 
       const role = res.roles[0];
 
-      if (role === "Admin") {
-        navigate("/admin-dashboard");
-      } else if (role === "Staff") {
-        navigate("/staff-dashboard");
-      } else if (role === "Citizen") {
-        navigate("/citizen-dashboard");
-      }
+      if (role === "Admin") navigate("/admin-dashboard");
+      else if (role === "Staff") navigate("/staff-dashboard");
+      else if (role === "Citizen") navigate("/citizen-dashboard");
     } catch (err) {
       console.error(err);
-      if (err.response && err.response.data && err.response.data.message) {
+      if (err.response?.data?.message) {
         setError(err.response.data.message);
-      } else if (err.message) {
-        setError(err.message);
       } else {
         setError("Login dështoi. Ju lutem provoni përsëri.");
       }
@@ -41,67 +34,95 @@ export default function Login() {
   };
 
   return (
-    <main className="flex items-center justify-center w-full min-h-screen px-4">
-      <form onSubmit={handleSubmit} className="flex w-full flex-col max-w-96">
-        <h2 className="text-4xl font-medium text-gray-900">Mire se vini</h2>
+    <div className="h-screen flex bg-white">
+      <div className="hidden lg:flex w-1/2  bg-gradient-to-r from-blue-800 to-blue-200 justify-around items-center relative isolation-auto">
+        <div className="relative z-10 px-12">
+          <h1 className="text-white font-bold text-4xl">MyTown</h1>
+          <p className="text-white mt-2 max-w-sm">
+            Mirë se vini në platformën e menaxhimit të qytetit tuaj. Raportoni
+            problemet dhe kontribuoni në komunitet.
+          </p>
+          <button
+            onClick={() => setShowMore(!showMore)}
+            className="block w-32 bg-white text-indigo-800 mt-6 py-2 rounded-2xl font-bold hover:bg-gray-100 transition-all"
+          >
+            {showMore ? "Fsheh tekstin" : "Shiko më shumë"}
+          </button>
 
-        <p className="mt-4 text-base text-gray-500/90">
-          Vendosni te dhenat tuaja per te vazhduar...
-        </p>
+          {showMore && (
+            <p className="text-white mt-4 max-w-md transition-all duration-300">
+              MyTown është një platformë digjitale që synon të lidhë qytetarët
+              me komunën e tyre, duke mundësuar raportimin e problemeve, ndarjen
+              e shqetësimeve dhe pjesëmarrjen aktive në vendimmarrje. Platforma
+              promovon transparencën, komunikimin dhe përfshirjen qytetare për
+              një komunitet më të mirë.
+            </p>
+          )}
+        </div>
+      </div>
 
-        {error && (
-          <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
-            {error}
+      {/* Pjesa e formes */}
+      <div className="flex w-full lg:w-1/2 justify-center items-center lg:bg-gradient-to-r from-blue-200  to-white sm:bg-white relative z-10">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-whitesmoke p-6 w-full max-w-md"
+        >
+          <h1 className="text-gray-800 font-bold text-2xl mb-1">
+            Mirë se vini!
+          </h1>
+          <p className="text-sm text-gray-600 mb-6">Kyquni për të vazhduar</p>
+
+          {error && (
+            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+
+          <div className="flex items-center border-1 py-3 px-3  mb-4">
+            <input
+              type="email"
+              required
+              placeholder="Email Address"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              className="bg-transparent pl-2 outline-none border-none w-full"
+            />
           </div>
-        )}
 
-        <div className="mt-10">
-          <label className="font-medium">Email</label>
-          <input
-            type="email"
-            name="email"
-            required
-            placeholder="Vendosni Email-in tuaj"
-            className="mt-2 rounded-md ring ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-          />
-        </div>
+          <div className="flex items-center border-1 py-3 px-3  mb-4">
+            <input
+              type="password"
+              required
+              placeholder="Password"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              className="pl-2 outline-none border-none w-full"
+            />
+          </div>
 
-        <div className="mt-6">
-          <label className="font-medium">Password</label>
-          <input
-            type="password"
-            name="password"
-            required
-            placeholder="Vendosni Fjalekalimin tuaj"
-            className="mt-2 rounded-md ring ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-          />
-        </div>
+          <button
+            type="submit"
+            className="block w-full bg-indigo-600 mt-4 py-3 text-white font-semibold hover:bg-indigo-700 transition-all hover:cursor-pointer"
+          >
+            Login
+          </button>
 
-        <button
-          type="submit"
-          className="mt-8 py-3 w-full cursor-pointer rounded-md bg-indigo-600 text-white transition hover:bg-indigo-700"
-        >
-          Login
-        </button>
-
-        <p className="text-center py-8">
-          Nuk keni llogari?{" "}
-          <a href="/create-citizen" className="text-[#0067b8] hover:underline">
-            Regjistrohu
-          </a>
-        </p>
-
-        <Link
-          to="/forgot-password"
-          className="text-sm text-blue-600 hover:underline"
-        >
-          Keni harruar fjalëkalimin?
-        </Link>
-      </form>
-    </main>
+          <div className="flex justify-between mt-4 text-sm">
+            <Link
+              to="/forgot-password"
+              className="text-gray-500 hover:text-blue-500 font-semibold"
+            >
+              Keni harruar fjalëkalimin?
+            </Link>
+            <Link
+              to="/create-citizen"
+              className="text-blue-500 hover:underline font-semibold"
+            >
+              Regjistrohu
+            </Link>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
