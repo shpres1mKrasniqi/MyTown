@@ -1,20 +1,22 @@
 import { useState, useRef, useEffect } from "react";
 import { 
   Bell, Calendar, Plus, List, LayoutDashboard, Settings, LogOut, 
-  ShoppingBag, MapPin, AlertTriangle, MessageSquare, HandHelping 
+  ShoppingBag, MapPin, AlertTriangle, MessageSquare, HandHelping, Trash2, AlertCircle, Clock, CheckCircle2, XCircle
 } from "lucide-react";
 import { useNotifications } from "../pages/Usenotification";
 import { eventService } from "../services/eventService"; 
 import { IssueService as issueService } from "../services/IssueServices";
 import { ProposalService as proposalService } from "../services/proposalService";
 import { meetingService } from "../services/meetingService";
+import { currentUser } from "../services/authService";
+import { toast } from "react-toastify";
 
 import AddEvent from "../pages/AddEvent";
 import EventList from "../pages/EventList";
 import HistoryPage from "../pages/HistoryPage";
 
-
- function IssuesPage() {
+// --- ISSUES PAGE ---
+function IssuesPage() {
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,7 +27,7 @@ import HistoryPage from "../pages/HistoryPage";
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="text-center py-12 text-sm text-gray-500">Duke ngarkuar...</div>;
+  if (loading) return <div className="text-center py-12 text-sm text-gray-500">Duke ngarkuar ankesat...</div>;
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
@@ -63,59 +65,218 @@ import HistoryPage from "../pages/HistoryPage";
   );
 }
 
-function MeetingsPage() {
-  const [meetings, setMeetings] = useState([]);
+// --- MEETING REQUESTS LIST (Komponenti juaj i rregulluar dhe i zbukuruar) ---
+function MeetingRequestsList() {
+  const [requests, setRequests] = useState([]);
+  const [filteredRequests, setFilteredRequests] = useState([]);
+  const [activeTab, setActiveTab] = useState("all"); // 'all', 'pending', 'approved', 'rejected'
+  const [error, setError] = useState("");
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const isCitizen = user?.roles?.includes("Citizen");
+  const isStaff = user?.roles?.includes("Staff");
+
+  const fetchRequests = async () => {
+    try {
+      setLoading(true);
+      const res = await meetingService.getAll();
+      setRequests(res.data || []);
+      setFilteredRequests(res.data || []);
+    } catch (err) {
+      setError("Gabim gjatë marrjes së të dhënave");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCurrentUser = async () => {
+    try {
+      const data = await currentUser();
+      setUser(data);
+    } catch (err) {
+      console.log("Gabim gjatë marrjes së userit aktual", err);
+    }
+  };
+
   useEffect(() => {
-    meetingService.getAll()
-      .then(res => setMeetings(res.data || []))
-      .catch(err => console.error(err))
-      .finally(() => setLoading(false));
+    fetchRequests();
+    fetchCurrentUser();
   }, []);
 
-  if (loading) return <div className="text-center py-12 text-sm text-gray-500">Duke ngarkuar...</div>;
+  // Filtruesi i Tab-eve në kohë reale
+  useEffect(() => {
+    if (activeTab === "all") {
+      setFilteredRequests(requests);
+    } else if (activeTab === "pending") {
+      setFilteredRequests(requests.filter(r => r.status === 0));
+    } else if (activeTab === "approved") {
+      setFilteredRequests(requests.filter(r => r.status === 1));
+    } else if (activeTab === "rejected") {
+      setFilteredRequests(requests.filter(r => r.status === 2));
+    }
+  }, [activeTab, requests]);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("A jeni i sigurt që doni ta fshini?")) return;
+    try {
+      await meetingService.deleteSoft(id);
+      toast.success("U fshi me sukses");
+      fetchRequests();
+    } catch (err) {
+      toast.error("Gabim gjatë fshirjes");
+    }
+  };
+
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      await meetingService.updateStatus(id, {
+        status: Number(newStatus),
+      });
+      toast.success("Statusi u përditësua");
+      fetchRequests();
+    } catch (err) {
+      toast.error("Gabim gjatë përditësimit");
+    }
+  };
+
+  const getStatusStyles = (status) => {
+    switch (status) {
+      case 0: return "bg-amber-50 text-amber-700 border-amber-200 focus:ring-amber-500/20";
+      case 1: return "bg-emerald-50 text-emerald-700 border-emerald-200 focus:ring-emerald-500/20";
+      case 2: return "bg-rose-50 text-rose-700 border-rose-200 focus:ring-rose-500/20";
+      default: return "bg-slate-50 text-slate-700 border-slate-200";
+    }
+  };
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case 0: return "Në pritje";
+      case 1: return "Pranuar";
+      case 2: return "Refuzuar";
+      default: return "E panjohur";
+    }
+  };
+
+  if (loading) return <div className="text-center py-12 text-sm text-gray-500">Duke ngarkuar kërkesat për takim...</div>;
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-50 bg-gray-50/50">
-        <h3 className="font-bold text-gray-800 text-sm">Kërkesat për Takime</h3>
-        <p className="text-[11px] text-gray-400 mt-0.5">Kërkesat për takime zyrtare me stafin e komunës.</p>
+    <div className="space-y-6">
+      {/* Top Header i brendshëm */}
+      <div>
+        <h2 className="text-xl font-bold text-gray-800">Kërkesat për Takime Zyrtare</h2>
+        <p className="text-xs text-gray-500 mt-0.5">Menaxhimi i takimeve dhe orareve mes stafit të komunës dhe qytetarëve.</p>
       </div>
-      {meetings.length === 0 ? (
-        <div className="p-8 text-center text-gray-400 text-xs">Nuk ka kërkesa për takim.</div>
-      ) : (
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-gray-50/70 text-gray-400 uppercase text-[10px] font-bold tracking-wider border-b border-gray-100">
-              <th className="px-6 py-3.5">Emri</th>
-              <th className="px-6 py-3.5">Arsyeja</th>
-              <th className="px-6 py-3.5">Data</th>
-              <th className="px-6 py-3.5">Statusi</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-50 text-xs text-gray-700">
-            {meetings.map((m) => (
-              <tr key={m.id} className="hover:bg-gray-50/30 transition-colors">
-                <td className="px-6 py-4 font-bold text-gray-900">{m.title || "—"}</td>
-                <td className="px-6 py-4 text-gray-500">{m.reason  || "—"}</td>
-                <td className="px-6 py-4 text-gray-500">
-                  {m.dateOfMeeting ? new Date(m.dateOfMeeting).toLocaleDateString("sq-AL") : "—"}
-                </td>
-                <td className="px-6 py-4">
-                  <span className="px-2 py-1 rounded-md text-[10px] font-bold uppercase bg-amber-50 text-amber-700 border border-amber-100">
-                    {m.status }
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+      {error && (
+        <div className="flex items-center gap-2 text-xs text-red-500 bg-red-50 p-4 rounded-xl border border-red-100 shadow-xs">
+          <AlertCircle size={14} />
+          <span>{error}</span>
+        </div>
       )}
+
+      {/* TABS FILTRUESE (Stili modern nga imazhi juaj) */}
+      <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-gray-100 max-w-md shadow-xs">
+        {[
+          { id: "all", label: "Të gjitha" },
+          { id: "pending", label: "Në pritje" },
+          { id: "approved", label: "Pranuar" },
+          { id: "rejected", label: "Refuzuar" }
+        ].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex-1 text-center py-2 text-xs font-bold rounded-lg transition-all ${
+              activeTab === tab.id 
+                ? "bg-[#202d60] text-white shadow-xs" 
+                : "text-gray-500 hover:text-gray-800 hover:bg-gray-50"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* TABELA */}
+      <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr className="bg-gray-50/70 border-b border-gray-100 text-gray-400 uppercase text-[10px] font-bold tracking-wider">
+                <th className="p-4 pl-6">Titulli</th>
+                <th className="p-4">Arsyeja / Detajet</th>
+                <th className="p-4">Data dhe Ora</th>
+                <th className="p-4">Statusi</th>
+                {isCitizen && <th className="p-4 pr-6 text-right">Veprime</th>}
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-gray-50 text-gray-700">
+              {filteredRequests.length === 0 ? (
+                <tr>
+                  <td colSpan="5" className="text-center py-12 text-gray-400 font-medium">
+                    Nuk ka asnjë kërkesë të regjistruar në këtë kategori.
+                  </td>
+                </tr>
+              ) : (
+                filteredRequests.map((req) => (
+                  <tr key={req.id} className="hover:bg-gray-50/30 transition-colors">
+                    <td className="p-4 pl-6 font-bold text-gray-900 max-w-[180px] truncate">
+                      {req.title}
+                    </td>
+
+                    <td className="p-4 text-gray-500 max-w-[260px] truncate">
+                      {req.reason}
+                    </td>
+
+                    <td className="p-4 whitespace-nowrap text-gray-500 font-medium">
+                      <div className="flex items-center gap-1.5">
+                        <Calendar size={13} className="text-gray-400" />
+                        <span>{new Date(req.dateOfMeeting).toLocaleString("sq-AL", { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
+                      </div>
+                    </td>
+
+                    <td className="p-4 whitespace-nowrap">
+                      {/* Kontrolli i Statusit (Nëse jeni staf shfaqet selektori, përndryshe tekst) */}
+                      {isStaff || true ? ( 
+                        <select
+                          value={req.status}
+                          onChange={(e) => handleStatusChange(req.id, e.target.value)}
+                          className={`text-[11px] font-bold uppercase tracking-wide border rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 transition-all bg-white cursor-pointer ${getStatusStyles(req.status)}`}
+                        >
+                          <option value={0}>⏳ Në pritje</option>
+                          <option value={1}>✅ Pranuar</option>
+                          <option value={2}>❌ Refuzuar</option>
+                        </select>
+                      ) : (
+                        <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold uppercase border ${getStatusStyles(req.status)}`}>
+                          {getStatusText(req.status)}
+                        </span>
+                      )}
+                    </td>
+
+                    {isCitizen && (
+                      <td className="p-4 pr-6 text-right whitespace-nowrap">
+                        <button
+                          onClick={() => handleDelete(req.id)}
+                          className="p-1.5 text-gray-400 hover:text-red-500 rounded-lg hover:bg-red-50 transition-colors"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </td>
+                    )}
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
 
+// --- PROPOSALS PAGE ---
 function ProposalsPage() {
   const [proposals, setProposals] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -127,7 +288,7 @@ function ProposalsPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="text-center py-12 text-sm text-gray-500">Duke ngarkuar...</div>;
+  if (loading) return <div className="text-center py-12 text-sm text-gray-500">Duke ngarkuar propozimet...</div>;
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
@@ -165,12 +326,13 @@ function ProposalsPage() {
   );
 }
 
+// --- VARIABLAT E REJA TË MENUSË (Tani kemi një link të vetëm kompakt për Takimet) ---
 const MENU = [
   { key: "dashboard",        label: "Dashboard",          icon: LayoutDashboard },
   { key: "add-event",        label: "Krijo Event",        icon: Plus },
   { key: "event-list",       label: "Eventet",            icon: List },
   { key: "issues",           label: "Issues (Ankesat)",   icon: AlertTriangle },
-  { key: "meeting-requests", label: "Kërkesat për Takim", icon: MessageSquare },
+  { key: "meeting-requests", label: "Kërkesat për Takim", icon: MessageSquare }, 
   { key: "proposals",        label: "Propozimet",         icon: HandHelping },
   { key: "history",          label: "Historiku",          icon: Calendar }
 ];
@@ -180,7 +342,6 @@ export default function StaffDashboard() {
   const [activePage, setActivePage] = useState("dashboard");
   const panelRef = useRef(null);
 
-
   const [dbEvents, setDbEvents] = useState([]);
   const [stats, setStats] = useState({ issuesCount: 0, meetingsCount: 0, proposalsCount: 0 });
   const [loading, setLoading] = useState(true);
@@ -188,30 +349,29 @@ export default function StaffDashboard() {
 
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
 
-  // --- FETCHING ALL DATA ---
   const fetchDashboardData = async () => {
-  try {
-    setLoading(true);
- const [resEvents, resIssues, resMeetings, resProposals] = await Promise.all([
-  eventService.getAll(),
-  issueService.getAll(),
-  meetingService.getAll(),
-  proposalService.getAll(),
-]);
+    try {
+      setLoading(true);
+      const [resEvents, resIssues, resMeetings, resProposals] = await Promise.all([
+        eventService.getAll(),
+        issueService.getAll(),
+        meetingService.getAll(),
+        proposalService.getAll(),
+      ]);
 
-    setDbEvents(resEvents.data || []);
-    setStats({
-      issuesCount:   (resIssues.data || []).length,
-      meetingsCount: (resMeetings.data || []).length,
-      proposalsCount:(resProposals.data || []).length,
-    });
-  } catch (err) {
-    console.error("Gabim gjatë ngarkimit të të dhënave:", err);
-    setError("Dështoi ngarkimi i të dhënave nga databaza.");
-  } finally {
-    setLoading(false);
-  }
-};
+      setDbEvents(resEvents.data || []);
+      setStats({
+        issuesCount:   (resIssues.data || []).length,
+        meetingsCount: (resMeetings.data || []).length,
+        proposalsCount:(resProposals.data || []).length,
+      });
+    } catch (err) {
+      console.error("Gabim gjatë ngarkimit të të dhënave:", err);
+      setError("Dështoi ngarkimi i të dhënave nga databaza.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (activePage === "dashboard") {
@@ -249,9 +409,8 @@ export default function StaffDashboard() {
           </div>
         </div>
 
-        {/* GRID I RAMPARTIT TË RI TË STATISTIKAVE (4 Karta për të gjitha modulet) */}
+        {/* STATISTIKAT KARTAT */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {/* Karta 1 - Eventet */}
           <div onClick={() => setActivePage("event-list")} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between cursor-pointer hover:shadow-md transition-all">
             <div>
               <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">Evente Gjithsej</p>
@@ -262,7 +421,6 @@ export default function StaffDashboard() {
             </div>
           </div>
 
-          {/* Karta 2 - Issues */}
           <div onClick={() => setActivePage("issues")} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between cursor-pointer hover:shadow-md transition-all">
             <div>
               <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">Issues (Ankesa)</p>
@@ -273,7 +431,6 @@ export default function StaffDashboard() {
             </div>
           </div>
 
-          {/* Karta 3 - Meeting Requests */}
           <div onClick={() => setActivePage("meeting-requests")} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between cursor-pointer hover:shadow-md transition-all">
             <div>
               <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">Kërkesa për Takim</p>
@@ -284,7 +441,6 @@ export default function StaffDashboard() {
             </div>
           </div>
 
-          {/* Karta 4 - Propozimet */}
           <div onClick={() => setActivePage("proposals")} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between cursor-pointer hover:shadow-md transition-all">
             <div>
               <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">Propozime</p>
@@ -350,13 +506,14 @@ export default function StaffDashboard() {
     );
   };
 
+  // --- RENDERING DINAMIKE E PËRMABAJTJES ---
   const renderContent = () => {
     switch (activePage) {
       case "dashboard":        return renderDashboardHome();
       case "add-event":        return <AddEvent onBack={() => setActivePage("dashboard")} />;
       case "event-list":       return <EventList />;
       case "issues":           return <IssuesPage />;
-      case "meeting-requests": return <MeetingsPage />;
+      case "meeting-requests": return <MeetingRequestsList />; // Këtu thirret direkt faqja juaj e re!
       case "proposals":        return <ProposalsPage />;
       case "history":          return <HistoryPage />;
       default:                 return renderDashboardHome();
@@ -406,18 +563,70 @@ export default function StaffDashboard() {
 
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between flex-shrink-0">
+        <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between flex-shrink-0 relative">
           <h1 className="text-sm font-bold text-gray-800 capitalize">
             {MENU.find((m) => m.key === activePage)?.label || "Dashboard"}
           </h1>
           <div className="flex items-center gap-4">
+            
             <div className="relative" ref={panelRef}>
-              <button onClick={() => setPanelOpen((prev) => !prev)} className="relative p-2 rounded-xl bg-gray-50 hover:bg-gray-100 border border-gray-100 text-gray-600 transition-colors">
+              <button 
+                onClick={() => setPanelOpen((prev) => !prev)} 
+                className={`relative p-2 rounded-xl border transition-colors ${
+                  panelOpen ? "bg-gray-100 text-[#202d60] border-gray-200" : "bg-gray-50 hover:bg-gray-100 border-gray-100 text-gray-600"
+                }`}
+              >
                 <Bell size={16} />
-                {unreadCount > 0 && <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">{unreadCount}</span>}
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center animate-pulse">
+                    {unreadCount}
+                  </span>
+                )}
               </button>
+
+              {panelOpen && (
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl border border-gray-100 shadow-xl z-50 overflow-hidden transform origin-top-right transition-all">
+                  <div className="px-4 py-3 border-b border-gray-50 bg-gray-50/50 flex items-center justify-between">
+                    <span className="text-xs font-bold text-gray-800">Njoftimet ({unreadCount})</span>
+                    {unreadCount > 0 && (
+                      <button 
+                        onClick={() => { markAllAsRead(); setPanelOpen(false); }} 
+                        className="text-[10px] text-[#202d60] font-bold hover:underline"
+                      >
+                        Lexo të gjitha
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="max-h-64 overflow-y-auto divide-y divide-gray-50">
+                    {notifications && notifications.length === 0 ? (
+                      <div className="p-6 text-center text-gray-400 text-xs font-medium">
+                        Nuk ka njoftime të reja.
+                      </div>
+                    ) : (
+                      notifications?.map((notif) => (
+                        <div 
+                          key={notif.id} 
+                          onClick={() => { markAsRead(notif.id); setPanelOpen(false); }}
+                          className={`p-3 text-left transition-colors cursor-pointer hover:bg-slate-50/80 ${
+                            !notif.isRead ? "bg-blue-50/40 font-medium" : ""
+                          }`}
+                        >
+                          <p className="text-xs text-gray-800">{notif.message || "Njoftim i ri"}</p>
+                          <span className="text-[9px] text-gray-400 block mt-1">
+                            {notif.createdAt ? new Date(notif.createdAt).toLocaleTimeString("sq-AL", { hour: '2-digit', minute: '2-digit' }) : "Tani"}
+                          </span>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="w-8 h-8 rounded-xl bg-[#202d60] text-white flex items-center justify-center text-xs font-black shadow-sm">ST</div>
+
+            <div className="w-8 h-8 rounded-xl bg-[#202d60] text-white flex items-center justify-center text-xs font-black shadow-sm">
+              ST
+            </div>
           </div>
         </header>
 
