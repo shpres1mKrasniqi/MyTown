@@ -10,6 +10,8 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import * as signalR from "@microsoft/signalr";
+import { MessageSquare, ThumbsUp, MapPin } from "lucide-react";
+import DataExchangeToolbar from "../components/DataExchangeToolbar";
 import api from "../api/axios";
 
 function ImageCarousel({ files }) {
@@ -251,6 +253,10 @@ function IssueList() {
   return (
     <div className="min-h-screen bg-white md:bg-gray-50 pb-10">
       <div className="max-w-[470px] mx-auto pt-4 space-y-4">
+        <div className="flex items-center justify-between px-3">
+          <h1 className="text-lg font-semibold text-slate-900">Issues</h1>
+          <DataExchangeToolbar entityType="issues" onImportSuccess={fetchIssues} />
+        </div>
         {issues.length === 0 && (
           <p className="text-center text-gray-500 mt-10">
             Nuk ka issues për momentin.

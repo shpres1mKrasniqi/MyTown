@@ -6,6 +6,7 @@ import { ProposalVoteService } from "../services/voteService";
 import { currentUser } from "../services/authService";
 import { MoreHorizontal, Trash2 } from "lucide-react";
 import { Navigate, useNavigate } from "react-router-dom";
+import DataExchangeToolbar from "../components/DataExchangeToolbar";
 
 function ProposalsList() {
   const [proposals, setProposals] = useState([]);
@@ -150,6 +151,10 @@ function ProposalsList() {
   return (
     <div className="min-h-screen bg-gray-50 pb-10">
       <div className="max-w-[700px] mx-auto pt-5 space-y-5">
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-semibold text-slate-900">Projekt Propozimet</h1>
+          <DataExchangeToolbar entityType="proposals" onImportSuccess={fetchProposals} />
+        </div>
         {proposals.map((proposal) => {
           const voteInfo = votesByProposal[proposal.id];
 

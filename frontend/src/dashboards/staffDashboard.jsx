@@ -12,6 +12,10 @@ import { meetingService } from "../services/meetingService";
 import AddEvent from "../pages/AddEvent";
 import EventList from "../pages/EventList";
 import HistoryPage from "../pages/HistoryPage";
+import MenaxhoProposals from "../pages/MenaxhoProposals";
+import MenaxhoEvents from "../pages/MenaxhoEvents";
+import MenaxhoMeetings from "../pages/MenaxhoMeetings";
+import MenaxhoPermits from "../pages/MenaxhoPermits";
 
 
  function IssuesPage() {
@@ -63,107 +67,7 @@ import HistoryPage from "../pages/HistoryPage";
   );
 }
 
-function MeetingsPage() {
-  const [meetings, setMeetings] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    meetingService.getAll()
-      .then(res => setMeetings(res.data || []))
-      .catch(err => console.error(err))
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) return <div className="text-center py-12 text-sm text-gray-500">Duke ngarkuar...</div>;
-
-  return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-50 bg-gray-50/50">
-        <h3 className="font-bold text-gray-800 text-sm">Kërkesat për Takime</h3>
-        <p className="text-[11px] text-gray-400 mt-0.5">Kërkesat për takime zyrtare me stafin e komunës.</p>
-      </div>
-      {meetings.length === 0 ? (
-        <div className="p-8 text-center text-gray-400 text-xs">Nuk ka kërkesa për takim.</div>
-      ) : (
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-gray-50/70 text-gray-400 uppercase text-[10px] font-bold tracking-wider border-b border-gray-100">
-              <th className="px-6 py-3.5">Emri</th>
-              <th className="px-6 py-3.5">Arsyeja</th>
-              <th className="px-6 py-3.5">Data</th>
-              <th className="px-6 py-3.5">Statusi</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-50 text-xs text-gray-700">
-            {meetings.map((m) => (
-              <tr key={m.id} className="hover:bg-gray-50/30 transition-colors">
-                <td className="px-6 py-4 font-bold text-gray-900">{m.title || "—"}</td>
-                <td className="px-6 py-4 text-gray-500">{m.reason  || "—"}</td>
-                <td className="px-6 py-4 text-gray-500">
-                  {m.dateOfMeeting ? new Date(m.dateOfMeeting).toLocaleDateString("sq-AL") : "—"}
-                </td>
-                <td className="px-6 py-4">
-                  <span className="px-2 py-1 rounded-md text-[10px] font-bold uppercase bg-amber-50 text-amber-700 border border-amber-100">
-                    {m.status }
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
-  );
-}
-
-function ProposalsPage() {
-  const [proposals, setProposals] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    proposalService.getAll()
-      .then(res => setProposals(res.data || []))
-      .catch(err => console.error(err))
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) return <div className="text-center py-12 text-sm text-gray-500">Duke ngarkuar...</div>;
-
-  return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-50 bg-gray-50/50">
-        <h3 className="font-bold text-gray-800 text-sm">Lista e Propozimeve</h3>
-        <p className="text-[11px] text-gray-400 mt-0.5">Idetë dhe propozimet e dërguara nga komuniteti.</p>
-      </div>
-      {proposals.length === 0 ? (
-        <div className="p-8 text-center text-gray-400 text-xs">Nuk ka propozime të regjistruara.</div>
-      ) : (
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-gray-50/70 text-gray-400 uppercase text-[10px] font-bold tracking-wider border-b border-gray-100">
-              <th className="px-6 py-3.5">Titulli</th>
-              <th className="px-6 py-3.5">Përshkrimi</th>
-              <th className="px-6 py-3.5">Statusi</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-50 text-xs text-gray-700">
-            {proposals.map((p) => (
-              <tr key={p.id} className="hover:bg-gray-50/30 transition-colors">
-                <td className="px-6 py-4 font-bold text-gray-900">{p.title}</td>
-                <td className="px-6 py-4 text-gray-500">{p.description || "—"}</td>
-                <td className="px-6 py-4">
-                  <span className="px-2 py-1 rounded-md text-[10px] font-bold uppercase bg-purple-50 text-purple-700 border border-purple-100">
-                    {p.status || "Aktive"}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
-  );
-}
 
 const MENU = [
   { key: "dashboard",        label: "Dashboard",          icon: LayoutDashboard },
@@ -172,6 +76,7 @@ const MENU = [
   { key: "issues",           label: "Issues (Ankesat)",   icon: AlertTriangle },
   { key: "meeting-requests", label: "Kërkesat për Takim", icon: MessageSquare },
   { key: "proposals",        label: "Propozimet",         icon: HandHelping },
+  { key: "construction-permits", label: "Leje Ndërtimi", icon: List },
   { key: "history",          label: "Historiku",          icon: Calendar }
 ];
 
@@ -354,10 +259,11 @@ export default function StaffDashboard() {
     switch (activePage) {
       case "dashboard":        return renderDashboardHome();
       case "add-event":        return <AddEvent onBack={() => setActivePage("dashboard")} />;
-      case "event-list":       return <EventList />;
+      case "event-list":       return <MenaxhoEvents isReadonly={true} />;
       case "issues":           return <IssuesPage />;
-      case "meeting-requests": return <MeetingsPage />;
-      case "proposals":        return <ProposalsPage />;
+      case "meeting-requests": return <MenaxhoMeetings isReadonly={true} />;
+      case "proposals":        return <MenaxhoProposals isReadonly={true} />;
+      case "construction-permits": return <MenaxhoPermits isReadonly={true} />;
       case "history":          return <HistoryPage />;
       default:                 return renderDashboardHome();
     }

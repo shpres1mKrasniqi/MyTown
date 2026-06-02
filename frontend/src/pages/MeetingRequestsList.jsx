@@ -3,6 +3,7 @@ import { meetingService } from "../services/meetingService";
 import { Trash2, Calendar, AlertCircle } from "lucide-react";
 import { toast } from "react-toastify";
 import { currentUser } from "../services/authService";
+import DataExchangeToolbar from "../components/DataExchangeToolbar";
 
 function MeetingRequestsList() {
   const [requests, setRequests] = useState([]);
@@ -88,13 +89,16 @@ function MeetingRequestsList() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-slate-900">
-          Kërkesat për Takim
-        </h1>
-        <p className="text-sm text-slate-500 mt-1">
-          Menaxhoni dhe shikoni statusin e të gjitha kërkesave për takim.
-        </p>
+      <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold text-slate-900">
+            Kërkesat për Takim
+          </h1>
+          <p className="text-sm text-slate-500 mt-1">
+            Menaxhoni dhe shikoni statusin e të gjitha kërkesave për takim.
+          </p>
+        </div>
+        <DataExchangeToolbar entityType="meetings" onImportSuccess={fetchRequests} />
       </div>
 
       {error && (
