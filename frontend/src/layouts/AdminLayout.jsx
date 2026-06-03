@@ -9,6 +9,11 @@ import {
   Users,
   PlusSquare,
   PlusSquareIcon,
+  AlertTriangle,
+  Lightbulb,
+  Calendar,
+  MessageSquare,
+  Hammer
 } from "lucide-react";
 
 export default function AdminLayout() {
@@ -25,6 +30,11 @@ export default function AdminLayout() {
     const path = location.pathname.toLowerCase();
     if (path.includes("komuna")) return "komunat";
     if (path.includes("department")) return "manage";
+    if (path.includes("issue")) return "issues";
+    if (path.includes("propozim")) return "propozime";
+    if (path.includes("event")) return "events";
+    if (path.includes("meeting")) return "meetings";
+    if (path.includes("permit")) return "permits";
     return "overview";
   };
 
@@ -99,6 +109,45 @@ export default function AdminLayout() {
               }
               label="Shto Kategori te problemit"
               onClick={() => navigate("/add-issueCategory")}
+            />
+            
+            <div className="pt-4 pb-2">
+              <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Të Dhënat</p>
+            </div>
+
+            <SidebarItem
+              icon={<AlertTriangle size={20} />}
+              label="Ankesat (Issues)"
+              active={activeView === "issues"}
+              onClick={() => navigate("/manage-issues")}
+            />
+            
+            <SidebarItem
+              icon={<Lightbulb size={20} />}
+              label="Propozimet"
+              active={activeView === "propozime"}
+              onClick={() => navigate("/manage-proposals")}
+            />
+            
+            <SidebarItem
+              icon={<Calendar size={20} />}
+              label="Eventet"
+              active={activeView === "events"}
+              onClick={() => navigate("/manage-events")}
+            />
+            
+            <SidebarItem
+              icon={<MessageSquare size={20} />}
+              label="Takimet"
+              active={activeView === "meetings"}
+              onClick={() => navigate("/manage-meetings")}
+            />
+            
+            <SidebarItem
+              icon={<Hammer size={20} />}
+              label="Lejet e Ndërtimit"
+              active={activeView === "permits"}
+              onClick={() => navigate("/manage-permits")}
             />
           </nav>
         </div>

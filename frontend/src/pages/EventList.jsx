@@ -3,6 +3,7 @@ import { eventService } from "../services/eventService";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import * as signalR from "@microsoft/signalr";
 import { MapPin } from "lucide-react";
+import DataExchangeToolbar from "../components/DataExchangeToolbar";
 function ImageCarousel({ files }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -144,6 +145,10 @@ function EventList() {
   return (
     <div className="min-h-screen bg-white md:bg-gray-50 pb-10">
       <div className="max-w-[470px] mx-auto pt-4 space-y-4">
+        <div className="flex items-center justify-between px-3">
+          <h1 className="text-lg font-semibold text-slate-900">Eventet</h1>
+          <DataExchangeToolbar entityType="events" onImportSuccess={fetchEvents} />
+        </div>
         {events.length === 0 && (
           <p className="text-center text-gray-400 mt-20">
             Nuk ka evente të publikuara.

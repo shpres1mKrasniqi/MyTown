@@ -22,6 +22,11 @@ const AddStaff = lazy(() => import("./pages/AddStaff"));
 const EditStaff = lazy(() => import("./pages/EditStaff"));
 const AddIssue = lazy(() => import("./pages/AddIssues"));
 const IssueList = lazy(() => import("./pages/IssueList"));
+const MenaxhoIssues = lazy(() => import("./pages/MenaxhoIssues"));
+const MenaxhoProposals = lazy(() => import("./pages/MenaxhoProposals"));
+const MenaxhoEvents = lazy(() => import("./pages/MenaxhoEvents"));
+const MenaxhoMeetings = lazy(() => import("./pages/MenaxhoMeetings"));
+const MenaxhoPermits = lazy(() => import("./pages/MenaxhoPermits"));
 const AddIssueCategory = lazy(() => import("./pages/AddIssueCategory"));
 const CreateCitizen = lazy(() => import("./pages/CreateCitizen"));
 const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
@@ -38,7 +43,12 @@ const MeetingsList = lazy(() => import("./pages/MeetingRequestsList"));
 const AddConstructionPermitRequest = lazy(
   () => import("./pages/AddConstructionPermitRequest"),
 );
-
+const ConstructionPermitsList = lazy(
+  () => import("./pages/ConstructionPermitsList"),
+);
+const MeetingRequestsSearch = lazy(
+  () => import("./pages/MeetingRequestsSearch"),
+);
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -59,20 +69,32 @@ function App() {
           <Route path="/add-staff" element={<AddStaff />} />
           <Route path="/add-issueCategory" element={<AddIssueCategory />} />
           <Route path="/add-event" element={<AddEvent />} />
+          <Route path="/manage-issues" element={<MenaxhoIssues />} />
+          <Route path="/manage-proposals" element={<MenaxhoProposals />} />
+          <Route path="/manage-events" element={<MenaxhoEvents />} />
+          <Route path="/manage-meetings" element={<MenaxhoMeetings />} />
+          <Route path="/manage-permits" element={<MenaxhoPermits />} />
+          <Route path="/issues" element={<IssueList />} />
+          <Route path="/lista-propozimeve" element={<ProposalsList />} />
+          <Route path="/events" element={<EventList />} />
+          <Route path="/meeting-requests" element={<MeetingsList />} />
+          <Route
+            path="/advanced-meeting-requests"
+            element={<MeetingRequestsSearch />}
+          />
+          <Route
+            path="/construction-permits"
+            element={<ConstructionPermitsList />}
+          />
         </Route>
         <Route path="/create-citizen" element={<CreateCitizen />} />
         <Route path="/add-issue" element={<AddIssue />} />
         <Route path="/staff-dashboard" element={<StaffDashboard />} />
         <Route path="/citizen-dashboard" element={<CitizenDashboard />} />
-        <Route path="/issues" element={<IssueList />} />
-        <Route path="/lista-propozimeve" element={<ProposalsList />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/events" element={<EventList />} />
         <Route path="/add-projectProposal" element={<AddProjectProposal />} />
-
         <Route path="/add-meeting-request" element={<AddMeetingRequest />} />
-        <Route path="/meeting-requests" element={<MeetingsList />} />
         <Route
           path="/add-construction-permit-request"
           element={<AddConstructionPermitRequest />}

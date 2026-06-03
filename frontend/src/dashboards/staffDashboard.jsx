@@ -19,6 +19,8 @@ import { eventService } from "../services/eventService";
 import { IssueService as issueService } from "../services/IssueServices";
 import { ProposalService as proposalService } from "../services/proposalService";
 import { meetingService } from "../services/meetingService";
+import { currentUser } from "../services/authService";
+import { toast } from "react-toastify";
 
 import AddEvent from "../pages/AddEvent";
 import EventList from "../pages/EventList";
@@ -92,9 +94,40 @@ function IssuesPage() {
   );
 }
 
-function MeetingsPage() {
-  const [meetings, setMeetings] = useState([]);
+
+// --- MEETING REQUESTS LIST (Komponenti juaj i rregulluar dhe i zbukuruar) ---
+function MeetingRequestsList() {
+  const [requests, setRequests] = useState([]);
+  const [filteredRequests, setFilteredRequests] = useState([]);
+  const [activeTab, setActiveTab] = useState("all"); // 'all', 'pending', 'approved', 'rejected'
+  const [error, setError] = useState("");
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const isCitizen = user?.roles?.includes("Citizen");
+  const isStaff = user?.roles?.includes("Staff");
+
+  const fetchRequests = async () => {
+    try {
+      setLoading(true);
+      const res = await meetingService.getAll();
+      setRequests(res.data || []);
+      setFilteredRequests(res.data || []);
+    } catch (err) {
+      setError("Gabim gjatë marrjes së të dhënave");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCurrentUser = async () => {
+    try {
+      const data = await currentUser();
+      setUser(data);
+    } catch (err) {
+      console.log("Gabim gjatë marrjes së userit aktual", err);
+    }
+  };
 
   useEffect(() => {
     meetingService
@@ -159,6 +192,7 @@ function MeetingsPage() {
   );
 }
 
+// --- PROPOSALS PAGE ---
 function ProposalsPage() {
   const [proposals, setProposals] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -220,6 +254,7 @@ function ProposalsPage() {
   );
 }
 
+// --- VARIABLAT E REJA TË MENUSË (Tani kemi një link të vetëm kompakt për Takimet) ---
 const MENU = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { key: "add-event", label: "Krijo Event", icon: Plus },
@@ -248,7 +283,6 @@ export default function StaffDashboard() {
   const { notifications, unreadCount, markAsRead, markAllAsRead } =
     useNotifications();
 
-  // --- FETCHING ALL DATA ---
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
@@ -330,7 +364,7 @@ export default function StaffDashboard() {
           </div>
         </div>
 
-        {/* GRID I RAMPARTIT TË RI TË STATISTIKAVE (4 Karta për të gjitha modulet) */}
+        {/* STATISTIKAT KARTAT */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {/* Karta 1 - Eventet */}
           <div
@@ -486,6 +520,7 @@ export default function StaffDashboard() {
     );
   };
 
+  // --- RENDERING DINAMIKE E PËRMABAJTJES ---
   const renderContent = () => {
     switch (activePage) {
       case "dashboard":
@@ -560,11 +595,12 @@ export default function StaffDashboard() {
 
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between flex-shrink-0">
+        <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between flex-shrink-0 relative">
           <h1 className="text-sm font-bold text-gray-800 capitalize">
             {MENU.find((m) => m.key === activePage)?.label || "Dashboard"}
           </h1>
           <div className="flex items-center gap-4">
+            
             <div className="relative" ref={panelRef}>
               <button
                 onClick={() => setPanelOpen((prev) => !prev)}
@@ -577,6 +613,49 @@ export default function StaffDashboard() {
                   </span>
                 )}
               </button>
+
+              {panelOpen && (
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl border border-gray-100 shadow-xl z-50 overflow-hidden transform origin-top-right transition-all">
+                  <div className="px-4 py-3 border-b border-gray-50 bg-gray-50/50 flex items-center justify-between">
+                    <span className="text-xs font-bold text-gray-800">Njoftimet ({unreadCount})</span>
+                    {unreadCount > 0 && (
+                      <button 
+                        onClick={() => { markAllAsRead(); setPanelOpen(false); }} 
+                        className="text-[10px] text-[#202d60] font-bold hover:underline"
+                      >
+                        Lexo të gjitha
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="max-h-64 overflow-y-auto divide-y divide-gray-50">
+                    {notifications && notifications.length === 0 ? (
+                      <div className="p-6 text-center text-gray-400 text-xs font-medium">
+                        Nuk ka njoftime të reja.
+                      </div>
+                    ) : (
+                      notifications?.map((notif) => (
+                        <div 
+                          key={notif.id} 
+                          onClick={() => { markAsRead(notif.id); setPanelOpen(false); }}
+                          className={`p-3 text-left transition-colors cursor-pointer hover:bg-slate-50/80 ${
+                            !notif.isRead ? "bg-blue-50/40 font-medium" : ""
+                          }`}
+                        >
+                          <p className="text-xs text-gray-800">{notif.message || "Njoftim i ri"}</p>
+                          <span className="text-[9px] text-gray-400 block mt-1">
+                            {notif.createdAt ? new Date(notif.createdAt).toLocaleTimeString("sq-AL", { hour: '2-digit', minute: '2-digit' }) : "Tani"}
+                          </span>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="w-8 h-8 rounded-xl bg-[#202d60] text-white flex items-center justify-center text-xs font-black shadow-sm">
+              ST
             </div>
             <div className="w-8 h-8 rounded-xl bg-[#202d60] text-white flex items-center justify-center text-xs font-black shadow-sm">
               ST
