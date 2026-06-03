@@ -38,6 +38,7 @@ const MeetingsList = lazy(() => import("./pages/MeetingRequestsList"));
 const AddConstructionPermitRequest = lazy(
   () => import("./pages/AddConstructionPermitRequest"),
 );
+
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>

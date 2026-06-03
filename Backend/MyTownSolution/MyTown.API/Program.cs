@@ -176,6 +176,9 @@ builder.Services.AddScoped<IMeetingRequestService, MeetingRequestService>();
 builder.Services.AddScoped<IConstructionPermitRequestService, ConstructionPermitRequestService>();
 builder.Services.AddScoped<IDocumentFileService, DocumentFileService>();
 builder.Services.AddScoped<IHistoryService, HistoryService>();
+builder.Services.AddScoped<IAdvancedSearchService, AdvancedSearchService>();
+builder.Services.AddScoped<IAdvancedStaffSearch, AdvancedStaffSearch>();
+builder.Services.AddScoped<IAdvancedMeetingRequestSearch, AdvancedMeetingRequestService>();
 
 var emailSettings = new EmailSettings
 {

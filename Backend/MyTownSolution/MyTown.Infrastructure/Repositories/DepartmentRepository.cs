@@ -12,10 +12,10 @@ namespace MyTown.Infrastructure.Repositories
         public DepartmentRepository(MyTownDbContext context)
         {
             _context = context;
-         }
+        }
         public async Task AddAsync(Department department)
         {
-             await _context.Departments.AddAsync(department);
+            await _context.Departments.AddAsync(department);
         }
         public async Task<IEnumerable<Department>> GetAllAsync()
         {
@@ -27,7 +27,7 @@ namespace MyTown.Infrastructure.Repositories
         }
         public async Task<bool> ExistsByNameAsync(string name, int komunaId)
         {
-            return await _context.Departments.AnyAsync( d => d.Name == name && d.IsActive && d.KomunaId == komunaId);
+            return await _context.Departments.AnyAsync(d => d.Name == name && d.IsActive && d.KomunaId == komunaId);
         }
         public async Task UpdateAsync(Department department)
         {
@@ -38,6 +38,12 @@ namespace MyTown.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-
+        public IQueryable<Department> Query()
+        {
+            return _context.Departments
+                .Include(d => d.Komuna)
+                .Where(d => d.IsActive == true)
+                .AsQueryable();
         }
+    }
 }

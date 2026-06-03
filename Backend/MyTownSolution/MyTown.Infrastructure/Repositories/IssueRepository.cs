@@ -45,5 +45,16 @@ namespace MyTown.Infrastructure.Repositories
         {
             _context.Issues.Update(issue);
         }
+
+        public IQueryable<Issue> Query()
+        {
+            return _context.Issues
+                .Include(i => i.Files)
+                .Include(i => i.IssueCategory)
+                .Include(i => i.Komuna)
+                .Where(i => i.IsDeleted == false)
+                .AsQueryable();
+        }
+
     }
 }

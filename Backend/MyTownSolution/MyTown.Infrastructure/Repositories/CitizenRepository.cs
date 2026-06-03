@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Domain.Entities;
 using MyTown.Infrastructure.Persistence.Data;
@@ -45,6 +46,16 @@ namespace MyTown.Infrastructure.Repositories
         {
             return await _context.CitizenProfiles
                 .AnyAsync(c => c.PersonalNumber == personalNumber && !c.IsDeleted);
+        }
+
+        public IQueryable<CitizenProfile> Query()
+        {
+            return _context.CitizenProfiles
+                .AsNoTracking()
+                .Include(c => c.User)
+                .Include(c => c.Komuna)
+                .Where(c => c.IsDeleted == false)
+                .AsQueryable();
         }
     }
 }

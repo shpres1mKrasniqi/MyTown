@@ -11,5 +11,7 @@ namespace MyTown.Application.Ports.OutboundPorts
         Task<List<StaffProfile>> GetByKomunaIdAsync(int komunaId);
         Task UpdateAsync(StaffProfile staffProfile);
         Task SaveChangesAsync();
+
+        IQueryable<StaffProfile> Query();
     }
 }

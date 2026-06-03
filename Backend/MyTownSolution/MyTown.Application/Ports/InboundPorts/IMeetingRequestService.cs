@@ -1,5 +1,6 @@
 ﻿
 
+using MyTown.Application.DTOs.AdvancedSearch;
 using MyTown.Application.DTOs.MeetingRequests;
 
 

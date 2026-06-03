@@ -14,5 +14,7 @@ namespace MyTown.Application.Ports.OutboundPorts
         Task SaveChangesAsync();
 
         Task<bool> ExistsByPersonalNumberAsync(string personalNumber);
+
+        IQueryable<CitizenProfile> Query();
     }
 }

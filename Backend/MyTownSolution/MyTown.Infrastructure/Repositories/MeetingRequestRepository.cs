@@ -47,5 +47,14 @@ namespace MyTown.Infrastructure.Repositories
         {
             _context.MeetingRequests.Update(meetingRequest);
         }
+
+        public IQueryable<MeetingRequest> Query()
+        {
+            return _context.MeetingRequests
+                .AsNoTracking()
+                .Include(mr => mr.Citizen)
+                .Where(m => !m.IsDeleted)
+                .AsQueryable();
+        }
     }
 }

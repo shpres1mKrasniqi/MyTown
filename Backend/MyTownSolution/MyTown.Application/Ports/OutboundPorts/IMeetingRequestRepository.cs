@@ -16,5 +16,7 @@ namespace MyTown.Application.Ports.OutboundPorts
         public void Update(MeetingRequest meetingRequest);
 
         void DeleteMeetingRequest(MeetingRequest meetingRequest);
+
+        IQueryable<MeetingRequest> Query();
     }
 }

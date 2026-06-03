@@ -56,5 +56,15 @@ namespace MyTown.Infrastructure.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public IQueryable<StaffProfile> Query()
+        {
+            return _context.StaffProfiles
+                .AsNoTracking()
+                .Include(s => s.User)
+                .Include(s => s.Department)
+                .Where(s => s.IsDeleted == false)
+                .AsQueryable();
+        }
     }
 }

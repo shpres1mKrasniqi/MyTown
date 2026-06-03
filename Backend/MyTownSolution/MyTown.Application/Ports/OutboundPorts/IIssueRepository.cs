@@ -6,6 +6,7 @@ namespace MyTown.Application.Ports.OutboundPorts
 {
     public interface IIssueRepository
     {
+        IQueryable<Issue> Query();
         Task AddIssueAsync(Issue issue);
         Task <IEnumerable<Issue>> GetAllAsync();
         Task<Issue?> GetIssueByIdAsync(int id);

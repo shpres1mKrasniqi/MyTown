@@ -10,5 +10,7 @@ namespace MyTown.Application.Ports.OutboundPorts
         Task<bool> ExistsByNameAsync(string name, int komunaId);
         Task UpdateAsync(Department department);
         Task SaveChangesAsync();
+
+        IQueryable<Department> Query();
     }
 }
