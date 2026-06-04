@@ -8,6 +8,8 @@ namespace MyTown.Domain
         public int CitizenId { get; private set; }
         public CitizenProfile Citizen { get; private set; }
 
+        public int KomunaId { get; private set; }
+
         public string Title { get; private set; }
         public string Description { get; private set; }
 
@@ -18,12 +20,13 @@ namespace MyTown.Domain
 
         private ConstructionPermitRequest() { }
 
-        public ConstructionPermitRequest(int citizenId, string title, string description)
+        public ConstructionPermitRequest(int citizenId,int komunaId, string title, string description)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Title is required");
 
             CitizenId = citizenId;
+            KomunaId = komunaId;
             Title = title;
             Description = description;
             Status = PermitReqStatus.NePritje;

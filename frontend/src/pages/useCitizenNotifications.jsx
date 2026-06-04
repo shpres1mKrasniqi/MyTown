@@ -8,54 +8,30 @@ export function useCitizenNotifications() {
 
     const unreadCount = notifications.filter((n) => !n.isRead).length;
 
-   const fetchNotifications = useCallback(async () => {
-    try {
-        const res = await notificationService.getAll();
-        
-        const eventNotifications = res.data.filter((n) => 
-            n.message.toLowerCase().includes("event")
-        );
-        setNotifications(eventNotifications);
-    } catch (err) {
-        console.error("Gabim gjate marrjes se njoftimeve");
-    } finally {
-        setLoading(false);
-    }
-}, []);
+    const fetchNotifications = useCallback(async () => {
+        try {
+            const res = await notificationService.getAll();
+            setNotifications(res.data);
+        } catch (err) {
+            console.error("Gabim gjate marrjes se njoftimeve");
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
         fetchNotifications();
 
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:7214/hubs/events")
+            .withUrl("https://localhost:7214/hubs/notifications")
             .withAutomaticReconnect()
             .build();
 
-       connection.start().then(() => {
-   
-    connection.invoke("JoinCitizenGroup")
-        .catch(err => console.error(err));
+        connection.start().then(() => {
+            connection.invoke("JoinCitizenGroup").catch(console.error);
 
-    connection.on("EventPublished", (data) => {
-        const newNotification = {
-            id: Date.now(),
-            message: `🎉 Event i ri: ${data.ev?.title}`,
-            isRead: false,
-            createdAt: new Date().toISOString(),
-        };
-        setNotifications((prev) => [newNotification, ...prev]);
-    });
-       
-           
-
-               connection.on("EventWinnerAnnounced", (data) => {
-                const newNotification = {
-                    id: Date.now(),
-                    message: `🏆 ${data.message}`,
-                    isRead: false,
-                    createdAt: new Date().toISOString(),
-                };
-                setNotifications((prev) => [newNotification, ...prev]);
+            connection.on("ReceiveNotification", async () => {
+                await fetchNotifications();
             });
 
         }).catch((err) => console.error("SignalR error:", err));

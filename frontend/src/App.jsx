@@ -82,10 +82,6 @@ function App() {
             path="/advanced-meeting-requests"
             element={<MeetingRequestsSearch />}
           />
-          <Route
-            path="/construction-permits"
-            element={<ConstructionPermitsList />}
-          />
         </Route>
         <Route path="/create-citizen" element={<CreateCitizen />} />
         <Route path="/add-issue" element={<AddIssue />} />
@@ -95,6 +91,10 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/add-projectProposal" element={<AddProjectProposal />} />
         <Route path="/add-meeting-request" element={<AddMeetingRequest />} />
+          <Route
+            path="/construction-permits"
+            element={<ConstructionPermitsList />}
+          />
         <Route
           path="/add-construction-permit-request"
           element={<AddConstructionPermitRequest />}

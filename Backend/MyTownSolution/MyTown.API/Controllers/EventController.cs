@@ -5,6 +5,7 @@ using MyTown.API.Hubs;
 using MyTown.API.Hubs.Problems;
 using MyTown.Application.DTOs.Event;
 using MyTown.Application.Ports.InboundPorts;
+using MyTown.Infrastructure.Hubs;
 using System.Security.Claims;
 
 namespace MyTown.API.Controllers
@@ -14,9 +15,9 @@ namespace MyTown.API.Controllers
     public class EventsController : ControllerBase
     {
         private readonly IEventService _eventService;
-        private readonly IHubContext<EventHub> _hub;
+        private readonly IHubContext<NotificationHub> _hub;
 
-        public EventsController(IEventService eventService, IHubContext<EventHub> hub)
+        public EventsController(IEventService eventService, IHubContext<NotificationHub> hub)
         {
             _eventService = eventService;
             _hub = hub;
@@ -39,13 +40,14 @@ namespace MyTown.API.Controllers
                 if (!staffId.HasValue) return Unauthorized();
 
                 var result = await _eventService.CreateEventAsync(dto, staffId.Value, userId.Value, GetIpAddress());
+
                 await _hub.Clients
-            .Group("Citizens")  
-            .SendAsync("EventPublished", new
-            {
-                message = $"Event i ri u publikua: {result.Title}",
-                ev = result
-            });
+          .Group("Citizens")
+          .SendAsync("ReceiveNotification", new
+          {
+              message = $"Event i ri u publikua: {result.Title}",
+          });
+
                 return Ok(result);
             }
             catch (Exception ex) { return BadRequest(ex.Message); }

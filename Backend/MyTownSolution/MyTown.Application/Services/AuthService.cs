@@ -197,6 +197,7 @@ namespace MyTown.Application.Services
                 Id = user.Id,
                 CitizenId = citizen?.Id,
                 StaffId = staff?.Id,
+                KomunaId = citizen?.KomunaId,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,

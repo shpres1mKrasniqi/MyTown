@@ -27,6 +27,14 @@ namespace MyTown.Infrastructure.Repositories
         {
             return await _context.CitizenProfiles.FirstOrDefaultAsync(c => c.Id == id && c.IsDeleted == false);
         }
+        public async Task<List<CitizenProfile>> GetByKomunaIdAsync(int komunaId)
+        {
+            return await _context.CitizenProfiles
+                .Include(s => s.User)
+                .Include(s => s.Komuna)
+                .Where(s => s.IsDeleted == false && s.KomunaId == komunaId)
+                .ToListAsync();
+        }
         public async Task UpdateAsync(CitizenProfile citizenProfile)
         {
             _context.CitizenProfiles.Update(citizenProfile);

@@ -17,9 +17,11 @@ namespace MyTown.Application.Services
         private readonly IStaffRepository _staffRepository;
         private readonly IFileService _fileService;
         private readonly IFileRepository _fileRepository;
+        private readonly ICitizenRepository _citizenRepository;
+
         public EventService(
             IEventRepository eventRepository,  IUnitOfWork unitOfWork, IAuditRepository auditRepository, INotificationService notificationService, IStaffRepository staffRepository,
-            IFileService fileService, IFileRepository fileRepository
+            IFileService fileService, IFileRepository fileRepository, ICitizenRepository citizenRepository
             )
         {
             _eventRepository = eventRepository;
@@ -29,6 +31,7 @@ namespace MyTown.Application.Services
             _staffRepository = staffRepository;
             _fileService = fileService;
             _fileRepository = fileRepository;
+            _citizenRepository = citizenRepository;
         }
         public async Task<EventResponseDto> CreateEventAsync(CreateEventDto dto, int staffId, int userId, string ipAddress)
         {
@@ -49,7 +52,18 @@ namespace MyTown.Application.Services
             await _eventRepository.AddAsync(ev);
             await _unitOfWork.SaveChangesAsync();
 
-           
+            var citizens = await _citizenRepository.GetByKomunaIdAsync(ev.KomunaId);
+            foreach (var citizen in citizens)
+            {
+                await _notificationService.CreateNotificationAsync(
+                    citizen.UserId,
+                    "New Event just Published",
+                    $"A new event '{ev.Title}' has been published in your area. Check it out!",
+                    NotificationType.Event
+                    );
+            }
+
+
             if (dto.Files != null && dto.Files.Count > 0)
             {
                 foreach (var file in dto.Files)

@@ -52,7 +52,9 @@ namespace MyTown.Application.Services
             {
                 await _notificationService.CreateNotificationAsync(
                     staff.UserId,
-                    $"Nje qytetar ka raportuar nje problem te ri: {issue.Title}"
+                    "New Issue Reported",
+                    $"Nje qytetar ka raportuar nje problem te ri: {issue.Title}",
+                    NotificationType.Issue
                     );
             }
 

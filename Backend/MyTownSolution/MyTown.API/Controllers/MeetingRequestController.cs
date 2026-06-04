@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using MyTown.API.Hubs.Meetings;
 using MyTown.Application.Authorization;
 using MyTown.Application.DTOs.MeetingRequests;
 using MyTown.Application.Ports.InboundPorts;
+using MyTown.Infrastructure.Hubs;
 
 namespace MyTown.API.Controllers
 {
@@ -12,10 +15,12 @@ namespace MyTown.API.Controllers
     public class MeetingRequestController : ControllerBase
     {
         private readonly IMeetingRequestService _meetingRequestService;
+        private readonly IHubContext<NotificationHub> _hub;
 
-        public MeetingRequestController(IMeetingRequestService meetingRequestService)
+        public MeetingRequestController(IMeetingRequestService meetingRequestService, IHubContext<NotificationHub> hub)
         {
             _meetingRequestService = meetingRequestService;
+            _hub = hub;
         }
 
         [HttpPost]
@@ -30,12 +35,23 @@ namespace MyTown.API.Controllers
 
                 var citizenId = GetCitizenId();
 
+                var komunaId = GetKomunaId();
+
                 if (citizenId == null)
                 {
                     return BadRequest("CitizenId is required.");
                 }
+                if(komunaId == null)
+                {
+                    return BadRequest("KomunaId is required.");
+                }
 
-                await _meetingRequestService.AddMeetingRequestAsync(dto, citizenId.Value, ipAddress);
+                await _meetingRequestService.AddMeetingRequestAsync(dto, citizenId.Value, komunaId.Value, ipAddress);
+
+                await _hub.Clients.Group("Staff").SendAsync("ReceiveNotification", new
+                {
+                    message = "Kerkese e re per takim me zyrtaret e komunes"
+                });
 
                 return Ok("Kerkesa per takim u regjistrua me sukses");
 
@@ -122,6 +138,11 @@ namespace MyTown.API.Controllers
         private int? GetCitizenId()
         {
             var claim = User.FindFirst("CitizenId")?.Value;
+            return int.TryParse(claim, out int id) ? id : null;
+        }
+        private int? GetKomunaId()
+        {
+            var claim = User.FindFirst("KomunaId")?.Value;
             return int.TryParse(claim, out int id) ? id : null;
         }
         private string GetIpAddress() =>

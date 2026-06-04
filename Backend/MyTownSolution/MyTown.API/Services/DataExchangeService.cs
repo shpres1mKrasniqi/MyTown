@@ -68,14 +68,14 @@ namespace MyTown.API.Services
                     var meetings = (await _meetingRepo.GetMeetingRequestsAsync()).Where(m => !m.IsDeleted).ToList();
                     sb.AppendLine("Id,Title,Reason,Status,DateOfMeeting,CitizenId,CreatedAt");
                     foreach (var m in meetings)
-                        sb.AppendLine($"{m.Id},{CsvEscape(m.Title)},{CsvEscape(m.Reason)},{m.Status},{m.DateOfMeeting:yyyy-MM-dd HH:mm:ss},{m.CitizenId},{m.CreatedAt:yyyy-MM-dd HH:mm:ss}");
+                        sb.AppendLine($"{m.Id},{CsvEscape(m.Title)},{CsvEscape(m.Reason)},{m.Status},{m.DateOfMeeting:yyyy-MM-dd HH:mm:ss},{m.CitizenId},{m.KomunaId},{m.CreatedAt:yyyy-MM-dd HH:mm:ss}");
                     break;
 
                 case "construction-permits":
                     var permits = (await _constructionRepo.GetAllConstructionPermitRequests()).Where(c => !c.IsDeleted).ToList();
-                    sb.AppendLine("Id,Title,Description,Status,CitizenId,CreatedAt");
+                    sb.AppendLine("Id,Title,Description,Status,CitizenId,KomunaId, CreatedAt");
                     foreach (var c in permits)
-                        sb.AppendLine($"{c.Id},{CsvEscape(c.Title)},{CsvEscape(c.Description)},{c.Status},{c.CitizenId},{c.CreatedAt:yyyy-MM-dd HH:mm:ss}");
+                        sb.AppendLine($"{c.Id},{CsvEscape(c.Title)},{CsvEscape(c.Description)},{c.Status},{c.CitizenId},{c.KomunaId},{c.CreatedAt:yyyy-MM-dd HH:mm:ss}");
                     break;
 
                 default:
@@ -160,7 +160,7 @@ namespace MyTown.API.Services
                 case "meetings":
                     var meetings = (await _meetingRepo.GetMeetingRequestsAsync()).Where(m => !m.IsDeleted).ToList();
                     var wsMeetings = workbook.Worksheets.Add("MeetingRequests");
-                    var meetHeaders = new[] { "Id", "Title", "Reason", "Status", "DateOfMeeting", "CitizenId", "CreatedAt" };
+                    var meetHeaders = new[] { "Id", "Title", "Reason", "Status", "DateOfMeeting", "CitizenId","KomunaId", "CreatedAt" };
                     for (int c = 0; c < meetHeaders.Length; c++)
                         wsMeetings.Cell(1, c + 1).Value = meetHeaders[c];
                     for (int r = 0; r < meetings.Count; r++)
@@ -180,7 +180,7 @@ namespace MyTown.API.Services
                 case "construction-permits":
                     var permits = (await _constructionRepo.GetAllConstructionPermitRequests()).Where(c => !c.IsDeleted).ToList();
                     var wsPermits = workbook.Worksheets.Add("ConstructionPermits");
-                    var permHeaders = new[] { "Id", "Title", "Description", "Status", "CitizenId", "CreatedAt" };
+                    var permHeaders = new[] { "Id", "Title", "Description", "Status", "CitizenId", "KomunaId", "CreatedAt" };
                     for (int c = 0; c < permHeaders.Length; c++)
                         wsPermits.Cell(1, c + 1).Value = permHeaders[c];
                     for (int r = 0; r < permits.Count; r++)
@@ -191,7 +191,8 @@ namespace MyTown.API.Services
                         wsPermits.Cell(r + 2, 3).Value = cp.Description;
                         wsPermits.Cell(r + 2, 4).Value = cp.Status.ToString();
                         wsPermits.Cell(r + 2, 5).Value = cp.CitizenId;
-                        wsPermits.Cell(r + 2, 6).Value = cp.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss");
+                        wsPermits.Cell(r + 2, 6).Value = cp.KomunaId;
+                        wsPermits.Cell(r + 2, 7).Value = cp.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss");
                     }
                     StyleWorksheet(wsPermits);
                     break;
@@ -226,11 +227,11 @@ namespace MyTown.API.Services
                     break;
                 case "meetings":
                     var meetings = (await _meetingRepo.GetMeetingRequestsAsync()).Where(m => !m.IsDeleted).ToList();
-                    data = meetings.Select(m => new { m.Id, m.Title, m.Reason, Status = m.Status.ToString(), DateOfMeeting = m.DateOfMeeting.ToString("yyyy-MM-dd HH:mm:ss"), m.CitizenId, CreatedAt = m.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss") });
+                    data = meetings.Select(m => new { m.Id, m.Title, m.Reason, Status = m.Status.ToString(), DateOfMeeting = m.DateOfMeeting.ToString("yyyy-MM-dd HH:mm:ss"), m.CitizenId, m.KomunaId, CreatedAt = m.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss") });
                     break;
                 case "construction-permits":
                     var permits = (await _constructionRepo.GetAllConstructionPermitRequests()).Where(c => !c.IsDeleted).ToList();
-                    data = permits.Select(c => new { c.Id, c.Title, c.Description, Status = c.Status.ToString(), c.CitizenId, CreatedAt = c.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss") });
+                    data = permits.Select(c => new { c.Id, c.Title, c.Description, Status = c.Status.ToString(), c.CitizenId,c.KomunaId, CreatedAt = c.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss") });
                     break;
                 default:
                     throw new ArgumentException($"Unknown entity type: {entityType}");
@@ -404,7 +405,8 @@ namespace MyTown.API.Services
                     var reason = data.GetValueOrDefault("Reason", "");
                     var meetDate = DateTime.TryParse(data.GetValueOrDefault("DateOfMeeting", ""), out var md) ? md : DateTime.UtcNow.AddDays(7);
                     var citizenId = int.TryParse(data.GetValueOrDefault("CitizenId", ""), out var cid) ? cid : userId;
-                    var meeting = new MeetingRequest(citizenId, mTitle, reason, meetDate);
+                    var mkomunaId = int.Parse(data.GetValueOrDefault("KomunaId", "0"));
+                    var meeting = new MeetingRequest(citizenId,mkomunaId, mTitle, reason, meetDate);
                     await _meetingRepo.AddMeetingRequestAsync(meeting);
                     break;
 
@@ -412,7 +414,8 @@ namespace MyTown.API.Services
                     var cpTitle = data.GetValueOrDefault("Title", "");
                     var cpDesc = data.GetValueOrDefault("Description", "");
                     var cpCitizenId = int.TryParse(data.GetValueOrDefault("CitizenId", ""), out var cpCid) ? cpCid : userId;
-                    var permit = new ConstructionPermitRequest(cpCitizenId, cpTitle, cpDesc);
+                    var cpKomunaId = int.Parse(data.GetValueOrDefault("KomunaId", "0"));
+                    var permit = new ConstructionPermitRequest(cpCitizenId, cpKomunaId, cpTitle, cpDesc);
                     await _constructionRepo.AddConstructionPermitRequestAsync(permit);
                     break;
 

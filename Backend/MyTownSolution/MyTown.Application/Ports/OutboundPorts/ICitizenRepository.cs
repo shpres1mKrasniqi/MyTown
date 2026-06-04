@@ -11,6 +11,7 @@ namespace MyTown.Application.Ports.OutboundPorts
         Task UpdateAsync(CitizenProfile citizenProfile);
 
         Task<CitizenProfile?> GetByUserIdAsync(int userId);
+        Task<List<CitizenProfile>> GetByKomunaIdAsync(int komunaId);
         Task SaveChangesAsync();
 
         Task<bool> ExistsByPersonalNumberAsync(string personalNumber);

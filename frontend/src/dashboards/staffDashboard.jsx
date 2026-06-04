@@ -657,9 +657,7 @@ export default function StaffDashboard() {
             <div className="w-8 h-8 rounded-xl bg-[#202d60] text-white flex items-center justify-center text-xs font-black shadow-sm">
               ST
             </div>
-            <div className="w-8 h-8 rounded-xl bg-[#202d60] text-white flex items-center justify-center text-xs font-black shadow-sm">
-              ST
-            </div>
+        
           </div>
         </header>
 

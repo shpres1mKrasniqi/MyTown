@@ -51,6 +51,10 @@ namespace MyTown.Application.Services
             {
                 claims.Add(new Claim("StaffId", user.StaffId.Value.ToString()));
             }
+            if (user.KomunaId.HasValue)
+            {
+                claims.Add(new Claim("KomunaId", user.KomunaId.Value.ToString()));
+            }
 
             foreach (var role in user.Roles.Distinct())
             {

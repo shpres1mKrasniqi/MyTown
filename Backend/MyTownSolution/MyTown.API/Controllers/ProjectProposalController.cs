@@ -6,6 +6,7 @@ using MyTown.Application.Authorization;
 using MyTown.Application.DTOs.ProjectProposals;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Services;
+using MyTown.Infrastructure.Hubs;
 using System.Security.Claims;
 
 namespace MyTown.API.Controllers
@@ -18,11 +19,14 @@ namespace MyTown.API.Controllers
         private readonly IProjectProposalService _projectProposalService;
 
         private readonly IHubContext<ProposalsHub> _proposalsHub;
+        private readonly IHubContext<NotificationHub> _notificationHub;
+
         public ProjectProposalController(IProjectProposalService projectProposalService,
-            IHubContext<ProposalsHub> proposalsHub)
+            IHubContext<ProposalsHub> proposalsHub, IHubContext<NotificationHub> notificationHub)
         {
             _projectProposalService = projectProposalService;
             _proposalsHub = proposalsHub;
+            _notificationHub = notificationHub;
         }
 
         [HttpPost]
@@ -31,6 +35,8 @@ namespace MyTown.API.Controllers
         public async Task<IActionResult> CreateProjectProposal([FromForm] CreateProposal request)
         {
             var userId = GetUserId();
+
+            
 
             if (userId == null)
                 return Unauthorized("User ID is missing in the token.");
@@ -48,6 +54,10 @@ namespace MyTown.API.Controllers
                 {
                     message = "Nje projekt propozim i ri u publikua",
                     vota = result
+                });
+                await _notificationHub.Clients.Group("Citizens").SendAsync("ReceiveNotification", new
+                {
+                    message = "Projekt propozim i ri u publikua"
                 });
 
 

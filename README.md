@@ -46,7 +46,9 @@ The platform provides a centralized environment where:
 * Password Recovery
 * Password Reset
 * Role-Based Access Control (RBAC)
-* Permission-Based Authorizatio
+* Permission-Based Authorization
+* Advanced Search
+* Data Exchange
 
 ---
 

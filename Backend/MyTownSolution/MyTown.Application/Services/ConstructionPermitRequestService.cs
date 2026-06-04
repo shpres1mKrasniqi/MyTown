@@ -1,6 +1,8 @@
+using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Domain;
 using MyTown.Domain.Common;
+using MyTown.Domain.Enums;
 using System.Text.Json;
 
 namespace MyTown.Application
@@ -11,27 +13,34 @@ namespace MyTown.Application
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAuditRepository _auditRepository;
         private readonly IDocumentFileService _fileService;
+        private readonly IStaffRepository _staffRepository;
+        private readonly INotificationService _notificationService;
 
         public ConstructionPermitRequestService(
             IConstructionPermitRequestRepository repo,
             IUnitOfWork unitOfWork,
             IAuditRepository auditRepository,
-            IDocumentFileService fileService)
+            IDocumentFileService fileService,
+            IStaffRepository staffRepository,
+            INotificationService notificationService)
         {
             _repo = repo;
             _unitOfWork = unitOfWork;
             _auditRepository = auditRepository;
             _fileService = fileService;
+            _staffRepository = staffRepository;
+            _notificationService = notificationService;
         }
 
         public async Task AddConstructionPermitRequestAsync(
-            CreateConstructionPermitRequestDto dto, int citizenId, string ipAddress)
+            CreateConstructionPermitRequestDto dto, int citizenId,int komunaId, string ipAddress)
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
 
             var permitRequest = new ConstructionPermitRequest(
                 citizenId,
+                komunaId,
                 dto.Title,
                 dto.Description
             );
@@ -45,6 +54,17 @@ namespace MyTown.Application
 
             await _repo.AddConstructionPermitRequestAsync(permitRequest);
             await _unitOfWork.SaveChangesAsync();
+
+            var staffMembers = await _staffRepository.GetByKomunaIdAsync(permitRequest.KomunaId);
+            foreach (var staff in staffMembers)
+            {
+                await _notificationService.CreateNotificationAsync(
+                    staff.UserId,
+                    "New Construction Permit Request",
+                    $"New construction permit request submitted: {permitRequest.Title}",
+                    NotificationType.BuildingPermit
+                    );
+            }
 
             var newValue = JsonSerializer.Serialize(new
             {

@@ -5,6 +5,7 @@ using MyTown.Domain.Common;
 using MyTown.Domain.Entities;
 using System.Net;
 using System.Runtime.Intrinsics.Arm;
+using MyTown.Domain.Enums;
 
 
 
@@ -24,9 +25,9 @@ namespace MyTown.Application.Services
             _notificationSender = notificationSender;
             _auditRepository = auditRepository;
         }
-        public async Task CreateNotificationAsync(int userId, string message)
+        public async Task CreateNotificationAsync(int userId,string title, string message, NotificationType type)
         {
-            var notification = new Notifications(userId, message);
+            var notification = new Notifications(userId,title, message, type);
 
             await _notificationRepository.AddAsync(notification);
             await _unitRepository.SaveChangesAsync();

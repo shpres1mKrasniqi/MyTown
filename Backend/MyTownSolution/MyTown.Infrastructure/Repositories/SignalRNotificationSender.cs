@@ -14,6 +14,6 @@ public class SignalRNotificationSender : INotificationSender
 
     public async Task SendNotificationAsync(int userId, object data)
     {
-        await _hubContext.Clients.Group("Staff").SendAsync("ReceiveNotification", data);
+        await _hubContext.Clients.Group($"user-{userId}").SendAsync("ReceiveNotification", data);
     }
 }

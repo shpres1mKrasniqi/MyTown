@@ -2,6 +2,8 @@ import { useEffect, useState, useCallback } from "react";
 import * as signalR from "@microsoft/signalr";
 import { ToastContainer } from "react-toastify";
 import { notificationService } from "../services/notificationService";
+import { toast } from "react-toastify";
+import { currentUser } from "../services/authService";
 
 export function useNotifications(userId) {
     const [notifications, setNotifications] = useState([]);
@@ -20,32 +22,38 @@ export function useNotifications(userId) {
         }
     },[]);
 
-   useEffect(() => {
+   
+useEffect(() => {
     fetchNotifications();
 
-    const connection = new signalR.HubConnectionBuilder()
-        .withUrl("https://localhost:7214/hubs/notifications")
-        .withAutomaticReconnect()
-        .build();
+    let connection;
 
-    connection
-        .start()
-        .then(() => {
-            console.log("SignalR u lidh");
-            
-            // KJO ËSHTË E RËNDËSISHME:
-            // Thirret metoda në Backend për t'u bërë pjesë e grupit Staff
-            connection.invoke("JoinStaffGroup").catch(err => console.error(err));
+    const startConnection = async () => {
+        const user = await currentUser();
+       
+        const userId = user?.userId; 
 
-            connection.on("ReceiveNotification", (data) => {
-                setNotifications((prev) => [data, ...prev]);
-            });
-        })
-        .catch((err) => console.error("SignalR error:", err));
+     
+    
 
-    return () => {
-        connection.stop();
+        connection = new signalR.HubConnectionBuilder()
+            .withUrl("https://localhost:7214/hubs/notifications")
+            .withAutomaticReconnect()
+            .build();
+
+    connection.start().then(() => {
+    connection.invoke("JoinUserGroup", userId.toString()).catch(console.error);
+    connection.invoke("JoinCitizenGroup").catch(console.error); 
+
+    connection.on("ReceiveNotification", async () => {
+        await fetchNotifications();
+    });
+});
     };
+
+    startConnection();
+
+    return () => connection?.stop();
 }, [fetchNotifications]);
 
     const markAsRead = async (id) => {

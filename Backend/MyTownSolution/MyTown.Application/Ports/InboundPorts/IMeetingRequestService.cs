@@ -8,7 +8,7 @@ namespace MyTown.Application.Ports.InboundPorts
 {
     public interface IMeetingRequestService
     {
-        Task AddMeetingRequestAsync(AddMeetingRequestDto dto, int citizenId, string ipAddress);
+        Task AddMeetingRequestAsync(AddMeetingRequestDto dto, int citizenId,int komunaId, string ipAddress);
 
         Task<IEnumerable<MeetingRequestResponseDto>> GetAllMeetingRequestsAsync();
 

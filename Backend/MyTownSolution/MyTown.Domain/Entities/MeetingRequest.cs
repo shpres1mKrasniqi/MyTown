@@ -10,6 +10,7 @@ namespace MyTown.Domain.Entities
         public int CitizenId { get; private set; }
 
         public CitizenProfile Citizen { get; private set; }
+        public int KomunaId { get; private set; }
 
         public string Title { get; private set; }
 
@@ -25,7 +26,7 @@ namespace MyTown.Domain.Entities
         private MeetingRequest() { }
 
 
-        public MeetingRequest(int citizenId, string title, string reason, DateTime dateOfMeeting)
+        public MeetingRequest(int citizenId,int komunaId, string title, string reason, DateTime dateOfMeeting)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Titulli është i nevojshëm");
@@ -37,6 +38,7 @@ namespace MyTown.Domain.Entities
                 throw new ArgumentException("Arsyeja është e nevojshme");
 
             CitizenId = citizenId;
+            KomunaId = komunaId;
             Title = title;
             Reason = reason;
             DateOfMeeting = dateOfMeeting;

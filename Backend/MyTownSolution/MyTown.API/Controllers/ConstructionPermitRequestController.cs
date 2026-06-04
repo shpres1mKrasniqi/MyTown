@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using MyTown.Application;
+using MyTown.API.Hubs.BuildingPermit;
 
 namespace MyTown.API.Controllers
 {
@@ -8,10 +10,12 @@ namespace MyTown.API.Controllers
     public class ConstructionPermitRequestController : ControllerBase
     {
         private readonly IConstructionPermitRequestService _service;
+        private readonly IHubContext<BuildingHub> _hub;
 
-        public ConstructionPermitRequestController(IConstructionPermitRequestService service)
+        public ConstructionPermitRequestController(IConstructionPermitRequestService service, IHubContext<BuildingHub> hub)
         {
             _service = service;
+            _hub = hub;
         }
 
         [HttpGet]
@@ -35,11 +39,24 @@ namespace MyTown.API.Controllers
 
             var citizenId = GetCitizenId();
 
+            var komunaId = GetKomunaId();
+
             if (citizenId == null)
             {
                 return BadRequest("CitizenId is required.");
             }
-            await _service.AddConstructionPermitRequestAsync(dto, citizenId.Value, ipAddress);
+            if (komunaId == null)
+            {
+                return BadRequest("KomunaId is required.");
+            }
+            await _service.AddConstructionPermitRequestAsync(dto, citizenId.Value,komunaId.Value, ipAddress);
+
+            await _hub.Clients.Group("Staff").SendAsync("BuildingPermitCreated", new
+            {
+                message = "Kerkesa per leje ndertimore u shtua me sukses.",
+                
+            });
+
             return Ok("Kërkesa u shtua me sukses.");
         }
 
@@ -93,6 +110,11 @@ namespace MyTown.API.Controllers
         private int? GetCitizenId()
         {
             var claim = User.FindFirst("CitizenId")?.Value;
+            return int.TryParse(claim, out int id) ? id : null;
+        }
+        private int? GetKomunaId()
+        {
+            var claim = User.FindFirst("KomunaId")?.Value;
             return int.TryParse(claim, out int id) ? id : null;
         }
         private string GetIpAddress() =>

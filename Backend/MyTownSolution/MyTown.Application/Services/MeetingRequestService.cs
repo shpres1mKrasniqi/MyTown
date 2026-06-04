@@ -14,15 +14,19 @@ namespace MyTown.Application.Services
         private readonly IMeetingRequestRepository _meetingRequestRepository;
         private readonly IAuditRepository _auditRepository;
         private readonly IUnitOfWork _unitOfWork;
-        public MeetingRequestService(IMeetingRequestRepository meetingRequestRepository, IAuditRepository auditRepository, IUnitOfWork unitOfWork)
+        private readonly INotificationService _notificationService;
+        private readonly IStaffRepository _staffRepository;
+        public MeetingRequestService(IMeetingRequestRepository meetingRequestRepository, IAuditRepository auditRepository, IUnitOfWork unitOfWork, INotificationService notificationService, IStaffRepository staffRepository)
         {
             _meetingRequestRepository = meetingRequestRepository;
             _auditRepository = auditRepository;
             _unitOfWork = unitOfWork;
+            _notificationService = notificationService;
+            _staffRepository = staffRepository;
         }
 
 
-       public async Task  AddMeetingRequestAsync(AddMeetingRequestDto dto, int citizenId, string ipAddress)
+       public async Task  AddMeetingRequestAsync(AddMeetingRequestDto dto, int citizenId, int komunaId, string ipAddress)
         {
             if(dto == null)
             {
@@ -31,12 +35,24 @@ namespace MyTown.Application.Services
 
             var meetingRequest = new MeetingRequest(
                 citizenId,
+                komunaId,
                 dto.Title,
                 dto.Reason,
                 dto.DateOfMeeting);
 
                 await _meetingRequestRepository.AddMeetingRequestAsync(meetingRequest);
             await _unitOfWork.SaveChangesAsync();
+
+            var staffMembers = await _staffRepository.GetByKomunaIdAsync(meetingRequest.KomunaId);
+            foreach(var staff in staffMembers)
+            {
+                await _notificationService.CreateNotificationAsync(
+                    staff.UserId,
+                    "Kerkese e re per takim me zyrtaret e komunes",
+                    $"Keni nje kerkese te re per takim: Titulli: {meetingRequest.Title}",
+                    NotificationType.Meeting
+                    );
+            }
 
             var newValue = System.Text.Json.JsonSerializer.Serialize(new
             {

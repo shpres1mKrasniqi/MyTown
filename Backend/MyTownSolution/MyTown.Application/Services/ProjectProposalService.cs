@@ -17,14 +17,18 @@ namespace MyTown.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFileRepository _fileRepo;
         private readonly IFileService _fileService;
+        private readonly INotificationService _notificationService;
+        private readonly ICitizenRepository _citizenRepo;
 
-        public ProjectProposalService(IProjectProposalRepository projectPropRepo, IAuditRepository auditRepository, IUnitOfWork unitOfWork, IFileRepository fileRepo, IFileService fileService)
+        public ProjectProposalService(IProjectProposalRepository projectPropRepo, IAuditRepository auditRepository, IUnitOfWork unitOfWork, IFileRepository fileRepo, IFileService fileService, INotificationService notificationService, ICitizenRepository citizenRepo)
         {
             _projectPropRepo = projectPropRepo;
             _auditRepo = auditRepository;
             _unitOfWork = unitOfWork;
             _fileRepo = fileRepo;
             _fileService = fileService;
+            _notificationService = notificationService;
+            _citizenRepo = citizenRepo;
         }
 
         public async Task<ProjectProposalResponseDto> AddProjectProposalAsync(CreateProposal proposal, int userId, string ipAddress)
@@ -50,6 +54,17 @@ namespace MyTown.Application.Services
 
             await _projectPropRepo.AddProjectProposalAsync(projektPropozimi);
             await _unitOfWork.SaveChangesAsync();
+
+            var citizens = await _citizenRepo.GetByKomunaIdAsync(projektPropozimi.KomunaId);
+            foreach (var citizen in citizens)
+            {
+                await _notificationService.CreateNotificationAsync(
+                    citizen.UserId,
+                    "Projekt propzoim i ri",
+                    $"Nje propozim projekti i ri eshte publikuar: Titulli: {projektPropozimi.Title}",
+                    NotificationType.ProjectProposal
+                    );
+            }
 
             var uploadedFiles = new List<MyTownFileResponseDto>();
 
