@@ -55,7 +55,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
-        <Route element={<AdminLayout />}>
+        <Route element={<AdminLayout  />}>
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/AddDepartment" element={<AddDepartment />} />
           <Route path="/edit-department/:id" element={<EditDepartment />} />
@@ -72,12 +72,11 @@ function App() {
           <Route path="/manage-issues" element={<MenaxhoIssues />} />
           <Route path="/manage-proposals" element={<MenaxhoProposals />} />
           <Route path="/manage-events" element={<MenaxhoEvents />} />
-          <Route path="/manage-meetings" element={<MenaxhoMeetings />} />
+          
           <Route path="/manage-permits" element={<MenaxhoPermits />} />
           <Route path="/issues" element={<IssueList />} />
-          <Route path="/lista-propozimeve" element={<ProposalsList />} />
           <Route path="/events" element={<EventList />} />
-          <Route path="/meeting-requests" element={<MeetingsList />} />
+          
           <Route
             path="/advanced-meeting-requests"
             element={<MeetingRequestsSearch />}
@@ -99,6 +98,9 @@ function App() {
           path="/add-construction-permit-request"
           element={<AddConstructionPermitRequest />}
         />
+        <Route path="/manage-meetings" element={<MenaxhoMeetings />} />
+        <Route path="/meeting-requests" element={<MeetingsList />} />
+        <Route path="/lista-propozimeve" element={<ProposalsList />} />
         <Route
           path="/project-proposals/edit/:id"
           element={<EditProjectProposal />}

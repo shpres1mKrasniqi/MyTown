@@ -2,6 +2,7 @@ import useAdvancedSearch from "../hooks/useAdvancedSearch";
 import SearchForm from "./SearchForm";
 import DataTable from "./DataTable";
 import Pagination from "./Pagination";
+import { Loader2 } from "lucide-react";
 
 export default function AdvancedSearchContainer({
   fetchFunction,
@@ -16,22 +17,37 @@ export default function AdvancedSearchContainer({
   );
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow">
-      <h2 className="text-lg font-semibold mb-4">{title}</h2>
+    <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden transition-all">
+      {/* Header i Panelit Kryesor */}
+      <div className="px-6 py-5 border-b border-slate-100 bg-slate-50/50">
+        <h2 className="text-xl font-bold text-slate-800">{title}</h2>
+        <p className="text-xs text-slate-500 mt-0.5">Filtro dhe kërko të dhënat në kohë reale</p>
+      </div>
 
-      <SearchForm filters={filters} setFilters={setFilters} fields={fields} />
+      {/* Forma e kërkimit (Seksioni i inputeve) */}
+      <div className="p-6 bg-white border-b border-slate-100">
+        <SearchForm filters={filters} setFilters={setFilters} fields={fields} />
+      </div>
 
+      {/* Pjesa e Tabelës dhe Faqosjes */}
       {loading ? (
-        <p className="text-gray-500">Loading...</p>
+        <div className="px-6 py-16 text-center text-slate-500 font-medium flex flex-col items-center gap-3">
+          <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+          <p className="text-sm">Duke ngarkuar të dhënat premium...</p>
+        </div>
       ) : (
         <>
-          <DataTable columns={columns} data={data} />
+          <div className="overflow-x-auto">
+            <DataTable columns={columns} data={data} />
+          </div>
 
-          <Pagination
-            filters={filters}
-            setFilters={setFilters}
-            totalCount={totalCount}
-          />
+          <div className="px-6 py-4 bg-slate-50/50 border-t border-slate-100">
+            <Pagination
+              filters={filters}
+              setFilters={setFilters}
+              totalCount={totalCount}
+            />
+          </div>
         </>
       )}
     </div>

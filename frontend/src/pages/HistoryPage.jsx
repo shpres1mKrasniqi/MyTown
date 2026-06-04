@@ -6,43 +6,58 @@ function HistoryPage() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedType, setSelectedType] = useState("");
 
   const fetchHistory = async () => {
-    try {
-      const res = await historyService.getAll();
-      setHistory(res.data);
-    } catch (err) {
-      console.error("Gabim gjatë marrjes së historikut:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    const res = await historyService.getAll({
+      type: selectedType || null,
+    });
+
+    setHistory(res.data);
+  } catch (err) {
+    console.error("Gabim gjatë marrjes së historikut:", err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const downloadPdf = async () => {
-    try {
-      const res = await historyService.exportPdf();
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "historiku-komunes.pdf");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    } catch (err) {
-      console.error("Gabim gjatë shkarkimit të PDF:", err);
-    }
-  };
+  try {
+    const res = await historyService.exportPdf({
+      type: selectedType || null,
+    });
 
-  useEffect(() => {
-    fetchHistory();
-  }, []);
+    const url = window.URL.createObjectURL(
+      new Blob([res.data], { type: "application/pdf" })
+    );
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "historiku-komunes.pdf";
+
+    document.body.appendChild(link);
+    link.click();
+
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error("Gabim gjatë shkarkimit të PDF:", err);
+  }
+};
+
+ useEffect(() => {
+  fetchHistory();
+}, [selectedType]);
 
   
-  const filteredHistory = history.filter((item) =>
+ const filteredHistory = history.filter((item) => {
+  return (
     item.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.entityType?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+});
 
   
   const getEntityBadgeColor = (type) => {
@@ -77,38 +92,39 @@ function HistoryPage() {
   return (
     <div className="max-w-4xl mx-auto">
       {/* Header i Faqes */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h2 className="text-xl font-bold text-gray-800">Historiku i Aktivitetit</h2>
-          <p className="text-xs text-gray-500 mt-0.5">Gjurmimi i të gjitha ngjarjeve, vendimeve dhe ndryshimeve në komunë.</p>
-        </div>
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+  <div className="flex items-center bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+    <div className="px-3 text-gray-500">
+      <FileText size={16} />
+    </div>
 
-        <button
-          onClick={downloadPdf}
-          disabled={history.length === 0}
-          className="inline-flex items-center justify-center gap-2 bg-[#202d60] hover:bg-[#18224a] text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-sm transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <Download size={14} />
-          Shkarko Raportin (PDF)
-        </button>
-      </div>
+    <select
+      value={selectedType}
+      onChange={(e) => setSelectedType(e.target.value)}
+      className="px-3 py-2.5 text-sm outline-none bg-transparent min-w-[180px]"
+    >
+      <option value="">Të gjitha aktivitetet</option>
+      <option value="Event">Evente</option>
+      <option value="Meeting">Takime</option>
+      <option value="Project">Projekte</option>
+      <option value="Issue">Issues</option>
+      <option value="Construction Permit">Leje Ndërtimi</option>
+    </select>
+  </div>
 
-      {/* Kontrollet: Kërkimi */}
-      <div className="mb-8 bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center">
-        <div className="relative w-full">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-            <Search size={16} />
-          </div>
-          <input
-            type="text"
-            placeholder="Kërko në historik sipas titullit, përshkrimit ose llojit..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-gray-50/50 border border-gray-200 rounded-lg outline-none text-xs transition-colors focus:border-[#202d60] focus:bg-white"
-          />
-        </div>
-      </div>
+  <button
+    onClick={downloadPdf}
+    disabled={history.length === 0}
+    className="inline-flex items-center justify-center gap-2 bg-[#202d60] hover:bg-[#18224a] text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 disabled:opacity-50"
+  >
+    <Download size={16} />
+    {selectedType
+      ? `Shkarko ${selectedType}`
+      : "Shkarko PDF"}
+  </button>
+</div>
 
+      
       {/* TIMELINE VIEW CONTAINER */}
       {filteredHistory.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
