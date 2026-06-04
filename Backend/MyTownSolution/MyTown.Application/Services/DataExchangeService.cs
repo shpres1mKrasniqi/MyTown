@@ -1,4 +1,3 @@
-using ClosedXML.Excel;
 using MyTown.Application.DTOs.DataExchange;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Ports.OutboundPorts;
@@ -8,6 +7,8 @@ using MyTown.Domain.Entities;
 using MyTown.Domain.Enums;
 using System.Text;
 using System.Text.Json;
+using ClosedXML.Excel;
+
 
 namespace MyTown.API.Services
 {

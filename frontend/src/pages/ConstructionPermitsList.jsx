@@ -1,35 +1,23 @@
-import { useEffect, useState } from "react";
-import { constructionPermitsService } from "../services/constructionPermitsService";
-import { Trash2, AlertCircle, FileText } from "lucide-react";
+import { useEffect } from "react";
+import { Trash2, AlertCircle } from "lucide-react";
 import { toast } from "react-toastify";
-import { currentUser } from "../services/authService";
 import DataExchangeToolbar from "../components/DataExchangeToolbar";
 
+import { useConstructionPermitsStore } from "../stores/useConstructionPermitsStore";
+
 function ConstructionPermitsList() {
-  const [permits, setPermits] = useState([]);
-  const [error, setError] = useState("");
-  const [user, setUser] = useState(null);
+  const {
+    permits,
+    user,
+    error,
+    fetchPermits,
+    fetchCurrentUser,
+    deletePermit,
+    updateStatus,
+  } = useConstructionPermitsStore();
 
   const isCitizen = user?.roles?.includes("Citizen");
   const isStaff = user?.roles?.includes("Staff");
-
-  const fetchPermits = async () => {
-    try {
-      const res = await constructionPermitsService.getAll();
-      setPermits(res.data);
-    } catch (err) {
-      setError("Gabim gjatë marrjes së të dhënave");
-    }
-  };
-
-  const fetchCurrentUser = async () => {
-    try {
-      const data = await currentUser();
-      setUser(data);
-    } catch (err) {
-      console.log("Gabim gjatë marrjes së userit aktual", err);
-    }
-  };
 
   useEffect(() => {
     fetchPermits();
@@ -38,27 +26,23 @@ function ConstructionPermitsList() {
 
   const handleDelete = async (id) => {
     if (!window.confirm("A jeni i sigurt që doni ta fshini?")) return;
+
     try {
-      await constructionPermitsService.deleteSoft(id);
+      await deletePermit(id);
       toast.success("U fshi me sukses");
-      fetchPermits();
-    } catch (err) {
+    } catch {
       toast.error("Gabim gjatë fshirjes");
     }
   };
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      await constructionPermitsService.updateStatus(id, {
-        status: Number(newStatus),
-      });
+      await updateStatus(id, newStatus);
       toast.success("Statusi u përditësua");
-      fetchPermits();
-    } catch (err) {
+    } catch {
       toast.error("Gabim gjatë përditësimit");
     }
   };
-
   const getStatusStyles = (status) => {
     switch (status) {
       case 0:
@@ -151,7 +135,9 @@ function ConstructionPermitsList() {
                       {req.citizenName || `ID: ${req.citizenId}`}
                     </td>
                     <td className="p-4 text-slate-500 whitespace-nowrap">
-                      {new Date(req.createdAt || new Date()).toLocaleDateString("sq-AL")}
+                      {new Date(req.createdAt || new Date()).toLocaleDateString(
+                        "sq-AL",
+                      )}
                     </td>
                     <td className="p-4 whitespace-nowrap">
                       {isStaff ? (

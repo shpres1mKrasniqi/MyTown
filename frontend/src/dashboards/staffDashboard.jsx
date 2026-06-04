@@ -1,7 +1,20 @@
 import { useState, useRef, useEffect } from "react";
 import MeetingRequestsSearch from "../pages/MeetingRequestsSearch";
 import {
-  Bell, Calendar, Plus, List, LayoutDashboard, Settings, LogOut, ShoppingBag, MapPin, AlertTriangle, MessageSquare, CheckSquare, HandHelping,
+  Bell,
+  Calendar,
+  Plus,
+  List,
+  LayoutDashboard,
+  Settings,
+  LogOut,
+  ShoppingBag,
+  MapPin,
+  AlertTriangle,
+  MessageSquare,
+  CheckSquare,
+  HandHelping,
+  HouseIcon,
 } from "lucide-react";
 import { useNotifications } from "../pages/Usenotification";
 import { eventService } from "../services/eventService";
@@ -21,8 +34,8 @@ import AddEvent from "../pages/AddEvent";
 import EventList from "../pages/EventList";
 import HistoryPage from "../pages/HistoryPage";
 import MenaxhoMeetings from "../pages/MenaxhoMeetings";
+import ConstructionPermitsList from "../pages/ConstructionPermitsList";
 
-// SINKRONIZIMI I MENYSË KRYESORE ME SIDEBAR-IN
 const MENU = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { key: "add-event", label: "Krijo Event", icon: Plus },
@@ -31,6 +44,7 @@ const MENU = [
   { key: "manage-meetings", label: "Takimet", icon: MessageSquare },
   { key: "meeting-requests", label: "Kërkesat për Takim", icon: CheckSquare },
   { key: "proposals", label: "Propozimet", icon: HandHelping },
+  { key: "construction-permits", label: "Lejet ndertimore", icon: HouseIcon },
   { key: "history", label: "Historiku", icon: Calendar },
 ];
 
@@ -49,7 +63,8 @@ export default function StaffDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
+  const { notifications, unreadCount, markAsRead, markAllAsRead } =
+    useNotifications();
 
   const fetchDashboardData = async () => {
     try {
@@ -111,7 +126,6 @@ export default function StaffDashboard() {
       case "issues":
         return <IssueList />;
 
-     
       case "manage-meetings":
         return (
           <div className="animate-fadeIn">
@@ -119,7 +133,6 @@ export default function StaffDashboard() {
           </div>
         );
 
-     
       case "meeting-requests":
         return (
           <div className="space-y-6 animate-fadeIn">
@@ -129,6 +142,9 @@ export default function StaffDashboard() {
 
       case "proposals":
         return <ProposalsList />;
+
+      case "construction-permits":
+        return <ConstructionPermitsList />;
       case "history":
         return <HistoryPage />;
       default:

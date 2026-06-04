@@ -7,8 +7,9 @@ import {
   LogOut,
   AlertTriangle,
   MessageSquare,
-  CheckSquare, 
+  CheckSquare,
   HandHelping,
+  HouseIcon,
 } from "lucide-react";
 
 const MENU = [
@@ -19,13 +20,11 @@ const MENU = [
   { key: "manage-meetings", label: "Menaxho Takimet", icon: MessageSquare },
   { key: "meeting-requests", label: "Lista takimeve", icon: CheckSquare },
   { key: "proposals", label: " Projekt propozimet", icon: HandHelping },
+  { key: "construction-permits", label: "Lejet ndertimore", icon: HouseIcon },
   { key: "history", label: "Historiku", icon: Calendar },
 ];
 
-export default function StaffSidebar({
-  activePage,
-  setActivePage,
-}) {
+export default function StaffSidebar({ activePage, setActivePage }) {
   return (
     <aside className="w-64 bg-[#202d60] text-gray-300 flex flex-col justify-between flex-shrink-0 hidden md:flex border-r border-gray-800">
       <div>
