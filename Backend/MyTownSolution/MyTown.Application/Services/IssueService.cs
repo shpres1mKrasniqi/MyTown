@@ -1,4 +1,4 @@
-﻿
+
 
 using MyTown.Application.DTOs.Files;
 using MyTown.Application.DTOs.Issues;
@@ -127,6 +127,10 @@ namespace MyTown.Application.Services
                 KomunaId = issue.KomunaId,
                 KomunaName = issue.Komuna?.Name,
 
+                CitizenName = issue.Citizen?.User != null
+                    ? $"{issue.Citizen.User.FirstName} {issue.Citizen.User.LastName}".Trim()
+                    : "Qytetar",
+
                 IssueCategoryId = issue.IssueCategoryId,
                 CategoryName = issue.IssueCategory?.Title,
 
@@ -164,6 +168,11 @@ namespace MyTown.Application.Services
                 Description = issue.Description,
                 KomunaId = issue.KomunaId,
                 KomunaName = issue.Komuna?.Name,
+
+                CitizenName = issue.Citizen?.User != null
+                    ? $"{issue.Citizen.User.FirstName} {issue.Citizen.User.LastName}".Trim()
+                    : "Qytetar",
+
                 IssueCategoryId = issue.IssueCategoryId,
                 CategoryName = issue.IssueCategory?.Title,
                 Status = issue.Status,

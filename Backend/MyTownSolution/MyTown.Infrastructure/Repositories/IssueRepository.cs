@@ -1,4 +1,4 @@
-﻿
+
 
 using Microsoft.EntityFrameworkCore;
 using MyTown.Application.Ports.OutboundPorts;
@@ -28,6 +28,7 @@ namespace MyTown.Infrastructure.Repositories
                 .Include(i => i.Files)
                 .Include(i => i.IssueCategory)
                 .Include(i => i.Komuna)
+                .Include(i => i.Citizen).ThenInclude(c => c.User)
                 .Where(i => i.IsDeleted == false)
                 .ToListAsync();
         }
@@ -38,6 +39,7 @@ namespace MyTown.Infrastructure.Repositories
                 .Include(i => i.Files)
                 .Include(i => i.IssueCategory)
                 .Include(i => i.Komuna)
+                .Include(i => i.Citizen).ThenInclude(c => c.User)
                 .FirstOrDefaultAsync(i => i.Id == id && !i.IsDeleted);
         }
 
@@ -52,6 +54,7 @@ namespace MyTown.Infrastructure.Repositories
                 .Include(i => i.Files)
                 .Include(i => i.IssueCategory)
                 .Include(i => i.Komuna)
+                .Include(i => i.Citizen).ThenInclude(c => c.User)
                 .Where(i => i.IsDeleted == false)
                 .AsQueryable();
         }

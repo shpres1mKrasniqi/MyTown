@@ -7,22 +7,29 @@ export default function CommentForm({ value, setValue, onSubmit }) {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        onSubmit(text);
-        setText("");
+        if (text?.trim()) {
+          onSubmit(text);
+          setText("");
+          setValue("");
+        }
       }}
-      className="flex gap-2 px-3 pb-3"
+      className="flex gap-2 px-3 pb-3 border-t border-gray-100 pt-2 mt-1"
     >
       <input
-        value={text}
+        value={text || ""}
         onChange={(e) => {
           setText(e.target.value);
           setValue(e.target.value);
         }}
-        className="border flex-1 text-xs"
+        className="flex-1 text-sm outline-none placeholder-gray-400 bg-transparent"
         placeholder="Shto koment..."
       />
-
-      <button type="submit">Send</button>
+      
+      {text?.trim() && (
+        <button type="submit" className="text-sm font-semibold text-blue-500 hover:text-blue-700">
+          Posto
+        </button>
+      )}
     </form>
   );
 }

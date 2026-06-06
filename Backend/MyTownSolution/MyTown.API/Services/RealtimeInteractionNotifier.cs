@@ -7,9 +7,9 @@ namespace MyTown.API.Services;
 
 public class RealtimeInteractionNotifier : IRealtimeInteractionNotifier
 {
-    private readonly IHubContext<EventHub> _hub;
+    private readonly IHubContext<ProblemHub> _hub;
 
-    public RealtimeInteractionNotifier(IHubContext<EventHub> hub)
+    public RealtimeInteractionNotifier(IHubContext<ProblemHub> hub)
     {
         _hub = hub;
     }

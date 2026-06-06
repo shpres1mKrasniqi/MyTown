@@ -5,6 +5,28 @@ export default function useIssueSocial() {
   const [socialByIssue, setSocialByIssue] = useState({});
   const [commentDraft, setCommentDraft] = useState({});
 
+  const loadSocialForIssues = async (issuesList) => {
+    const map = {};
+    await Promise.all(
+      issuesList.map(async (issue) => {
+        try {
+          const [likesRes, commentsRes] = await Promise.all([
+            IssueService.getLikes(issue.id),
+            IssueService.getComments(issue.id),
+          ]);
+          map[issue.id] = {
+            likeCount: likesRes.data.likeCount,
+            likedByMe: likesRes.data.likedByCurrentUser,
+            comments: commentsRes.data,
+          };
+        } catch (err) {
+          map[issue.id] = { likeCount: 0, likedByMe: false, comments: [] };
+        }
+      })
+    );
+    setSocialByIssue(map);
+  };
+
   const handleToggleLike = async (issueId) => {
     try {
       const res = await IssueService.toggleLike(issueId);
@@ -48,5 +70,6 @@ export default function useIssueSocial() {
     setCommentDraft,
     handleToggleLike,
     handleAddComment,
+    loadSocialForIssues,
   };
 }

@@ -31,7 +31,7 @@ export default function useIssueRealtime({ fetchIssues, setSocialByIssue }) {
             ...prev,
             [payload.postId]: {
               ...cur,
-              comments: [...cur.comments, payload.comment],
+              comments: [...(cur.comments || []), payload.comment],
             },
           };
         });

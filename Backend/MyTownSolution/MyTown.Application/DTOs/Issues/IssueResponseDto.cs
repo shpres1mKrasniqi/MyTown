@@ -1,4 +1,4 @@
-﻿using MyTown.Application.DTOs.Files;
+using MyTown.Application.DTOs.Files;
 using MyTown.Domain.Enums;
 
 public class IssueResponseDto
@@ -9,6 +9,8 @@ public class IssueResponseDto
 
     public int KomunaId { get; set; }
     public string KomunaName { get; set; }
+
+    public string CitizenName { get; set; }
 
     public int IssueCategoryId { get; set; }
     public string CategoryName { get; set; }
