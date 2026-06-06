@@ -18,22 +18,24 @@ namespace MyTown.Application.Services
         }
 
 
-       public async Task<PaginationResponse<MeetingRequestResponseDto>> SearchMeetingRequestsAsync(MeetingRequestSearchDto query)
+        public async Task<PaginationResponse<MeetingRequestResponseDto>> SearchMeetingRequestsAsync(MeetingRequestSearchDto query)
         {
-            
             var pageSize = query.PageSize > 0 ? query.PageSize : 10;
             var pageNumber = query.PageNumber > 0 ? query.PageNumber : 1;
 
-            var meetingRequests =  _meetingRequestRepository.Query();
+            var meetingRequests = _meetingRequestRepository.Query();
 
             if (!string.IsNullOrWhiteSpace(query.Title))
             {
-                meetingRequests = meetingRequests.Where(m => m.Title.Contains(query.Title));
+                var t = query.Title;
+                meetingRequests = meetingRequests.Where(m =>
+                    m.Title.Contains(t) || m.Reason.Contains(t));
             }
+       
 
-            if (!string.IsNullOrWhiteSpace(query.Reason))
+            if (query.Status.HasValue)
             {
-                meetingRequests = meetingRequests.Where(m => m.Reason.Contains(query.Reason));
+                meetingRequests = meetingRequests.Where(m => m.Status == query.Status.Value);
             }
 
             var totalCount = await meetingRequests.CountAsync();

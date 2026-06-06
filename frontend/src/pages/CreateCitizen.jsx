@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, Link } from "react-router-dom";
 import { idScanService } from "../services/idScanService";
 import { citizenService } from "../services/citizenService";
 import { komunaService } from "../services/komunaService";
@@ -134,32 +133,32 @@ export default function CreateCitizen() {
   ];
 
   return (
-    <div className="h-screen flex flex-col lg:flex-row">
-      <div className="flex w-full lg:w-1/2 bg-gradient-to-r from-blue-800 to-blue-200 justify-around items-center p-8 lg:p-0">
-        <div className="max-w-md">
-          <h1 className="text-white font-bold text-4xl">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-white">
+      <div className="w-full lg:w-1/2 bg-gray-100 flex justify-center items-center p-6 sm:p-12">
+        <div className="max-w-md w-full text-center">
+          <h1 className="text-gray-900 font-bold text-3xl sm:text-4xl mb-3">
             Regjistrohu si qytetar
           </h1>
-          <p className="text-blue-100 mt-3">
+          <p className="text-gray-500 text-sm mb-6 sm:text-sm sm:mb-8">
             Krijoni llogarinë tuaj në MyTown ose përdorni shërbimin inteligjent
             AI Scan duke ngarkuar një foto të letërnjoftimit/pasaportës.
           </p>
 
-          <div className="mt-8 bg-black/20 p-6 border border-white/10 backdrop-blur-sm rounded-none">
-            <label className="block text-white text-sm font-medium mb-2">
+          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-200">
+            <label className="block text-gray-700 text-sm font-semibold mb-3 text-left pl-2">
               Skano Letërnjoftimin (AI Scan)
             </label>
             <input
               type="file"
               onChange={(e) => setFile(e.target.files[0])}
-              className="text-white text-sm w-full file:mr-4 file:py-2 file:px-4 file:rounded-none file:border-0 file:text-sm file:font-semibold file:bg-white file:text-blue-800 hover:file:bg-blue-50 cursor-pointer"
+              className="text-gray-700 text-sm w-full file:mr-4 file:py-2 file:px-5 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200 cursor-pointer"
             />
 
             <button
               type="button"
               onClick={handleScan}
               disabled={loading || !file}
-              className="block w-full bg-white text-blue-800 mt-4 py-2.5 rounded-none font-bold tracking-wide transition hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed uppercase text-xs"
+              className="block w-full bg-gradient-to-br from-purple-800 from-blue-700 to-blue-500 text-white mt-5 py-3 rounded-full font-semibold tracking-wide transition hover:bg-purple-800 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
               {loading ? "Duke skenuar..." : "Skano Dokumentin"}
             </button>
@@ -167,12 +166,12 @@ export default function CreateCitizen() {
         </div>
       </div>
 
-      <div className="flex w-full lg:w-1/2 justify-center items-center lg:bg-gradient-to-r from-blue-200  to-white sm:bg-white py-12 lg:py-0 overflow-y-auto h-full">
-        <form onSubmit={handleSubmit} className="w-11/12 max-w-md my-auto px-4">
-          <h1 className="text-gray-900 font-bold text-3xl mb-1 tracking-tight">
+      <div className="flex w-full lg:w-1/2 justify-center items-center bg-gradient-to-br from-purple-800 from-blue-700 to-blue-500 overflow-y-auto py-12">
+        <form onSubmit={handleSubmit} className="w-full max-w-md px-8 my-auto">
+          <h1 className="text-white font-bold text-3xl mb-2 text-center">
             Krijo Llogari
           </h1>
-          <p className="text-sm text-gray-500 mb-8">
+          <p className="text-white/80 text-sm mb-6 text-center">
             Plotësoni formularin e mëposhtëm me të dhënat tuaja zyrtare.
           </p>
 
@@ -180,28 +179,22 @@ export default function CreateCitizen() {
             {fields.map((f) => (
               <div key={f.name} className="w-full">
                 {f.type === "date" && (
-                  <label className="block text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider text-left">
+                  <label className="block text-xs font-semibold text-white/70 mb-1 uppercase tracking-wider text-left pl-4">
                     Datëlindja
                   </label>
                 )}
-                <div
-                  className={`flex items-center border bg-white/20 backdrop-blur-sm px-3 py-2.5 rounded-none transition-all ${
-                    errors[f.name]
-                      ? "border-red-500 bg-red-50/10 focus-within:ring-1 focus-within:ring-red-500"
-                      : "border-1 focus-within:border-blue-600 focus-within:bg-white"
+                <input
+                  type={f.type || "text"}
+                  name={f.name}
+                  value={form[f.name]}
+                  onChange={handleChange}
+                  placeholder={f.type === "date" ? "" : f.placeholder}
+                  className={`w-full py-3 px-5 rounded-full bg-white/90 outline-none text-gray-800 placeholder-gray-400 text-sm transition-all ${
+                    errors[f.name] ? "ring-2 ring-red-400 bg-white" : ""
                   }`}
-                >
-                  <input
-                    type={f.type || "text"}
-                    name={f.name}
-                    value={form[f.name]}
-                    onChange={handleChange}
-                    placeholder={f.type === "date" ? "" : f.placeholder}
-                    className="bg-transparent outline-none w-full text-gray-800 placeholder-gray-400 text-sm"
-                  />
-                </div>
+                />
                 {errors[f.name] && (
-                  <p className="text-red-500 text-xs mt-1 font-medium">
+                  <p className="text-red-200 text-xs mt-1 font-medium pl-4 text-left">
                     {errors[f.name]}
                   </p>
                 )}
@@ -209,54 +202,42 @@ export default function CreateCitizen() {
             ))}
 
             <div className="w-full">
-              <div
-                className={`flex items-center border bg-white/20 backdrop-blur-sm px-3 py-2.5 rounded-none transition-all ${
-                  errors.komunaId
-                    ? "border-red-500 bg-red-50/10"
-                    : "border-1 focus-within:border-blue-600 focus-within:bg-white"
+              <select
+                name="komunaId"
+                value={form.komunaId}
+                onChange={handleChange}
+                className={`w-full py-3 px-5 rounded-full bg-white/90 outline-none text-sm text-gray-800 cursor-pointer transition-all ${
+                  errors.komunaId ? "ring-2 ring-red-400 bg-white" : ""
                 }`}
               >
-                <select
-                  name="komunaId"
-                  value={form.komunaId}
-                  onChange={handleChange}
-                  className="w-full outline-none bg-transparent text-sm text-gray-400 cursor-pointer"
-                >
-                  <option value="" className="text-gray-400">
-                    Përzgjidhni Komunën
+                <option value="" className="text-gray-400">
+                  Përzgjidhni Komunën
+                </option>
+                {komunat.map((k) => (
+                  <option key={k.id} value={k.id} className="text-gray-800">
+                    {k.name}
                   </option>
-                  {komunat.map((k) => (
-                    <option key={k.id} value={k.id}>
-                      {k.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                ))}
+              </select>
               {errors.komunaId && (
-                <p className="text-red-500 text-xs mt-1 font-medium">
+                <p className="text-red-200 text-xs mt-1 font-medium pl-4 text-left">
                   {errors.komunaId}
                 </p>
               )}
             </div>
 
             <div className="w-full">
-              <div
-                className={`flex items-center border bg-white/20 backdrop-blur-sm px-3 py-2.5 rounded-none transition-all ${
-                  errors.address
-                    ? "border-red-500 bg-red-50/10"
-                    : "border-1 focus-within:border-blue-600 focus-within:bg-white"
+              <input
+                name="address"
+                value={form.address}
+                onChange={handleChange}
+                placeholder="Prishtine, Veterrnik, Rruga, Nr"
+                className={`w-full py-3 px-5 rounded-full bg-white/90 outline-none text-gray-800 placeholder-gray-400 text-sm transition-all ${
+                  errors.address ? "ring-2 ring-red-400 bg-white" : ""
                 }`}
-              >
-                <input
-                  name="address"
-                  value={form.address}
-                  onChange={handleChange}
-                  placeholder="Adresa e Vendbanimit"
-                  className="outline-none bg-transparent w-full text-gray-800 placeholder-gray-400 text-sm"
-                />
-              </div>
+              />
               {errors.address && (
-                <p className="text-red-500 text-xs mt-1 font-medium">
+                <p className="text-red-200 text-xs mt-1 font-medium pl-4 text-left">
                   {errors.address}
                 </p>
               )}
@@ -265,10 +246,19 @@ export default function CreateCitizen() {
 
           <button
             type="submit"
-            className="block w-full bg-blue-600 hover:bg-blue-700 mt-8 py-3 rounded-none text-white font-bold hover:cursor-pointer tracking-wide transition uppercase text-sm shadow-sm"
+            className="block w-full bg-yellow-400 mt-6 py-3 text-white font-semibold rounded-full hover:bg-yellow-500 transition hover:cursor-pointer text-center"
           >
             Krijo Profilin
           </button>
+
+          <div className="flex justify-center mt-4 text-sm">
+            <Link
+              to="/login"
+              className="text-white/80 hover:text-white font-semibold hover:underline"
+            >
+              Keni llogari? Kyçu këtu
+            </Link>
+          </div>
         </form>
       </div>
     </div>

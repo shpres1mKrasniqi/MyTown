@@ -1,76 +1,150 @@
+import { useNavigate } from "react-router-dom";
 import {
-  Calendar,
+  LayoutDashboard,
   Plus,
   List,
-  LayoutDashboard,
-  Settings,
-  LogOut,
   AlertTriangle,
   MessageSquare,
   CheckSquare,
   HandHelping,
   HouseIcon,
+  Calendar,
+  Settings,
+  LogOut,
 } from "lucide-react";
 
 const MENU = [
-  { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { key: "add-event", label: "Krijo Event", icon: Plus },
-  { key: "event-list", label: "Eventet", icon: List },
-  { key: "issues", label: "Issues (Ankesat)", icon: AlertTriangle },
-  { key: "manage-meetings", label: "Menaxho Takimet", icon: MessageSquare },
-  { key: "meeting-requests", label: "Lista takimeve", icon: CheckSquare },
-  { key: "proposals", label: " Projekt propozimet", icon: HandHelping },
-  { key: "construction-permits", label: "Lejet ndertimore", icon: HouseIcon },
-  { key: "history", label: "Historiku", icon: Calendar },
+  {
+    key: "dashboard",
+    label: "Dashboard",
+    icon: LayoutDashboard,
+    path: "/staff-dashboard",
+  },
+  {
+    key: "add-event",
+    label: "Krijo Event",
+    icon: Plus,
+    path: "/add-event",
+  },
+  { key: "event-list", label: "Eventet", icon: List, path: "/staff/events" },
+  {
+    key: "issues",
+    label: "Ankesat (Issues)",
+    icon: AlertTriangle,
+    path: "/issues",
+  },
+  {
+    key: "manage-meetings",
+    label: "Menaxho Takimet",
+    icon: MessageSquare,
+    path: "/manage-meetings",
+  },
+  {
+    key: "meeting-requests",
+    label: "Lista takimeve",
+    icon: CheckSquare,
+    path: "/meeting-requests",
+  },
+  {
+    key: "proposals",
+    label: "Projekt propozimet",
+    icon: HandHelping,
+    path: "/proposals",
+  },
+  {
+    key: "construction-permits",
+    label: "Lejet ndërtimore",
+    icon: HouseIcon,
+    path: "/permits",
+  },
+  {
+    key: "history",
+    label: "Historiku",
+    icon: Calendar,
+    path: "/history",
+  },
 ];
 
-export default function StaffSidebar({ activePage, setActivePage }) {
+export default function StaffSidebar({ activePage }) {
+  const navigate = useNavigate();
+
   return (
-    <aside className="w-64 bg-[#202d60] text-gray-300 flex flex-col justify-between flex-shrink-0 hidden md:flex border-r border-gray-800">
+    <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between">
       <div>
-        <div className="px-6 py-6 border-b border-white/5">
-          <h2 className="text-white font-black text-sm tracking-wider uppercase">
-            STAFF PANEL v1.0
-          </h2>
+        <div
+          className="flex h-16 items-center px-6 border-b border-slate-100 cursor-pointer"
+          onClick={() => navigate("/staff-dashboard")}
+        >
+          <div className="flex items-center gap-2">
+            <div className="h-6 w-6 bg-[#010694] text-white flex items-center justify-center rounded">
+              ∞
+            </div>
+            <span className="text-lg font-extrabold text-slate-900">
+              MYTOWN
+            </span>
+          </div>
         </div>
 
-        <nav className="px-4 py-6 space-y-1">
-          {MENU.map(({ key, label, icon: Icon }) => {
-            const isActive = activePage === key;
+        <nav className="space-y-1 px-3 py-6">
+          {MENU.map(({ key, label, icon: Icon, path }) => (
+            <SidebarItem
+              key={key}
+              icon={<Icon size={20} />}
+              label={label}
+              active={activePage === key}
+              onClick={() => navigate(path)}
+            />
+          ))}
 
-            return (
-              <button
-                key={key}
-                onClick={() => setActivePage(key)}
-                className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-150 ${
-                  isActive
-                    ? "bg-white text-[#202d60] font-bold shadow-md"
-                    : "hover:bg-white/5 text-gray-400 hover:text-white"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <Icon size={16} />
-                  <span className="text-xs font-semibold">{label}</span>
-                </div>
+          <div className="pt-4 pb-2">
+            <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              Të tjera
+            </p>
+          </div>
 
-                {isActive && <span>›</span>}
-              </button>
-            );
-          })}
+          <SidebarItem
+            icon={<Settings size={20} />}
+            label="Settings"
+            active={activePage === "settings"}
+            onClick={() => {}}
+          />
         </nav>
       </div>
 
-      <div className="p-4 border-t border-white/5 space-y-1">
-        <button className="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-semibold text-gray-400 hover:text-white hover:bg-white/5 rounded-xl">
-          <Settings size={16} />
-          <span>Rregullimet</span>
-        </button>
+      <div className="border-t border-slate-100 p-4 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="h-8 w-8 rounded-full bg-[#010694] text-white flex items-center justify-center text-xs font-bold">
+            ST
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-slate-900">Staff</p>
+            <p className="text-[10px] text-slate-500">Workspace</p>
+          </div>
+        </div>
 
-        <button className="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-semibold text-red-400 hover:bg-red-500/10 rounded-xl">
-          <LogOut size={16} />
-          <span>Dil</span>
+        <button
+          onClick={() => navigate("/login")}
+          className="text-red-500 hover:text-red-600"
+        >
+          <LogOut size={18} />
         </button>
       </div>
     </aside>
+  );
+}
+
+function SidebarItem({ icon, label, active, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+        active
+          ? "bg-[#eff0ff] text-[#010694]"
+          : "text-slate-600 hover:bg-slate-50"
+      }`}
+    >
+      {icon}
+      {label}
+    </button>
   );
 }

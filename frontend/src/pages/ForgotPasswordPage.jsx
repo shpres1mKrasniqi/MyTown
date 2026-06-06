@@ -90,19 +90,17 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4">
-      <div className="w-full max-w-md border-t border-blue-600 bg-white p-8">
-        <h2 className="text-xl font-normal mb-2 text-gray-900">
-          Forgot Password
-        </h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-800 from-blue-700 to-blue-500 px-4">
+      <div className="w-full max-w-md border-t border-blue-600 bg-transparent p-8">
+        <h2 className="text-xl font-bold mb-2 text-white">Forgot Password</h2>
 
-        <p className="text-gray-500 text-sm mb-8">
+        <p className="text-white text-sm mb-8">
           Shkruani email-in tuaj për të marrë kodin e rivendosjes.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6" noValidate>
           <div>
-            <label className="block mb-2 text-sm font-normal text-gray-700">
+            <label className="block mb-2 text-sm font-normal text-white">
               Email
             </label>
 
@@ -111,7 +109,7 @@ export default function ForgotPasswordPage() {
               value={email}
               onChange={handleEmailChange}
               placeholder="Shkruani email-in"
-              className={`w-full border bg-white px-3 py-2 outline-none transition-colors text-sm ${
+              className={`w-full border bg-white rounded-full px-3 py-3 outline-none transition-colors text-sm ${
                 errors.email
                   ? "border-red-500 focus:border-red-500"
                   : "border-gray-300 focus:border-blue-600"
@@ -132,7 +130,7 @@ export default function ForgotPasswordPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full border border-blue-600 bg-blue-600 text-white hover:bg-white hover:text-blue-600 py-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="w-full border border-blue-600 bg-yellow-400 text-white rounded-full hover:bg-yellow-500 transition hover:cursor-pointer py-3 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? "Duke dërguar..." : "Dërgo kodin"}
           </button>

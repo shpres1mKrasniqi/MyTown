@@ -62,7 +62,6 @@ export default function MeetingRequestsSearch() {
   return (
     <div className="space-y-6 max-w-7xl mx-auto p-1 animate-fadeIn">
       
-      {/* HEADER PREMIUM SHTRESËZUR */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 bg-gradient-to-r from-white to-slate-50/50 p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
         <div className="absolute top-0 left-0 w-1.5 h-full bg-[#202d60]" />
         

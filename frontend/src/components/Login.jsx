@@ -35,88 +35,64 @@ export default function Login() {
 
   return (
     <div className="h-screen flex bg-white">
-      <div className="hidden lg:flex w-1/2  bg-gradient-to-r from-blue-800 to-blue-200 justify-around items-center relative isolation-auto">
-        <div className="relative z-10 px-12">
-          <h1 className="text-white font-bold text-4xl">MyTown</h1>
-          <p className="text-white mt-2 max-w-sm">
-            Mirë se vini në platformën e menaxhimit të qytetit tuaj. Raportoni
-            problemet dhe kontribuoni në komunitet.
-          </p>
-          <button
-            onClick={() => setShowMore(!showMore)}
-            className="block w-32 bg-white text-indigo-800 mt-6 py-2 rounded-2xl font-bold hover:bg-gray-100 transition-all"
-          >
-            {showMore ? "Fsheh tekstin" : "Shiko më shumë"}
-          </button>
-
-          {showMore && (
-            <p className="text-white mt-4 max-w-md transition-all duration-300">
-              MyTown është një platformë digjitale që synon të lidhë qytetarët
-              me komunën e tyre, duke mundësuar raportimin e problemeve, ndarjen
-              e shqetësimeve dhe pjesëmarrjen aktive në vendimmarrje. Platforma
-              promovon transparencën, komunikimin dhe përfshirjen qytetare për
-              një komunitet më të mirë.
-            </p>
-          )}
-        </div>
+      <div className="hidden lg:flex w-1/2 bg-gray-100 justify-center items-center">
+        <img src="/Login2.jpg" alt="visual" className="w-3/4 object-contain" />
       </div>
 
-      {/* Pjesa e formes */}
-      <div className="flex w-full lg:w-1/2 justify-center items-center lg:bg-gradient-to-r from-blue-200  to-white sm:bg-white relative z-10">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-whitesmoke p-6 w-full max-w-md"
-        >
-          <h1 className="text-gray-800 font-bold text-2xl mb-1">
+      <div className="flex w-full lg:w-1/2 justify-center items-center bg-gradient-to-br from-purple-800 from-blue-700 to-blue-500">
+        <form onSubmit={handleSubmit} className="w-full max-w-md px-8">
+          <h1 className="text-white font-bold text-3xl mb-2 text-center">
             Mirë se vini!
           </h1>
-          <p className="text-sm text-gray-600 mb-6">Kyquni për të vazhduar</p>
+          <p className="text-white/80 text-sm mb-6 text-center">
+            Kyquni për të vazhduar
+          </p>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+            <div className="mb-4 p-3 bg-red-200 text-red-800 rounded-full text-sm text-center">
               {error}
             </div>
           )}
 
-          <div className="flex items-center border-1 py-3 px-3  mb-4">
+          <div className="mb-4">
             <input
               type="email"
               required
               placeholder="Email Address"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="bg-transparent pl-2 outline-none border-none w-full"
+              className="w-full py-3 px-5 rounded-full bg-white/90 outline-none"
             />
           </div>
 
-          <div className="flex items-center border-1 py-3 px-3  mb-4">
+          <div className="mb-4">
             <input
               type="password"
               required
               placeholder="Password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className="pl-2 outline-none border-none w-full"
+              className="w-full py-3 px-5 rounded-full bg-white/90 outline-none"
             />
           </div>
 
           <button
             type="submit"
-            className="block w-full bg-indigo-600 mt-4 py-3 text-white font-semibold hover:bg-indigo-700 transition-all hover:cursor-pointer"
+            className="block w-full bg-yellow-400 mt-4 py-3 text-white font-semibold rounded-full hover:bg-yellow-500 transition hover:cursor-pointer"
           >
-            Login
+            Kyçu
           </button>
 
           <div className="flex justify-between mt-4 text-sm">
             <Link
               to="/forgot-password"
-              className="text-gray-500 hover:text-blue-500 font-semibold"
+              className="text-white/80 hover:text-white font-semibold"
             >
               Keni harruar fjalëkalimin?
             </Link>
             <Link
               to="/create-citizen"
-              className="text-blue-500 hover:underline font-semibold"
+              className="text-white hover:underline font-semibold"
             >
               Regjistrohu
             </Link>

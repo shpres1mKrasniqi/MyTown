@@ -1,7 +1,5 @@
-
 import useCurrentUser from "../hooks/useCurrentUser";
-import useMeetingActions from "../hooks/useMeetingActions";
-
+import useMeetingRequests from "../hooks/useMeetingRequests";
 import MeetingHeader from "../components/MeetingHeader";
 import MeetingTable from "../components/MeetingTable";
 import ErrorBanner from "../components/ErrorBanner";
@@ -10,7 +8,8 @@ export default function MeetingRequestsList() {
   const { requests, error, fetchRequests } = useMeetingRequests();
   const user = useCurrentUser();
 
-  const { handleDelete, handleStatusChange } = useMeetingActions(fetchRequests);
+  const { handleDelete, handleStatusChange } =
+    useMeetingRequests(fetchRequests);
 
   const isCitizen = user?.roles?.includes("Citizen");
   const isStaff = user?.roles?.includes("Staff");

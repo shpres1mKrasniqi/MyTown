@@ -13,4 +13,10 @@ export const meetingService = {
 
   deleteSoft: (id) =>
     api.delete(`/MeetingRequest/${id}`, { withCredentials: true }),
+
+  search: (params) =>
+    api.get("/AdvancedSearch/meetingRequests", {
+      params,
+      withCredentials: true,
+    }),
 };
