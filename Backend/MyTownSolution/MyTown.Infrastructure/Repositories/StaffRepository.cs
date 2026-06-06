@@ -57,6 +57,12 @@ namespace MyTown.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public Task<int> CountStaffMembersAsync()
+        {
+            return _context.StaffProfiles.CountAsync(s => !s.IsDeleted);
+        }
+
+
         public IQueryable<StaffProfile> Query()
         {
             return _context.StaffProfiles

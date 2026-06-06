@@ -6,4 +6,5 @@ export const staffService = {
   create: (data) => api.post("/staff/", data),
   update: (id, data) => api.put(`/staff/${id}`, data),
   delete: (id) => api.delete(`/staff/${id}`),
+  getStaffMembers: () => api.get("/staff/NumberOfStaff"),
 };

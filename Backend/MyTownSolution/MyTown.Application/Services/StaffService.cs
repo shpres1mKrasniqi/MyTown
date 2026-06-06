@@ -228,5 +228,10 @@ namespace MyTown.Application.Services
                
             };
         }
+
+        public async Task<int> CountStaffMembersAsync()
+        {
+            return await _staffRepository.CountStaffMembersAsync();
+        }
     }
 }

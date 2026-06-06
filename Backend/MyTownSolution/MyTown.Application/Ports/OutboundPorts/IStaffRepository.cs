@@ -13,5 +13,7 @@ namespace MyTown.Application.Ports.OutboundPorts
         Task SaveChangesAsync();
 
         IQueryable<StaffProfile> Query();
+
+        Task<int> CountStaffMembersAsync();
     }
 }

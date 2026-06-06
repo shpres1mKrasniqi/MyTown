@@ -55,6 +55,8 @@ const ConstructionPermitsList = lazy(
   () => import("./pages/ConstructionPermitsList"),
 );
 
+const CitizenLayout = lazy(() => import("./layouts/CitizenLayout"));
+
 // Auth pages (publike)
 const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
 const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
@@ -82,12 +84,12 @@ function App() {
           path="/admin-dashboard"
           element={
             <ProtectedRoute allowedRoles={["Admin"]}>
-              <AdminLayout>
-                <AdminDashboard />
-              </AdminLayout>
+              <AdminLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<AdminDashboard />} />
+        </Route>
         <Route
           path="/AddDepartment"
           element={
@@ -266,92 +268,32 @@ function App() {
           path="/citizen-dashboard"
           element={
             <ProtectedRoute allowedRoles={["Citizen"]}>
-              <CitizenDashboard />
+              <CitizenLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/add-issue"
-          element={
-            <ProtectedRoute allowedRoles={["Citizen"]}>
-              <AddIssue />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/add-meeting-request"
-          element={
-            <ProtectedRoute allowedRoles={["Citizen"]}>
-              <AddMeetingRequest />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/add-projectProposal"
-          element={
-            <ProtectedRoute allowedRoles={["Citizen"]}>
-              <AddProjectProposal />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/add-construction-permit-request"
-          element={
-            <ProtectedRoute allowedRoles={["Citizen"]}>
-              <AddConstructionPermitRequest />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/project-proposals/edit/:id"
-          element={
-            <ProtectedRoute allowedRoles={["Citizen"]}>
-              <EditProjectProposal />
-            </ProtectedRoute>
-          }
-        />
+        >
+          <Route index element={<CitizenDashboard />} />
+          <Route path="add-issue" element={<AddIssue />} />
+          <Route path="add-meeting-request" element={<AddMeetingRequest />} />
+          <Route path="add-projectProposal" element={<AddProjectProposal />} />
+          <Route
+            path="add-construction-permit-request"
+            element={<AddConstructionPermitRequest />}
+          />
+          <Route
+            path="project-proposals/edit/:id"
+            element={<EditProjectProposal />}
+          />
 
-        {/* ── Citizen + të gjithë të kyçurit ── */}
-        <Route
-          path="/issues"
-          element={
-            <ProtectedRoute allowedRoles={["Citizen", "Admin", "Staff"]}>
-              <IssueList />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/events"
-          element={
-            <ProtectedRoute allowedRoles={["Citizen", "Admin", "Staff"]}>
-              <EventList />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/meeting-requests"
-          element={
-            <ProtectedRoute allowedRoles={["Citizen", "Admin", "Staff"]}>
-              <MeetingsList />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/lista-propozimeve"
-          element={
-            <ProtectedRoute allowedRoles={["Citizen", "Admin", "Staff"]}>
-              <ProposalsList />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/construction-permits"
-          element={
-            <ProtectedRoute allowedRoles={["Citizen", "Admin", "Staff"]}>
-              <ConstructionPermitsList />
-            </ProtectedRoute>
-          }
-        />
+          <Route path="issues" element={<IssueList />} />
+          <Route path="events" element={<EventList />} />
+          <Route path="meeting-requests" element={<MeetingsList />} />
+          <Route path="lista-propozimeve" element={<ProposalsList />} />
+          <Route
+            path="construction-permits"
+            element={<ConstructionPermitsList />}
+          />
+        </Route>
       </Routes>
 
       <ToastContainer

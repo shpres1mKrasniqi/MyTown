@@ -71,7 +71,15 @@ namespace MyTown.Api.Controllers
             }
         }
 
-       
+        [HttpGet("NumberOfStaff")]
+
+        public async Task<IActionResult> GetNumberOfStaff()
+        {
+            var count = await _staffService.CountStaffMembersAsync();
+            return Ok(new { numberOfStaff = count });
+        }
+
+
         [HttpPut("{id}")]
         [Authorize(Policy = Permissions.CanEditStaff)]
         public async Task<IActionResult> UpdateStaff(int id, [FromBody] UpdateStaffDto dto)

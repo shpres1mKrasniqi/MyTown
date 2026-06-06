@@ -12,5 +12,7 @@ namespace MyTown.Application.Ports.InboundPorts
         Task<StaffResponseDto> UpdateAsync(int id,UpdateStaffDto dto, int adminId, string ipAddress);
         Task<StaffResponseDto> DeleteAsync(int id, int adminId, string ipAddress);
 
+        Task<int> CountStaffMembersAsync();
+
     }
 }

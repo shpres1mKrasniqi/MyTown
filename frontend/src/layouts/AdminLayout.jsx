@@ -13,19 +13,20 @@ import {
   Lightbulb,
   Calendar,
   MessageSquare,
-  Hammer
+  Hammer,
 } from "lucide-react";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 
 export default function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const handleLogout = () => {
     Cookies.remove("accessToken");
     navigate("/login");
   };
 
-  // Determine active view based on path to highlight sidebar
   const getActiveView = () => {
     const path = location.pathname.toLowerCase();
     if (path.includes("komuna")) return "komunat";
@@ -43,25 +44,57 @@ export default function AdminLayout() {
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50 text-slate-800">
       {/* SIDEBAR */}
-      <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between">
+      {/* BACKDROP (mobile) */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* SIDEBAR */}
+      <aside
+        className={`
+              fixed md:static z-50
+              top-0 left-0 h-full w-64
+              bg-white border-r border-slate-200
+              flex flex-col justify-between
+
+              transform transition-transform duration-200
+              ${sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+            `}
+      >
         {/* LOGO */}
         <div>
           <div
             className="flex h-16 items-center px-6 border-b border-slate-100 cursor-pointer"
             onClick={() => navigate("/admin-dashboard")}
           >
-            <div className="flex items-center gap-2">
-              <div className="h-6 w-6 bg-[#010694] text-white flex items-center justify-center rounded">
-                ∞
+            <div className="flex h-16 items-center justify-between px-6 border-b border-slate-100">
+              <div
+                className="flex items-center gap-2 cursor-pointer"
+                onClick={() => navigate("/admin-dashboard")}
+              >
+                <div className="h-6 w-6 bg-[#010694] text-white flex items-center justify-center rounded">
+                  ∞
+                </div>
+                <span className="text-lg font-extrabold text-slate-900">
+                  MYTOWN
+                </span>
               </div>
-              <span className="text-lg font-extrabold text-slate-900">
-                MYTOWN
-              </span>
+
+              {/* CLOSE BUTTON (mobile only) */}
+              <button
+                className="md:hidden"
+                onClick={() => setSidebarOpen(false)}
+              >
+                <X size={20} />
+              </button>
             </div>
           </div>
 
           {/* NAV */}
-          <nav className="space-y-1 px-3 py-6">
+          <nav className="space-y-1 px-3 py-6 overflow-y-auto max-h-[calc(100vh-120px)]">
             <SidebarItem
               icon={<LayoutDashboard size={20} />}
               label="Dashboard"
@@ -110,9 +143,11 @@ export default function AdminLayout() {
               label="Shto Kategori te problemit"
               onClick={() => navigate("/add-issueCategory")}
             />
-            
+
             <div className="pt-4 pb-2">
-              <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Të Dhënat</p>
+              <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Të Dhënat
+              </p>
             </div>
 
             <SidebarItem
@@ -121,28 +156,28 @@ export default function AdminLayout() {
               active={activeView === "issues"}
               onClick={() => navigate("/manage-issues")}
             />
-            
+
             <SidebarItem
               icon={<Lightbulb size={20} />}
               label="Propozimet"
               active={activeView === "propozime"}
               onClick={() => navigate("/manage-proposals")}
             />
-            
+
             <SidebarItem
               icon={<Calendar size={20} />}
               label="Eventet"
               active={activeView === "events"}
               onClick={() => navigate("/manage-events")}
             />
-            
+
             <SidebarItem
               icon={<MessageSquare size={20} />}
               label="Takimet"
               active={activeView === "meetings"}
               onClick={() => navigate("/manage-meetings")}
             />
-            
+
             <SidebarItem
               icon={<Hammer size={20} />}
               label="Lejet e Ndërtimit"
@@ -168,10 +203,19 @@ export default function AdminLayout() {
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* HEADER */}
         <header className="h-16 flex items-center justify-between px-6 border-b border-slate-200 bg-white/80 backdrop-blur">
-          <div className="text-sm font-medium text-slate-500 capitalize">
-            {activeView === "overview" ? "Dashboard Overview" : activeView}
+          {/* LEFT */}
+          <div className="flex items-center gap-3">
+            {/* MOBILE MENU BUTTON */}
+            <button className="md:hidden" onClick={() => setSidebarOpen(true)}>
+              <Menu size={22} />
+            </button>
+
+            <div className="text-sm font-medium text-slate-500 capitalize">
+              {activeView === "overview" ? "Dashboard Overview" : activeView}
+            </div>
           </div>
 
+          {/* RIGHT */}
           <button
             onClick={handleLogout}
             className="text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
