@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { logout } from "../../services/authService";
 import {
   LayoutDashboard,
   Plus,
@@ -65,15 +67,25 @@ const MENU = [
   },
 ];
 
-export default function StaffSidebar({ activePage }) {
+export default function StaffSidebar({ activePage, setActivePage }) {
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+    Cookies.remove("accessToken");
+    navigate("/login", { replace: true });
+  };
 
   return (
     <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between">
       <div>
         <div
           className="flex h-16 items-center px-6 border-b border-slate-100 cursor-pointer"
-          onClick={() => navigate("/staff-dashboard")}
+          onClick={() => setActivePage("dashboard")}
         >
           <div className="flex items-center gap-2">
             <div className="h-6 w-6 bg-[#010694] text-white flex items-center justify-center rounded">
@@ -86,13 +98,13 @@ export default function StaffSidebar({ activePage }) {
         </div>
 
         <nav className="space-y-1 px-3 py-6">
-          {MENU.map(({ key, label, icon: Icon, path }) => (
+          {MENU.map(({ key, label, icon: Icon }) => (
             <SidebarItem
               key={key}
               icon={<Icon size={20} />}
               label={label}
               active={activePage === key}
-              onClick={() => navigate(path)}
+              onClick={() => setActivePage(key)}
             />
           ))}
 
@@ -123,7 +135,7 @@ export default function StaffSidebar({ activePage }) {
         </div>
 
         <button
-          onClick={() => navigate("/login")}
+          onClick={handleLogout}
           className="text-red-500 hover:text-red-600"
         >
           <LogOut size={18} />

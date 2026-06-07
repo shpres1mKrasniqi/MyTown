@@ -1,5 +1,6 @@
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import Cookies from "js-cookie";
+import { logout } from "../services/authService";
 import {
   LayoutDashboard,
   Building2,
@@ -22,9 +23,14 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
     Cookies.remove("accessToken");
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
   const getActiveView = () => {

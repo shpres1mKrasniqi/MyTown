@@ -52,17 +52,24 @@ export default function EditStaff() {
         ]);
 
         const staff = staffRes.data;
+        const depts = deptRes.data || [];
+
+        const matchingDept = depts.find(d => d.name === staff.departmentName);
+        const deptId = staff.departmentId || matchingDept?.id || "";
+
+        const rawDate = staff.dateHired || "";
+        const formattedDate = rawDate.includes("T") ? rawDate.split("T")[0] : rawDate.substring(0, 10);
 
         setForm({
           firstName: staff.firstName || "",
           lastName: staff.lastName || "",
           email: staff.email || "",
           position: staff.position || "",
-          dateHired: staff.dateHired || "",
-          departmentId: staff.departmentId || "",
+          dateHired: formattedDate,
+          departmentId: deptId,
         });
 
-        setDepartments(deptRes.data || []);
+        setDepartments(depts);
       } catch (err) {
         console.error("Gabim gjatë marrjes së stafit:", err);
         showToast("error", "Gabim gjatë marrjes së të dhënave.");

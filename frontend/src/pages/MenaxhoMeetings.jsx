@@ -149,8 +149,8 @@ export default function MenaxhoMeetings({ isReadonly = false }) {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto p-1 animate-fadeIn">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 bg-gradient-to-r from-white to-slate-50/50 p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-1.5 h-full bg-[#202d60]" />
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 bg-gradient-to-r from-white to-slate-50/50 p-6 rounded-2xl border border-slate-200 shadow-sm relative z-10">
+        <div className="absolute top-0 left-0 w-1.5 h-full bg-[#202d60] rounded-l-2xl overflow-hidden" />
         <div>
           <h1 className="text-xl font-bold text-slate-900 tracking-tight">
             Kërkesat për Takim
@@ -160,7 +160,12 @@ export default function MenaxhoMeetings({ isReadonly = false }) {
           </p>
         </div>
         <div className="flex items-center gap-3 self-start sm:self-center bg-white p-1.5 rounded-xl border border-slate-200/60 shadow-inner">
-          
+          {!isReadonly && (
+            <DataExchangeToolbar 
+              entityType="meetings" 
+              onImportSuccess={() => fetchMeetings(filters, 1)} 
+            />
+          )}
           <button
             onClick={() => fetchMeetings(filters, currentPage)}
             className="p-2 text-slate-500 hover:text-[#202d60] hover:bg-slate-100 rounded-lg transition-all duration-150"

@@ -6,6 +6,7 @@ import "./App.css";
 
 import AdminLayout from "./layouts/AdminLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminOrPlainLayout from "./layouts/AdminOrPlainLayout";
 
 const LandingPage = lazy(() => import("./components/LandingPage"));
 const Login = lazy(() => import("./components/Login"));
@@ -81,177 +82,44 @@ function App() {
 
         {/* ── Admin only ── */}
         <Route
-          path="/admin-dashboard"
           element={
             <ProtectedRoute allowedRoles={["Admin"]}>
               <AdminLayout />
             </ProtectedRoute>
           }
         >
-          <Route index element={<AdminDashboard />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/AddDepartment" element={<AddDepartment />} />
+          <Route path="/edit-department/:id" element={<EditDepartment />} />
+          <Route path="/MenaxhoDepartments" element={<MenaxhoDepartments />} />
+          <Route path="/ShikoDepartments" element={<ShikoDepartments />} />
+          <Route path="/AddKomuna" element={<AddKomuna />} />
+          <Route path="/edit-komuna/:id" element={<EditKomuna />} />
+          <Route path="/MenaxhoKomunat" element={<MenaxhoKomunat />} />
+          <Route path="/manage-staff" element={<MenaxhoStaff />} />
+          <Route path="/add-staff" element={<AddStaff />} />
+          <Route path="/edit-staff/:id" element={<EditStaff />} />
+          <Route path="/add-issueCategory" element={<AddIssueCategory />} />
         </Route>
-        <Route
-          path="/AddDepartment"
-          element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
-              <AddDepartment />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/edit-department/:id"
-          element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
-              <EditDepartment />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/MenaxhoDepartments"
-          element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
-              <MenaxhoDepartments />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/ShikoDepartments"
-          element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
-              <ShikoDepartments />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/AddKomuna"
-          element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
-              <AddKomuna />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/edit-komuna/:id"
-          element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
-              <EditKomuna />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/MenaxhoKomunat"
-          element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
-              <MenaxhoKomunat />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/manage-staff"
-          element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
-              <MenaxhoStaff />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/add-staff"
-          element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
-              <AddStaff />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/edit-staff/:id"
-          element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
-              <EditStaff />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/add-issueCategory"
-          element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
-              <AddIssueCategory />
-            </ProtectedRoute>
-          }
-        />
 
         {/* ── Admin + Staff ── */}
         <Route
-          path="/manage-issues"
           element={
             <ProtectedRoute allowedRoles={["Admin", "Staff"]}>
-              <MenaxhoIssues />
+              <AdminOrPlainLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/manage-proposals"
-          element={
-            <ProtectedRoute allowedRoles={["Admin", "Staff"]}>
-              <MenaxhoProposals />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/manage-events"
-          element={
-            <ProtectedRoute allowedRoles={["Admin", "Staff"]}>
-              <MenaxhoEvents />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/manage-meetings"
-          element={
-            <ProtectedRoute allowedRoles={["Admin", "Staff"]}>
-              <MenaxhoMeetings />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/manage-permits"
-          element={
-            <ProtectedRoute allowedRoles={["Admin", "Staff"]}>
-              <MenaxhoPermits />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/issues/:id/edit"
-          element={
-            <ProtectedRoute allowedRoles={["Admin", "Staff"]}>
-              <EditIssueDetails />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/issues/:id/status"
-          element={
-            <ProtectedRoute allowedRoles={["Admin", "Staff"]}>
-              <UpdateIssueStatus />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/advanced-meeting-requests"
-          element={
-            <ProtectedRoute allowedRoles={["Admin", "Staff"]}>
-              <MeetingRequestsSearch />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/add-event"
-          element={
-            <ProtectedRoute allowedRoles={["Admin", "Staff"]}>
-              <AddEvent />
-            </ProtectedRoute>
-          }
-        />
+        >
+          <Route path="/manage-issues" element={<MenaxhoIssues />} />
+          <Route path="/manage-proposals" element={<MenaxhoProposals />} />
+          <Route path="/manage-events" element={<MenaxhoEvents />} />
+          <Route path="/manage-meetings" element={<MenaxhoMeetings />} />
+          <Route path="/manage-permits" element={<MenaxhoPermits />} />
+          <Route path="/issues/:id/edit" element={<EditIssueDetails />} />
+          <Route path="/issues/:id/status" element={<UpdateIssueStatus />} />
+          <Route path="/advanced-meeting-requests" element={<MeetingRequestsSearch />} />
+          <Route path="/add-event" element={<AddEvent />} />
+        </Route>
 
         {/* ── Staff dashboard ── */}
         <Route

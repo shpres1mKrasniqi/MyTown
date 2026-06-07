@@ -166,17 +166,17 @@ function EventList() {
                 <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-400 to-purple-600 p-[1.5px]">
                   <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
                     <span className="text-[10px] font-bold text-gray-600">
-                      {event.komunaName?.substring(0, 2).toUpperCase()}
+                      {event.staffName?.substring(0, 2).toUpperCase()}
                     </span>
                   </div>
                 </div>
                 <div>
                   <h2 className="text-sm font-semibold leading-tight">
-                    {event.komunaName}
+                    {event.staffName}
                   </h2>
                   <div className="flex items-center gap-1 text-[11px] text-gray-500">
                     <MapPin size={12} />
-                    <p>{event.location}</p>
+                    <p>{event.komunaName}</p>
                   </div>
                 </div>
               </div>

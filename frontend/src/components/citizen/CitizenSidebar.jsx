@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { logout } from "../../services/authService";
 import {
   LayoutDashboard,
   Plus,
@@ -73,6 +75,16 @@ const MENU = [
 export default function CitizenSidebar({ activePage }) {
   const navigate = useNavigate();
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+    Cookies.remove("accessToken");
+    navigate("/login", { replace: true });
+  };
+
   return (
     <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between">
       <div>
@@ -126,7 +138,7 @@ export default function CitizenSidebar({ activePage }) {
         </div>
 
         <button
-          onClick={() => navigate("/login")}
+          onClick={handleLogout}
           className="text-red-500 hover:text-red-600"
         >
           <LogOut size={18} />
