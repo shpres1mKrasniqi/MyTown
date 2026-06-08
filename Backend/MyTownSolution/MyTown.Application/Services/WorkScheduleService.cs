@@ -41,7 +41,7 @@ namespace MyTown.Application.Services
             await _workScheduleRepository.CreateWorkScheduleAsync(workSchedule);
             await _unitOfWork.SaveChangesAsync();
 
-            // ✅ AUDIT (pa cycle)
+
             var audit = new AuditLog(
                 userId,
                 "CREATE",
@@ -69,7 +69,7 @@ namespace MyTown.Application.Services
 
             var oldValue = System.Text.Json.JsonSerializer.Serialize(MapToDto(workSchedule));
 
-            workSchedule.Delete(userId); // soft delete
+            workSchedule.Delete(userId);
 
             var audit = new AuditLog(
                 userId,
@@ -91,7 +91,7 @@ namespace MyTown.Application.Services
             if (workSchedule == null)
                 throw new Exception($"WorkSchedule me id '{id}' nuk u gjet.");
 
-            // ✅ OLD VALUE (DTO, jo entity!)
+
             var oldValue = System.Text.Json.JsonSerializer.Serialize(MapToDto(workSchedule));
 
             workSchedule.Update(
@@ -105,7 +105,6 @@ namespace MyTown.Application.Services
                 userId
             );
 
-            // ✅ NEW VALUE
             var newValue = System.Text.Json.JsonSerializer.Serialize(MapToDto(workSchedule));
 
             var audit = new AuditLog(
@@ -141,6 +140,7 @@ namespace MyTown.Application.Services
         {
             return new WorkScheduleResponseDto
             {
+                Id = ws.Id,
                 StaffName = ws.StaffProfile.User.FirstName + " " + ws.StaffProfile.User.LastName,
                 Date = ws.Date,
                 DayOfWeek = ws.DayOfWeek,

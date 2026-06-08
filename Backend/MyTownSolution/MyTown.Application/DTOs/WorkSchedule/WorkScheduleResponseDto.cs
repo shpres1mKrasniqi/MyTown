@@ -4,7 +4,7 @@ namespace MyTown.Application.DTOs.WorkSchedule
 {
     public class WorkScheduleResponseDto
     {
-
+        public int Id { get; set; }
         public string StaffName { get; set; }
         public DateTime Date { get; set; }
         public DaysOfWeek DayOfWeek { get; set; }

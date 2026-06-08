@@ -13,6 +13,7 @@ import {
   Calendar,
   Settings,
   LogOut,
+  CalendarClock,
 } from "lucide-react";
 
 const MENU = [
@@ -40,6 +41,13 @@ const MENU = [
     label: "Menaxho Takimet",
     icon: MessageSquare,
     path: "/manage-meetings",
+  },
+
+  {
+    key: "shiko-oraret",
+    label: "Shiko Oraret",
+    icon: CalendarClock,
+    path: "/shiko-oraret",
   },
   {
     key: "proposals",

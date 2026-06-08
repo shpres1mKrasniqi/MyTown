@@ -151,6 +151,11 @@ export default function AdminLayout() {
               active={activeView === "issues"}
               onClick={() => navigate("/manage-issues")}
             />
+            <SidebarItem
+              icon={<Calendar size={20} />}
+              label="Orari i punes"
+              onClick={() => navigate("/manage-workSchedules")}
+            />
 
             <SidebarItem
               icon={<Lightbulb size={20} />}

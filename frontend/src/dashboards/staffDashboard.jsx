@@ -29,7 +29,7 @@ import StaffSidebar from "../components/staff/StaffSideBar";
 import StaffDashboardHome from "../components/staff/StaffDashboardHome";
 import StaffHeader from "../components/staff/StaffHeader";
 import { toast } from "react-toastify";
-
+import ViewWorkSchedules from "../pages/ViewWorkSchedules";
 import AddEvent from "../pages/AddEvent";
 import EventList from "../pages/EventList";
 import HistoryPage from "../pages/HistoryPage";
@@ -133,6 +133,9 @@ export default function StaffDashboard() {
             <MenaxhoMeetings />
           </div>
         );
+
+      case "shiko-oraret":
+        return <ViewWorkSchedules />;
 
       case "meeting-requests":
         return (

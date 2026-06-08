@@ -122,8 +122,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy
-            .SetIsOriginAllowed(_ => true)  // allow any origin in dev
-            .AllowAnyHeader()
+            .WithOrigins("http://localhost:5173")
+          .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
     });
@@ -150,6 +150,7 @@ builder.Services.AddScoped<IUserLockoutRepository, UserLockoutRepository>();
 builder.Services.AddScoped<IMeetingRequestRepository, MeetingRequestRepository>();
 builder.Services.AddScoped<IConstructionPermitRequestRepository, ConstructionPermitRequestRepository>();
 builder.Services.AddScoped<IHistoryRepository, HistoryRepository>();
+builder.Services.AddScoped<IWorkScheduleRepository, WorkScheduleRepository>();
 
 
 // Servicet
@@ -180,6 +181,7 @@ builder.Services.AddScoped<IAdvancedSearchService, AdvancedSearchService>();
 builder.Services.AddScoped<IAdvancedStaffSearch, AdvancedStaffSearch>();
 builder.Services.AddScoped<IAdvancedMeetingRequestSearch, AdvancedMeetingRequestService>();
 builder.Services.AddScoped<IDataExchangeService, DataExchangeService>();
+builder.Services.AddScoped<IWorkScheduleService, WorkScheduleService>();
 
 var emailSettings = new EmailSettings
 {
@@ -275,7 +277,12 @@ builder.Services.AddAuthorization(options =>
     Permissions.CanViewMeetingRequests,
 
     Permissions.CanExportHistoryPdf,
-    Permissions.CanViewHistory
+    Permissions.CanViewHistory,
+
+    Permissions.CanCreateWorkSchedule,
+    Permissions.CanEditWorkSchedule,
+    Permissions.CanViewWorkSchedule,
+    Permissions.CanDeleteWorkSchedule
 };
     foreach (var premission in permissions)
     {

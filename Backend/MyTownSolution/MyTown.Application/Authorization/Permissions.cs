@@ -71,5 +71,6 @@ namespace MyTown.Application.Authorization
         public const string CanExportHistoryPdf = "CanExportHistoryPdf";
         public const string CanViewHistory = "CanViewHistory";
 
+    
     }
 }

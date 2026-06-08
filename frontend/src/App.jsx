@@ -60,7 +60,11 @@ const CitizenLayout = lazy(() => import("./layouts/CitizenLayout"));
 // Auth pages (publike)
 const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
 const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
-
+const WorkScheduleForm = lazy(
+  () => import("./components/workschedule/WorkScheduleForm"),
+);
+const ManageWorkSchedules = lazy(() => import("./pages/ManageWorkSchedules"));
+const ViewWorkSchedules = lazy(() => import("./pages/ViewWorkSchedules"));
 function App() {
   return (
     <Suspense
@@ -109,6 +113,10 @@ function App() {
           <Route path="/add-staff" element={<AddStaff />} />
           <Route path="/edit-staff/:id" element={<EditStaff />} />
           <Route path="/add-issueCategory" element={<AddIssueCategory />} />
+          <Route
+            path="/manage-workSchedules"
+            element={<ManageWorkSchedules />}
+          />
         </Route>
 
         {/* ── Admin + Staff ── */}
@@ -119,6 +127,7 @@ function App() {
             </ProtectedRoute>
           }
         >
+          <Route path="/shiko-oraret" element={<ViewWorkSchedules />} />
           <Route path="/manage-issues" element={<MenaxhoIssues />} />
           <Route path="/manage-proposals" element={<MenaxhoProposals />} />
           <Route path="/manage-events" element={<MenaxhoEvents />} />
