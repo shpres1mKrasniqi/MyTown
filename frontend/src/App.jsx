@@ -55,7 +55,6 @@ const AddConstructionPermitRequest = lazy(
 const ConstructionPermitsList = lazy(
   () => import("./pages/ConstructionPermitsList"),
 );
-
 const CitizenLayout = lazy(() => import("./layouts/CitizenLayout"));
 
 // Auth pages (publike)
@@ -115,9 +114,11 @@ function App() {
           <Route path="/manage-events" element={<MenaxhoEvents />} />
           <Route path="/manage-meetings" element={<MenaxhoMeetings />} />
           <Route path="/manage-permits" element={<MenaxhoPermits />} />
-          <Route path="/issues/:id/edit" element={<EditIssueDetails />} />
           <Route path="/issues/:id/status" element={<UpdateIssueStatus />} />
-          <Route path="/advanced-meeting-requests" element={<MeetingRequestsSearch />} />
+          <Route
+            path="/advanced-meeting-requests"
+            element={<MeetingRequestsSearch />}
+          />
           <Route path="/add-event" element={<AddEvent />} />
         </Route>
 
@@ -152,7 +153,7 @@ function App() {
             path="project-proposals/edit/:id"
             element={<EditProjectProposal />}
           />
-
+          <Route path="issues/edit/:id" element={<EditIssueDetails />} />
           <Route path="issues" element={<IssueList />} />
           <Route path="events" element={<EventList />} />
           <Route path="meeting-requests" element={<MeetingsList />} />

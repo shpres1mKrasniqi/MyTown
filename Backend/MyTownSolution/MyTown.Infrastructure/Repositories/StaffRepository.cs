@@ -38,6 +38,7 @@ namespace MyTown.Infrastructure.Repositories
         public async Task<StaffProfile?> GetByUserIdAsync(int userId)
         {
             return await _context.StaffProfiles
+                .Where(s => s.IsDeleted == false)
                 .FirstOrDefaultAsync(s => s.UserId == userId && s.IsDeleted == false);
         }
         public async Task<List<StaffProfile>>GetByKomunaIdAsync(int komunaId)

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { logout } from "../../services/authService";
+import LogoutButton from "../LogoutButton";
 import {
   LayoutDashboard,
   Plus,
@@ -113,13 +113,6 @@ export default function StaffSidebar({ activePage, setActivePage }) {
               Të tjera
             </p>
           </div>
-
-          <SidebarItem
-            icon={<Settings size={20} />}
-            label="Settings"
-            active={activePage === "settings"}
-            onClick={() => {}}
-          />
         </nav>
       </div>
 
@@ -134,12 +127,7 @@ export default function StaffSidebar({ activePage, setActivePage }) {
           </div>
         </div>
 
-        <button
-          onClick={handleLogout}
-          className="text-red-500 hover:text-red-600"
-        >
-          <LogOut size={18} />
-        </button>
+        <LogoutButton showLabel={false} />
       </div>
     </aside>
   );

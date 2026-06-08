@@ -68,7 +68,7 @@ function EditIssueDetails() {
 
       await IssueService.updateDetails(id, formData);
 
-      navigate("/issues");
+      navigate("/citizen-dashboard/issues/");
     } catch (err) {
       console.log("ERRORS:", err.response?.data?.errors);
       console.log(err.response?.data || err.message);

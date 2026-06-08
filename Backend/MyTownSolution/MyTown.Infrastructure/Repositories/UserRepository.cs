@@ -25,14 +25,17 @@ namespace MyTown.Infrastructure.Repositories
         {
 
             return await _context.Users
+                .AsNoTracking()
                 .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
+                .Where(u => u.IsActive)
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
         public async Task<User?> GetByEmailAsync(string email)
         {
             return await _context.Users
+                .AsNoTracking()
                 .Include(u => u.UserRoles)
                     .ThenInclude(ur => ur.Role)
                         .ThenInclude(r => r.RolePermissions)

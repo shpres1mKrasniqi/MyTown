@@ -29,7 +29,7 @@ const refreshTokens = async () => {
     processQueue(null);
   } catch (err) {
     processQueue(err);
-    window.location.href = "/";
+    window.location.href = "/login";
     throw err;
   } finally {
     isRefreshing = false;
@@ -42,13 +42,12 @@ api.interceptors.response.use(
     const originalRequest = error.config;
 
     if (originalRequest.url?.includes("/auth/refresh")) {
-      window.location.href = "/";
+      window.location.href = "/login";
       return Promise.reject(error);
     }
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
       try {
         await refreshTokens();
         return api(originalRequest);

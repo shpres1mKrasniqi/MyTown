@@ -29,7 +29,14 @@ namespace MyTown.API.Controllers
         {
             try
             {
-               
+                Console.WriteLine("=== CREATE EVENT DEBUG ===");
+                Console.WriteLine($"User authenticated: {User.Identity?.IsAuthenticated}");
+                Console.WriteLine($"UserId: {User.FindFirst(ClaimTypes.NameIdentifier)?.Value}");
+                Console.WriteLine($"StaffId: {User.FindFirst("StaffId")?.Value}");
+                foreach (var claim in User.Claims)
+                    Console.WriteLine($"Claim: {claim.Type} = {claim.Value}");
+                Console.WriteLine("==========================");
+
                 Console.WriteLine($"Files nga Request.Form.Files: {Request.Form.Files.Count}");
                 Console.WriteLine($"Files nga dto: {dto.Files?.Count ?? 0}");
 

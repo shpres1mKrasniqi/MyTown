@@ -47,6 +47,8 @@ namespace MyTown.Infrastructure.Repositories
         public async Task<CitizenProfile?> GetByUserIdAsync(int userId)
         {
             return await _context.CitizenProfiles
+                .AsNoTracking()
+                .Where(cP => cP.IsDeleted == false)
                 .FirstOrDefaultAsync(c => c.UserId == userId && !c.IsDeleted);
         }
 

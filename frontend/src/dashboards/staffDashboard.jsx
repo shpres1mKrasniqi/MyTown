@@ -161,7 +161,7 @@ export default function StaffDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f6fa] flex">
+    <div className="h-screen bg-[#f4f6fa] flex overflow-hidden">
       {/* Sidebar */}
       <StaffSidebar
         activePage={activePage}

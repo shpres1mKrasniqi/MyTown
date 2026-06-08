@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { logout } from "../../services/authService";
+import LogoutButton from "../LogoutButton";
 import {
   LayoutDashboard,
   Plus,
@@ -114,19 +114,6 @@ export default function CitizenSidebar({ activePage }) {
               onClick={() => navigate(path)}
             />
           ))}
-
-          <div className="pt-4 pb-2">
-            <p className="px-3 text-xs font-semibold text-slate-400 uppercase">
-              Të tjera
-            </p>
-          </div>
-
-          <SidebarItem
-            icon={<Settings size={20} />}
-            label="Settings"
-            active={activePage === "settings"}
-            onClick={() => {}}
-          />
         </nav>
       </div>
 
@@ -137,12 +124,7 @@ export default function CitizenSidebar({ activePage }) {
           <p className="text-[10px] text-slate-500">Portal</p>
         </div>
 
-        <button
-          onClick={handleLogout}
-          className="text-red-500 hover:text-red-600"
-        >
-          <LogOut size={18} />
-        </button>
+        <LogoutButton showLabel={false} />
       </div>
     </aside>
   );

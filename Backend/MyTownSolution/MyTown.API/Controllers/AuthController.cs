@@ -147,11 +147,12 @@ namespace MyTown.API.Controllers
             {
                 HttpOnly = true,
                 Secure = true,
-                SameSite = SameSiteMode.None
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddDays(-1) 
             };
 
-            Response.Cookies.Delete("accessToken", cookieOptions);
-            Response.Cookies.Delete("refreshToken", cookieOptions);
+            Response.Cookies.Append("accessToken", "", cookieOptions);
+            Response.Cookies.Append("refreshToken", "", cookieOptions);
 
             return Ok(new { message = "Logout me sukses." });
         }

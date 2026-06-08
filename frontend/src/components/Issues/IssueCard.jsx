@@ -15,7 +15,6 @@ export default function IssueCard({
   onDelete,
   isCitizen,
   isStaff,
-  navigate,
 }) {
   return (
     <div className="bg-white border border-gray-200 md:rounded-sm overflow-hidden">
@@ -24,7 +23,6 @@ export default function IssueCard({
         onDelete={onDelete}
         isCitizen={isCitizen}
         isStaff={isStaff}
-        navigate={navigate}
       />
 
       <ImageCarousel files={issue.files} />

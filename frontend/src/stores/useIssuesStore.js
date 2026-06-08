@@ -16,7 +16,7 @@ export const useIssuesStore = create((set) => ({
 
   deleteIssue: async (id) => {
     try {
-      await issuesService.delete(id);
+      await IssueService.delete(id);
       set((state) => ({
         issues: state.issues.filter((i) => i.id !== id),
       }));
