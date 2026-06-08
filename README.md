@@ -624,7 +624,7 @@ The MyTown platform uses a relational SQL Server database designed around munici
 
 ## Entity Relationship Diagram (ERD)
 <p align="center">
-  <a href="./docs/ERD.png">
+  <a href="frontend/docs/ERD.png">
     <img src="frontend/docs/ERD.png" alt="MyTown ERD Diagram" width="1000"/>
   </a>
 </p>
