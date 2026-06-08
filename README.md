@@ -52,6 +52,27 @@ The platform provides a centralized environment where:
 
 ---
 
+## 🔍 Advanced Search
+
+- Search Issues
+- Search Citizens
+- Search Staff
+- Search Departments
+- Search Meeting Requests
+
+---
+
+## 🔄 Data Import & Export
+
+- Export data to CSV
+- Export data to Excel
+- Export data to JSON
+- Import data from CSV
+- Import data from Excel
+- Import data from JSON
+
+---
+
 ## 🪪 ID Document Scanning
 
 - Upload ID card
@@ -376,6 +397,39 @@ MyTown
 | /api/auth/logout          | POST   | Logout user              |
 
 
+## Advanced Search
+
+| Endpoint                            | Method |
+| --------------------                | ------ |
+| /api/AdvancedSearch/issues          | GET    |
+| /api/AdvancedSearch/departments     | GET    |
+| /api/AdvancedSearch/meetingRequests | GET    |
+| /api/AdvancedSearch/citizens        | GET    |
+| /api/AdvancedSearch/staff           | GET    |
+
+
+## Data Exchange
+### Export Data
+
+| Endpoint                                      | Method |
+| --------------------                          | ------ |
+| /api/DataExchange/export/{entityType}/format  | GET    |
+
+Supported formats:
+* CSV
+* Exel
+* Json
+
+### Import Data
+
+| Endpoint                                      | Method |
+| --------------------                          | ------ |
+| /api/DataExchange/import/{entityType}/format  | POST   |
+
+Supported formats:
+* CSV
+* Exel
+* Json
 
 ## Departments
 
@@ -566,11 +620,19 @@ npm run dev
 ---
 # 🗄 Database Design
 
-The system uses a hybrid database architecture.
+The MyTown platform uses a relational SQL Server database designed around municipalities, citizens, staff management, issue reporting, events, project proposals, notifications, and authorization.
 
-## SQL Server
+## Entity Relationship Diagram (ERD)
+<p align="center">
+  <a href="./docs/ERD.png">
+    <img src="frontend/docs/ERD.png" alt="MyTown ERD Diagram" width="1000"/>
+  </a>
+</p>
 
-Stores:
+Click the diagram to view it in full size.
+
+## Main Entities
+
 
 * Users
 * CitizenProfiles
