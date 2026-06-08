@@ -152,8 +152,13 @@ function ProposalsList() {
     <div className="min-h-screen bg-gray-50 pb-10">
       <div className="max-w-[700px] mx-auto pt-5 space-y-5">
         <div className="flex items-center justify-between">
-          <h1 className="text-lg font-semibold text-slate-900">Projekt Propozimet</h1>
-          <DataExchangeToolbar entityType="proposals" onImportSuccess={fetchProposals} />
+          <h1 className="text-lg font-semibold text-slate-900">
+            Projekt Propozimet
+          </h1>
+          <DataExchangeToolbar
+            entityType="proposals"
+            onImportSuccess={fetchProposals}
+          />
         </div>
         {proposals.map((proposal) => {
           const voteInfo = votesByProposal[proposal.id];
@@ -208,7 +213,7 @@ function ProposalsList() {
                             <button
                               onClick={() =>
                                 navigate(
-                                  `/project-proposals/edit/${proposal.id}`,
+                                  `/staff-dashboard/project-proposals/edit/${proposal.id}`,
                                 )
                               }
                               className="w-full flex items-center gap-2 px-4 py-3 text-sm text-blue-600 hover:bg-blue-50 transition"

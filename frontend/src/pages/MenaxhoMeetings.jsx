@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { meetingService } from "../services/meetingService";
 import { toast } from "react-toastify";
+import useCurrentUser from "../hooks/useCurrentUser";
 import {
   Trash2,
   RefreshCw,
@@ -15,6 +16,7 @@ import SearchWithStatusFilter from "../components/meetings/SearchWithStatusFilte
 const PAGE_SIZE = 5;
 
 export default function MenaxhoMeetings({ isReadonly = false }) {
+  const user = useCurrentUser();
   const [meetings, setMeetings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
@@ -148,7 +150,7 @@ export default function MenaxhoMeetings({ isReadonly = false }) {
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto p-1 animate-fadeIn">
+    <div className="space-y-6 max-w-7xl mx-auto p-4 animate-fadeIn">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 bg-gradient-to-r from-white to-slate-50/50 p-6 rounded-2xl border border-slate-200 shadow-sm relative z-10">
         <div className="absolute top-0 left-0 w-1.5 h-full bg-[#202d60] rounded-l-2xl overflow-hidden" />
         <div>
@@ -159,16 +161,16 @@ export default function MenaxhoMeetings({ isReadonly = false }) {
             Menaxho të gjitha kërkesat e qytetarëve për takime.
           </p>
         </div>
-        <div className="flex items-center gap-3 self-start sm:self-center bg-white p-1.5 rounded-xl border border-slate-200/60 shadow-inner">
+        <div className="flex flex-wrap items-center gap-3 self-stretch sm:self-center bg-white p-1.5 rounded-xl border border-slate-200/60 shadow-inner justify-between sm:justify-start">
           {!isReadonly && (
-            <DataExchangeToolbar 
-              entityType="meetings" 
-              onImportSuccess={() => fetchMeetings(filters, 1)} 
+            <DataExchangeToolbar
+              entityType="meetings"
+              onImportSuccess={() => fetchMeetings(filters, 1)}
             />
           )}
           <button
             onClick={() => fetchMeetings(filters, currentPage)}
-            className="p-2 text-slate-500 hover:text-[#202d60] hover:bg-slate-100 rounded-lg transition-all duration-150"
+            className="p-2 text-slate-500 hover:text-[#202d60] hover:bg-slate-100 rounded-lg transition-all duration-150 ml-auto sm:ml-0"
             title="Rifresko"
           >
             <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
@@ -184,7 +186,75 @@ export default function MenaxhoMeetings({ isReadonly = false }) {
       </div>
 
       <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="block md:hidden divide-y divide-slate-100">
+          {meetings.length > 0 ? (
+            meetings.map((m, index) => (
+              <div key={m.id || index} className="p-5 space-y-4 bg-white">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="h-9 w-9 bg-blue-50 text-[#202d60] flex items-center justify-center rounded-xl border border-blue-100 shadow-sm flex-shrink-0">
+                      <MessageSquare size={16} />
+                    </div>
+                    <span className="font-bold text-slate-900 block truncate">
+                      {m.title}
+                    </span>
+                  </div>
+                  {!isReadonly && !user?.isStaff && (
+                    <button
+                      onClick={() => handleDelete(m.id, m.title)}
+                      className="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors flex-shrink-0"
+                      title="Fshij kërkesën"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  )}
+                </div>
+
+                <div className="text-sm text-slate-600 font-medium line-clamp-3">
+                  <span className="text-xs text-slate-400 block font-normal mb-0.5">
+                    Arsyeja:
+                  </span>
+                  {m.reason}
+                </div>
+
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-50">
+                  <span className="flex items-center gap-2 text-slate-600 font-semibold text-xs bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200/60 whitespace-nowrap">
+                    <Calendar size={13} className="text-blue-600" />
+                    {new Date(m.dateOfMeeting).toLocaleDateString("sq-AL", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
+
+                  <select
+                    value={m.status}
+                    onChange={(e) => handleStatusChange(m.id, e.target.value)}
+                    className={`text-xs font-bold border rounded-xl px-3 py-1.5 focus:outline-none focus:ring-4 focus:ring-blue-500/10 cursor-pointer shadow-sm transition-all duration-150 bg-white w-full sm:w-auto ${getStatusStyles(m.status)}`}
+                  >
+                    <option value={0}>Në pritje</option>
+                    <option value={1}>Pranuar</option>
+                    <option value={2}>Refuzuar</option>
+                  </select>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="px-6 py-16 text-center text-slate-400 bg-white flex flex-col items-center justify-center gap-3">
+              <div className="h-12 w-12 bg-blue-50 text-[#202d60] rounded-2xl flex items-center justify-center border border-blue-100 shadow-sm">
+                <MessageSquare size={22} />
+              </div>
+              <p className="font-semibold text-slate-700 text-base">
+                Nuk u gjet asnjë kërkesë.
+              </p>
+              <p className="text-xs text-slate-400 -mt-1">
+                Nuk ka të dhëna për t'u shfaqur për këtë kriter.
+              </p>
+            </div>
+          )}
+        </div>
+
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-[#202d60] text-white text-xs font-bold uppercase tracking-wider border-b border-[#162045]">
@@ -194,7 +264,7 @@ export default function MenaxhoMeetings({ isReadonly = false }) {
                   Data e Kërkuar
                 </th>
                 <th className="px-6 py-4.5 font-bold tracking-wide">Statusi</th>
-                {!isReadonly && (
+                {!isReadonly && !user?.isStaff && (
                   <th className="px-6 py-4.5 font-bold tracking-wide text-right">
                     Veprimet
                   </th>
@@ -244,12 +314,12 @@ export default function MenaxhoMeetings({ isReadonly = false }) {
                         <option value={2}>Refuzuar</option>
                       </select>
                     </td>
-                    {!isReadonly && (
+                    {!isReadonly && !user?.isStaff && (
                       <td className="px-6 py-4.5 text-right align-middle whitespace-nowrap">
                         <div className="flex justify-end items-center gap-2">
                           <button
                             onClick={() => handleDelete(m.id, m.title)}
-                            className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl border border-transparent hover:border-rose-100 transition-all duration-150 shadow-sm hover:shadow"
+                            className="p-2 text-slate-400 hover:text-rose-600"
                             title="Fshij kërkesën"
                           >
                             <Trash2 size={15} />
@@ -283,8 +353,8 @@ export default function MenaxhoMeetings({ isReadonly = false }) {
           </table>
         </div>
 
-        <div className="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-3">
-          <p className="text-xs text-slate-500 font-medium">
+        <div className="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-slate-500 font-medium text-center sm:text-left">
             Duke shfaqur{" "}
             <span className="font-bold text-slate-700 bg-slate-200/60 px-1.5 py-0.5 rounded">
               {meetings.length}
@@ -296,7 +366,7 @@ export default function MenaxhoMeetings({ isReadonly = false }) {
           </p>
 
           {totalPages > 1 && (
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 flex-wrap justify-center">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}

@@ -8,7 +8,14 @@ export default function useCurrentUser() {
     const fetchUser = async () => {
       try {
         const data = await currentUser();
-        setUser(data);
+
+        setUser({
+          ...data,
+          roles: data.roles || [],
+          isCitizen:
+            data.roles?.includes("Citizen") && !data.roles?.includes("Staff"),
+          isStaff: data.roles?.includes("Staff"),
+        });
       } catch (err) {
         console.log("Error fetching user", err);
       }

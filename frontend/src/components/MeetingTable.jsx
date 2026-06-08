@@ -1,10 +1,8 @@
 import MeetingTableRow from "./MeetingTableRow";
-
 export default function MeetingTable({
   requests,
-  isCitizen,
-  isStaff,
   handleDelete,
+  user,
   handleStatusChange,
 }) {
   return (
@@ -17,7 +15,9 @@ export default function MeetingTable({
               <th className="p-4">Arsyeja</th>
               <th className="p-4">Data</th>
               <th className="p-4">Statusi</th>
-              {isCitizen && <th className="p-4 text-right">Veprime</th>}
+              {user && user.isCitizen && (
+                <th className="p-4 text-right">Veprime</th>
+              )}
             </tr>
           </thead>
 
@@ -33,8 +33,7 @@ export default function MeetingTable({
                 <MeetingTableRow
                   key={req.id}
                   req={req}
-                  isCitizen={isCitizen}
-                  isStaff={isStaff}
+                  user={user}
                   handleDelete={handleDelete}
                   handleStatusChange={handleStatusChange}
                 />

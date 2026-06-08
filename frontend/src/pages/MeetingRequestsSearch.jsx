@@ -82,7 +82,6 @@ export default function MeetingRequestsSearch() {
         </div>
       </div>
 
-      {/* KONTENIERI I AVANCUAR KËRKIMIT */}
       <div className="shadow-sm rounded-2xl overflow-hidden">
         <AdvancedSearchContainer
           key={refreshKey}

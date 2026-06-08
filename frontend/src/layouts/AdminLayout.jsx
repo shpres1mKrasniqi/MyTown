@@ -1,6 +1,7 @@
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import Cookies from "js-cookie";
 import { logout } from "../services/authService";
+import LogoutButton from "../components/LogoutButton";
 import {
   LayoutDashboard,
   Building2,
@@ -15,6 +16,7 @@ import {
   Calendar,
   MessageSquare,
   Hammer,
+  LogOutIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
@@ -132,13 +134,6 @@ export default function AdminLayout() {
               label="Menaxho Stafin"
               onClick={() => navigate("/manage-staff")}
             />
-
-            <SidebarItem
-              icon={<Settings size={20} />}
-              label="Settings"
-              active={activeView === "settings"}
-              onClick={() => {}}
-            />
             <SidebarItem
               icon={
                 <PlusSquareIcon
@@ -149,12 +144,6 @@ export default function AdminLayout() {
               label="Shto Kategori te problemit"
               onClick={() => navigate("/add-issueCategory")}
             />
-
-            <div className="pt-4 pb-2">
-              <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                Të Dhënat
-              </p>
-            </div>
 
             <SidebarItem
               icon={<AlertTriangle size={20} />}
@@ -190,6 +179,10 @@ export default function AdminLayout() {
               active={activeView === "permits"}
               onClick={() => navigate("/manage-permits")}
             />
+
+            <div className="mt-auto p-4 border-t">
+              <LogoutButton showLabel={true} />
+            </div>
           </nav>
         </div>
 
@@ -220,14 +213,6 @@ export default function AdminLayout() {
               {activeView === "overview" ? "Dashboard Overview" : activeView}
             </div>
           </div>
-
-          {/* RIGHT */}
-          <button
-            onClick={handleLogout}
-            className="text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-          >
-            Logout
-          </button>
         </header>
 
         {/* CONTENT - OUTLET WILL INJECT SUBPAGES HERE (AddKomuna, MenaxhoKomunat, Dashboard etc) */}

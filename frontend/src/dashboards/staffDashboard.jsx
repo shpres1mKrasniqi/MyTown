@@ -35,7 +35,7 @@ import EventList from "../pages/EventList";
 import HistoryPage from "../pages/HistoryPage";
 import MenaxhoMeetings from "../pages/MenaxhoMeetings";
 import ConstructionPermitsList from "../pages/ConstructionPermitsList";
-
+import AddProjectProposal from "../pages/AddProjectProposal";
 const MENU = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { key: "add-event", label: "Krijo Event", icon: Plus },
@@ -44,6 +44,7 @@ const MENU = [
   { key: "manage-meetings", label: "Takimet", icon: MessageSquare },
   { key: "meeting-requests", label: "Kërkesat për Takim", icon: CheckSquare },
   { key: "proposals", label: "Propozimet", icon: HandHelping },
+  { key: "add-project-proposal", label: "Shto Propozim", icon: Plus },
   { key: "construction-permits", label: "Lejet ndertimore", icon: HouseIcon },
   { key: "history", label: "Historiku", icon: Calendar },
 ];
@@ -142,6 +143,13 @@ export default function StaffDashboard() {
 
       case "proposals":
         return <ProposalsList />;
+
+      case "add-project-proposal":
+        return (
+          <div className="animate-fadeIn">
+            <AddProjectProposal />
+          </div>
+        );
 
       case "construction-permits":
         return <ConstructionPermitsList />;

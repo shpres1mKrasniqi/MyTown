@@ -130,6 +130,7 @@ namespace MyTown.API.Controllers
         }
 
         [HttpPut("{proposalId}")]
+        [Authorize(Policy =Permissions.CanEditProjectProposal)]
         public async Task<IActionResult> Update(int proposalId, [FromForm] UpdateProjectProposalDto dto)
         {
             try

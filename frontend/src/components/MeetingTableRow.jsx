@@ -1,38 +1,9 @@
-import { Calendar, Trash2 } from "lucide-react";
-
 export default function MeetingTableRow({
   req,
-  isCitizen,
-  isStaff,
+  user,
   handleDelete,
   handleStatusChange,
 }) {
-  const getStatusStyles = (status) => {
-    switch (status) {
-      case 0:
-        return "bg-amber-50 text-amber-700 border-amber-100";
-      case 1:
-        return "bg-emerald-50 text-emerald-700 border-emerald-100";
-      case 2:
-        return "bg-rose-50 text-rose-700 border-rose-100";
-      default:
-        return "bg-slate-50 text-slate-700 border-slate-100";
-    }
-  };
-
-  const getStatusText = (status) => {
-    switch (status) {
-      case 0:
-        return "Në pritje";
-      case 1:
-        return "Pranuar";
-      case 2:
-        return "Refuzuar";
-      default:
-        return "Unknown";
-    }
-  };
-
   return (
     <tr className="hover:bg-slate-50 transition-colors">
       <td className="p-4 font-medium">{req.title}</td>
@@ -47,30 +18,22 @@ export default function MeetingTableRow({
       </td>
 
       <td className="p-4">
-        {isStaff ? (
+        {user?.isStaff ? (
           <select
             value={req.status}
             onChange={(e) => handleStatusChange(req.id, e.target.value)}
-            className={`text-xs border rounded px-2 py-1 ${getStatusStyles(
-              req.status,
-            )}`}
+            className="text-xs border rounded px-2 py-1"
           >
             <option value={0}>Në pritje</option>
             <option value={1}>Pranuar</option>
             <option value={2}>Refuzuar</option>
           </select>
         ) : (
-          <span
-            className={`text-xs px-2 py-1 rounded border ${getStatusStyles(
-              req.status,
-            )}`}
-          >
-            {getStatusText(req.status)}
-          </span>
+          <span className="text-xs px-2 py-1 rounded border">{req.status}</span>
         )}
       </td>
 
-      {isCitizen && (
+      {user && user.isCitizen && (
         <td className="p-4 text-right">
           <button
             onClick={() => handleDelete(req.id)}

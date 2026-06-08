@@ -79,6 +79,16 @@ function App() {
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/create-citizen" element={<CreateCitizen />} />
 
+        {/* ── Meetings accessible for ALL roles (or Citizen + Staff + Admin) ── */}
+        <Route
+          path="/manage-meetings"
+          element={
+            <ProtectedRoute allowedRoles={["Admin", "Staff", "Citizen"]}>
+              <MenaxhoMeetings />
+            </ProtectedRoute>
+          }
+        />
+
         {/* ── Admin only ── */}
         <Route
           element={
@@ -112,7 +122,6 @@ function App() {
           <Route path="/manage-issues" element={<MenaxhoIssues />} />
           <Route path="/manage-proposals" element={<MenaxhoProposals />} />
           <Route path="/manage-events" element={<MenaxhoEvents />} />
-          <Route path="/manage-meetings" element={<MenaxhoMeetings />} />
           <Route path="/manage-permits" element={<MenaxhoPermits />} />
           <Route path="/issues/:id/status" element={<UpdateIssueStatus />} />
           <Route
@@ -132,6 +141,24 @@ function App() {
           }
         />
 
+        <Route
+          path="/meeting-requests"
+          element={
+            <ProtectedRoute allowedRoles={["Citizen", "Staff", "Admin"]}>
+              <MeetingsList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/staff-dashboard/lista-propozimeve"
+          element={
+            <ProtectedRoute allowedRoles={["Admin", "Staff"]}>
+              <ProposalsList />
+            </ProtectedRoute>
+          }
+        />
+
         {/* ── Citizen only ── */}
         <Route
           path="/citizen-dashboard"
@@ -142,17 +169,15 @@ function App() {
           }
         >
           <Route index element={<CitizenDashboard />} />
+
           <Route path="add-issue" element={<AddIssue />} />
           <Route path="add-meeting-request" element={<AddMeetingRequest />} />
-          <Route path="add-projectProposal" element={<AddProjectProposal />} />
+
           <Route
             path="add-construction-permit-request"
             element={<AddConstructionPermitRequest />}
           />
-          <Route
-            path="project-proposals/edit/:id"
-            element={<EditProjectProposal />}
-          />
+
           <Route path="issues/edit/:id" element={<EditIssueDetails />} />
           <Route path="issues" element={<IssueList />} />
           <Route path="events" element={<EventList />} />

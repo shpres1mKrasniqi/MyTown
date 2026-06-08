@@ -41,22 +41,16 @@ const MENU = [
     path: "/citizen-dashboard/add-meeting-request",
   },
   {
-    key: "meeting-requests",
-    label: "Takimet",
-    icon: CheckSquare,
-    path: "/citizen-dashboard/meeting-requests",
+    key: "manage-meetings",
+    label: "Menaxho Takimet",
+    icon: MessageSquare,
+    path: "/manage-meetings",
   },
   {
     key: "proposals",
     label: "Propozime",
     icon: HandHelping,
     path: "/citizen-dashboard/lista-propozimeve",
-  },
-  {
-    key: "add-proposal",
-    label: "Krijo Propozim",
-    icon: Plus,
-    path: "/citizen-dashboard/add-projectProposal",
   },
   {
     key: "permits",

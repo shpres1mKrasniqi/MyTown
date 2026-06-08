@@ -36,7 +36,7 @@ function UpdateIssueStatus() {
         status: Number(status),
       });
 
-      navigate("/issues");
+      navigate("/staff-dashboard");
     } catch (err) {
       console.log(err.response?.data || err.message);
       alert("Gabim gjatë përditësimit të statusit.");

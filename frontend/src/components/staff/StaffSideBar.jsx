@@ -42,16 +42,16 @@ const MENU = [
     path: "/manage-meetings",
   },
   {
-    key: "meeting-requests",
-    label: "Lista takimeve",
-    icon: CheckSquare,
-    path: "/meeting-requests",
-  },
-  {
     key: "proposals",
     label: "Projekt propozimet",
     icon: HandHelping,
     path: "/proposals",
+  },
+  {
+    key: "add-project-proposal",
+    label: "Shto Propozim",
+    icon: Plus,
+    path: "/add-project-proposal",
   },
   {
     key: "construction-permits",
@@ -107,12 +107,6 @@ export default function StaffSidebar({ activePage, setActivePage }) {
               onClick={() => setActivePage(key)}
             />
           ))}
-
-          <div className="pt-4 pb-2">
-            <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-              Të tjera
-            </p>
-          </div>
         </nav>
       </div>
 

@@ -17,17 +17,25 @@ const processQueue = (error) => {
 };
 
 const refreshTokens = async () => {
+  console.log("🔄 Refresh token request START");
+
   if (isRefreshing) {
+    console.log("⏳ Already refreshing, queueing request...");
     return new Promise((resolve, reject) => {
       failedQueue.push({ resolve, reject });
     });
   }
 
   isRefreshing = true;
+
   try {
+    console.log("Jena kah e thirrum refreshtokenin...");
     await api.post("/auth/refresh");
+
+    console.log("Refresh token erdhi");
     processQueue(null);
   } catch (err) {
+    console.log("Refresh token spo ben");
     processQueue(err);
     window.location.href = "/login";
     throw err;

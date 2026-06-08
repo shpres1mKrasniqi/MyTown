@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { meetingService } from "../services/meetingService";
+import { toast } from "react-toastify";
 
 export default function useMeetingRequests() {
   const [requests, setRequests] = useState([]);
@@ -14,6 +15,28 @@ export default function useMeetingRequests() {
     }
   };
 
+  const handleDelete = async (id) => {
+    if (!window.confirm("A jeni i sigurt që dëshironi të fshini këtë kërkesë?"))
+      return;
+    try {
+      await meetingService.deleteSoft(id);
+      toast.success("Kërkesa u fshi me sukses.");
+      fetchRequests();
+    } catch {
+      toast.error("Fshirja dështoi!");
+    }
+  };
+
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      await meetingService.updateStatus(id, { status: Number(newStatus) });
+      toast.success("Statusi u përditësua me sukses!");
+      fetchRequests();
+    } catch {
+      toast.error("Gabim gjatë përditësimit të statusit");
+    }
+  };
+
   useEffect(() => {
     fetchRequests();
   }, []);
@@ -23,5 +46,7 @@ export default function useMeetingRequests() {
     setRequests,
     error,
     fetchRequests,
+    handleDelete,
+    handleStatusChange,
   };
 }

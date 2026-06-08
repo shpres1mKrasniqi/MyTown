@@ -39,7 +39,7 @@ export default function IssueHeader({ issue, onDelete, isCitizen, isStaff }) {
             {isCitizen && (
               <button
                 onClick={() =>
-                  navigate(`/citizen-dashboard/issues/edit/${issue.id}`)
+                  navigate(`/citizen-dashboard/project-proposals/edit/${id}`)
                 }
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
               >
