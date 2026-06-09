@@ -1,4 +1,4 @@
-﻿namespace MyTown.Application.DTOs.Citizens
+namespace MyTown.Application.DTOs.Citizens
 {
     public class CitizenResponseDto
     {

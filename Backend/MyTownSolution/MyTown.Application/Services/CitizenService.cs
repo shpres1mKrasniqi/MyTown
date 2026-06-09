@@ -1,4 +1,4 @@
-﻿using MyTown.Application.DTOs.Citizens;
+using MyTown.Application.DTOs.Citizens;
 using MyTown.Application.Ports.InboundPorts;
 using MyTown.Application.Ports.OutboundPorts;
 using MyTown.Domain.Common;

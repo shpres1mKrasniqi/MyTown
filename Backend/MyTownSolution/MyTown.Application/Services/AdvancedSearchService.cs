@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MyTown.Application.DTOs.AdvancedSearch;
 using MyTown.Application.DTOs.Citizens;
 using MyTown.Application.DTOs.Department;
