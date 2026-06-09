@@ -31,5 +31,6 @@ export default function useAdvancedSearch(fetchFunction, initialFilters) {
     filters,
     setFilters,
     loading,
+    refetch: fetchData,
   };
 }
