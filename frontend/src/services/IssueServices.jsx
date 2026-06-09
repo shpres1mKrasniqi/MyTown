@@ -8,6 +8,12 @@ export const IssueService = {
   //   api.put(`/issues/${id}`, data, { withCredentials: true }),
   delete: (id) => api.delete(`/issues/${id}`, { withCredentials: true }),
 
+  search: (params) =>
+    api.get("/AdvancedSearch/issues", {
+      params,
+      withCredentials: true,
+    }),
+
   getLikes: (issueId) =>
     api.get(`/issues/${issueId}/likes`, { withCredentials: true }),
   toggleLike: (issueId) =>

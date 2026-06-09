@@ -8,21 +8,44 @@ import {
   Trash2, 
   RefreshCw, 
   AlertTriangle, 
-  Plus
+  Plus,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import DataExchangeToolbar from "../components/DataExchangeToolbar";
+import SearchWithStatusFilter from "../components/meetings/SearchWithStatusFilter";
+
+const PAGE_SIZE = 10;
 
 export default function MenaxhoIssues() {
   const [issues, setIssues] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filters, setFilters] = useState({ searchTerm: "", status: null });
   const navigate = useNavigate();
 
-  const fetchIssues = async () => {
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+
+  const fetchIssues = async (searchParams = {}, page = 1) => {
     setLoading(true);
     try {
-      const res = await IssueService.getAll();
-      setIssues(res.data);
+      const query = {
+        pageSize: PAGE_SIZE,
+        pageNumber: page,
+      };
+
+      if (searchParams.searchTerm) {
+        query.searchTerm = searchParams.searchTerm;
+      }
+
+      if (searchParams.status !== null && searchParams.status !== undefined) {
+        query.status = searchParams.status;
+      }
+
+      const res = await IssueService.search(query);
+      setIssues(res.data.items || []);
+      setTotalCount(res.data.totalCount || 0);
     } catch {
       toast.error("Gabim gjatë marrjes së të dhënave të ankesave");
     } finally {
@@ -31,23 +54,72 @@ export default function MenaxhoIssues() {
   };
 
   useEffect(() => {
-    fetchIssues();
-  }, []);
+    setCurrentPage(1);
+    fetchIssues(filters, 1);
+  }, [filters]);
 
-  const filtered = issues.filter((i) =>
-    (i.title || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (i.komunaName || "").toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleSearch = (searchData) => {
+    setFilters({
+      searchTerm: searchData.searchTerm,
+      status: searchData.status,
+    });
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    setCurrentPage(newPage);
+    fetchIssues(filters, newPage);
+  };
 
   const handleDelete = async (id, title) => {
     if (!window.confirm(`A jeni i sigurt që dëshironi të fshini "${title}"?`)) return;
     try {
       await IssueService.delete(id);
       toast.success("Ankesa u fshi me sukses.");
-      fetchIssues();
+      
+      const newPage = issues.length === 1 && currentPage > 1 ? currentPage - 1 : currentPage;
+      setCurrentPage(newPage);
+      fetchIssues(filters, newPage);
     } catch {
       toast.error("Fshirja dështoi!");
     }
+  };
+
+  const getPageNumbers = () => {
+    if (totalPages <= 5) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    const pages = [];
+    if (currentPage <= 3) {
+      pages.push(1, 2, 3, 4, "...", totalPages);
+    } else if (currentPage >= totalPages - 2) {
+      pages.push(
+        1,
+        "...",
+        totalPages - 3,
+        totalPages - 2,
+        totalPages - 1,
+        totalPages,
+      );
+    } else {
+      pages.push(
+        1,
+        "...",
+        currentPage - 1,
+        currentPage,
+        currentPage + 1,
+        "...",
+        totalPages,
+      );
+    }
+    return pages;
+  };
+
+  const formatStatus = (status) => {
+    if (status === 0) return "Në pritje";
+    if (status === 1) return "Pranuar";
+    if (status === 2) return "Refuzuar";
+    return status || "Aktive";
   };
 
   return (
@@ -62,10 +134,10 @@ export default function MenaxhoIssues() {
         </div>
         
         <div className="flex items-center gap-3">
-          <DataExchangeToolbar entityType="issues" onImportSuccess={fetchIssues} />
+          <DataExchangeToolbar entityType="issues" onImportSuccess={() => fetchIssues(filters, 1)} />
           
           <button 
-            onClick={fetchIssues}
+            onClick={() => fetchIssues(filters, currentPage)}
             className="p-2.5 text-slate-500 hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-200 rounded-lg transition-all"
             title="Rifresko"
           >
@@ -75,14 +147,10 @@ export default function MenaxhoIssues() {
       </div>
 
       {/* SEARCH BAR */}
-      <div className="relative group">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#010694] transition-colors" size={18} />
-        <input
-          type="text"
+      <div className="w-full">
+        <SearchWithStatusFilter
+          onSearch={handleSearch}
           placeholder="Kërko sipas titullit ose komunës..."
-          className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#010694]/20 focus:border-[#010694] transition-all text-sm shadow-sm"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
@@ -99,8 +167,8 @@ export default function MenaxhoIssues() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {filtered.length > 0 ? (
-                filtered.map((i) => (
+              {issues.length > 0 ? (
+                issues.map((i) => (
                   <tr key={i.id} className="hover:bg-slate-50/70 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
@@ -116,7 +184,7 @@ export default function MenaxhoIssues() {
                     </td>
                     <td className="px-6 py-4">
                       <span className="px-2 py-1 rounded-md text-[10px] font-bold uppercase bg-slate-100 text-slate-700">
-                        {i.status || "Aktive"}
+                        {formatStatus(i.status)}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
@@ -149,10 +217,60 @@ export default function MenaxhoIssues() {
         </div>
         
         {/* FOOTER */}
-        <div className="px-6 py-4 bg-slate-50/30 border-t border-slate-100 flex justify-between items-center">
-          <p className="text-xs text-slate-500">
-            Duke shfaqur <span className="font-semibold">{filtered.length}</span> nga <span className="font-semibold">{issues.length}</span> ankesa
+        <div className="px-6 py-4 bg-slate-50/30 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-slate-500 font-medium text-center sm:text-left">
+            Duke shfaqur{" "}
+            <span className="font-bold text-slate-700 bg-slate-200/60 px-1.5 py-0.5 rounded">
+              {issues.length}
+            </span>{" "}
+            nga <span className="font-bold text-slate-700">{totalCount}</span>{" "}
+            ankesa — Faqja{" "}
+            <span className="font-bold text-slate-700">{currentPage}</span> nga{" "}
+            <span className="font-bold text-slate-700">{totalPages || 1}</span>
           </p>
+
+          {totalPages > 1 && (
+            <div className="flex items-center gap-1 flex-wrap justify-center">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:text-[#010694] hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150"
+              >
+                <ChevronLeft size={15} />
+              </button>
+
+              {getPageNumbers().map((page, i) =>
+                page === "..." ? (
+                  <span
+                    key={`dots-${i}`}
+                    className="px-2 py-1 text-xs text-slate-400 select-none"
+                  >
+                    …
+                  </span>
+                ) : (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`min-w-[32px] h-8 px-2 text-xs font-bold rounded-lg border transition-all duration-150 ${
+                      currentPage === page
+                        ? "bg-[#010694] text-white border-[#010694] shadow-sm"
+                        : "border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-[#010694]"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ),
+              )}
+
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:text-[#010694] hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150"
+              >
+                <ChevronRight size={15} />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
