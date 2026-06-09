@@ -250,10 +250,14 @@ namespace MyTown.Application.Services
                .Take(pageSize)
                 .Select(c => new CitizenResponseDto
                 {
+                    Id = c.Id,
                     FirstName = c.User.FirstName,
                     LastName = c.User.LastName,
+                    Email = c.User.Email,
                     Address = c.Address,
-                    PhoneNumber = c.PhoneNumber
+                    PhoneNumber = c.PhoneNumber,
+                    KomunaId = c.KomunaId,
+                    KomunaName = c.Komuna.Name,
                 }).ToList();
      
 

@@ -21,11 +21,18 @@ namespace MyTown.Infrastructure.Repositories
         }
         public async Task<IEnumerable<CitizenProfile>> GetAll()
         {
-            return await _context.CitizenProfiles.Where(c => c.IsDeleted == false ).ToListAsync();
+            return await _context.CitizenProfiles
+                .Include(c => c.User)
+                .Include(c => c.Komuna)
+                .Where(c => c.IsDeleted == false)
+                .ToListAsync();
         }
         public async Task<CitizenProfile> GetById(int id)
         {
-            return await _context.CitizenProfiles.FirstOrDefaultAsync(c => c.Id == id && c.IsDeleted == false);
+            return await _context.CitizenProfiles
+                .Include(c => c.User)
+                .Include(c => c.Komuna)
+                .FirstOrDefaultAsync(c => c.Id == id && c.IsDeleted == false);
         }
         public async Task<List<CitizenProfile>> GetByKomunaIdAsync(int komunaId)
         {

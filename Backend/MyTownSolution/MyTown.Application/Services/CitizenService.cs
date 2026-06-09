@@ -82,13 +82,7 @@ namespace MyTown.Application.Services
 
             await _unitOfWork.SaveChangesAsync();
 
-            var reponse = new CitizenResponseDto
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Address = citizen.Address,
-                PhoneNumber = citizen.PhoneNumber
-            };
+            var reponse = MapToDto(citizen);
 
             return reponse;
         }
@@ -96,14 +90,7 @@ namespace MyTown.Application.Services
         {
             var citizens = await _citizenRepository.GetAll();
 
-            return citizens.Select(c => new CitizenResponseDto
-            {
-              
-                FirstName = c.User.FirstName,
-                LastName = c.User.LastName,
-                Address = c.Address,
-                PhoneNumber = c.PhoneNumber
-            });
+            return citizens.Select(MapToDto);
         
     }
         public async Task<CitizenResponseDto> GetCitizenByIdAsync(int id)
@@ -113,13 +100,7 @@ namespace MyTown.Application.Services
             if (citizen == null)
                 throw new Exception("Qytetari nuk u gjet!");
 
-            return new CitizenResponseDto
-            {
-                FirstName = citizen.User.FirstName,
-                LastName = citizen.User.LastName,
-                Address = citizen.Address,
-                PhoneNumber = citizen.PhoneNumber
-            };
+            return MapToDto(citizen);
         }
         public async Task<CitizenResponseDto> UpdateCitizenAsync(int id, UpdateCitizenDto dto)
         {
@@ -159,13 +140,7 @@ namespace MyTown.Application.Services
             //await _auditRepository.AddAsync(log);
             await _unitOfWork.SaveChangesAsync();
 
-            return new CitizenResponseDto
-            {
-                FirstName = citizen.User.FirstName,
-                LastName = citizen.User.LastName,
-                Address = citizen.Address,
-                PhoneNumber = citizen.PhoneNumber
-            };
+            return MapToDto(citizen);
         }
         public async Task DeleteCitizenAsync(int id)
         {
@@ -178,5 +153,18 @@ namespace MyTown.Application.Services
 
             await _unitOfWork.SaveChangesAsync();
         }
+
+        private static CitizenResponseDto MapToDto(CitizenProfile citizen) =>
+            new()
+            {
+                Id = citizen.Id,
+                FirstName = citizen.User.FirstName,
+                LastName = citizen.User.LastName,
+                Email = citizen.User.Email,
+                Address = citizen.Address,
+                PhoneNumber = citizen.PhoneNumber,
+                KomunaId = citizen.KomunaId,
+                KomunaName = citizen.Komuna?.Name ?? string.Empty,
+            };
     }
 }
