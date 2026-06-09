@@ -19,11 +19,15 @@ namespace MyTown.Infrastructure.Repositories
         }
         public async Task<IEnumerable<Department>> GetAllAsync()
         {
-            return await _context.Departments.Where(d => d.IsActive).ToListAsync();
+            return await _context.Departments
+                .Include(d => d.Komuna)
+                .Where(d => d.IsActive).ToListAsync();
         }
         public async Task<Department> GetByIdAsync(int id)
         {
-            return await _context.Departments.FirstOrDefaultAsync(d => d.Id == id && d.IsActive);
+            return await _context.Departments
+                 .Include(d => d.Komuna)
+                .FirstOrDefaultAsync(d => d.Id == id && d.IsActive);
         }
         public async Task<bool> ExistsByNameAsync(string name, int komunaId)
         {

@@ -38,6 +38,7 @@ const MeetingRequestsSearch = lazy(
   () => import("./pages/MeetingRequestsSearch"),
 );
 
+
 // Citizen pages
 const CitizenDashboard = lazy(() => import("./dashboards/citizenDashboard"));
 const AddIssue = lazy(() => import("./pages/AddIssues"));
@@ -137,6 +138,9 @@ function App() {
             path="/advanced-meeting-requests"
             element={<MeetingRequestsSearch />}
           />
+          
+         
+          
           <Route path="/add-event" element={<AddEvent />} />
         </Route>
 

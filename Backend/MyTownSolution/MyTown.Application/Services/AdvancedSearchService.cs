@@ -177,6 +177,7 @@ namespace MyTown.Application.Services
                     d.Description,
                     true,
                     d.KomunaId,
+                     d.Komuna.Name,
                     d.CreatedAt,
                     d.UpdatedAt,
                     d.CreatedBy,
