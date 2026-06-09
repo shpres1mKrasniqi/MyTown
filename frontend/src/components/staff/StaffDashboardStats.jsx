@@ -5,6 +5,39 @@ import {
   HandHelping,
 } from "lucide-react";
 
+function StatCard({ title, value, icon, color, onClick, subtitle }) {
+  return (
+    <div
+      onClick={onClick}
+      className={`relative overflow-hidden cursor-pointer rounded-2xl p-5 text-white shadow-lg
+      transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl
+      bg-gradient-to-r ${color}`}
+    >
+      {/* glow effect */}
+      <div className="absolute -top-10 -right-10 w-32 h-32 bg-white opacity-10 rounded-full" />
+      <div className="absolute bottom-[-20px] left-[-20px] w-28 h-28 bg-black opacity-10 rounded-full" />
+
+      <div className="flex items-start justify-between">
+        <div>
+          <p className="text-[11px] uppercase tracking-wider opacity-80">
+            {title}
+          </p>
+
+          <h3 className="text-3xl font-extrabold mt-1">{value}</h3>
+
+          {subtitle && (
+            <p className="text-xs opacity-70 mt-1">{subtitle}</p>
+          )}
+        </div>
+
+        <div className="p-3 bg-white/20 rounded-xl backdrop-blur-md">
+          {icon}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function StaffDashboardStats({
   stats,
   eventsCount,
@@ -12,75 +45,43 @@ export default function StaffDashboardStats({
 }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      <div
+
+      <StatCard
+        title="Evente Gjithsej"
+        value={eventsCount}
+        subtitle="Aktivitete aktive"
+        icon={<ShoppingBag size={20} />}
+        color="from-blue-500 to-indigo-600"
         onClick={() => setActivePage("event-list")}
-        className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex justify-between cursor-pointer"
-      >
-        <div>
-          <p className="text-[11px] text-gray-400 uppercase">
-            Evente Gjithsej
-          </p>
-          <p className="text-2xl font-black">{eventsCount}</p>
-        </div>
+      />
 
-        <div className="p-3 bg-blue-50 rounded-xl">
-          <ShoppingBag size={18} />
-        </div>
-      </div>
-
-      <div
+      <StatCard
+        title="Issues"
+        value={stats.issuesCount}
+        subtitle="Raporte nga qytetarët"
+        icon={<AlertTriangle size={20} />}
+        color="from-red-500 to-rose-600"
         onClick={() => setActivePage("issues")}
-        className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex justify-between cursor-pointer"
-      >
-        <div>
-          <p className="text-[11px] text-gray-400 uppercase">
-            Issues
-          </p>
-          <p className="text-2xl font-black text-red-600">
-            {stats.issuesCount}
-          </p>
-        </div>
+      />
 
-        <div className="p-3 bg-red-50 rounded-xl">
-          <AlertTriangle size={18} />
-        </div>
-      </div>
-
-      <div
+      <StatCard
+        title="Takime"
+        value={stats.meetingsCount}
+        subtitle="Kërkesa për takime"
+        icon={<MessageSquare size={20} />}
+        color="from-amber-500 to-orange-500"
         onClick={() => setActivePage("meeting-requests")}
-        className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex justify-between cursor-pointer"
-      >
-        <div>
-          <p className="text-[11px] text-gray-400 uppercase">
-            Takime
-          </p>
-          <p className="text-2xl font-black text-amber-500">
-            {stats.meetingsCount}
-          </p>
-        </div>
+      />
 
-        <div className="p-3 bg-amber-50 rounded-xl">
-          <MessageSquare size={18} />
-        </div>
-      </div>
-
-      <div
+      <StatCard
+        title="Propozime"
+        value={stats.proposalsCount}
+        subtitle="Ide nga qytetarët"
+        icon={<HandHelping size={20} />}
+        color="from-purple-500 to-fuchsia-600"
         onClick={() => setActivePage("proposals")}
-        className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex justify-between cursor-pointer"
-      >
-        <div>
-          <p className="text-[11px] text-gray-400 uppercase">
-            Propozime
-          </p>
-          <p className="text-2xl font-black text-purple-600">
-            {stats.proposalsCount}
-          </p>
-        </div>
+      />
 
-        <div className="p-3 bg-purple-50 rounded-xl">
-          <HandHelping size={18} />
-        </div>
-      </div>
     </div>
   );
 }

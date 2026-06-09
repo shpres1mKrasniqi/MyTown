@@ -48,13 +48,19 @@ const MENU = [
   },
   {
     key: "proposals",
-    label: "Propozime",
+    label: "Projekt Propozimet",
     icon: HandHelping,
     path: "/citizen-dashboard/lista-propozimeve",
   },
+    {
+    key: "add-permits",
+    label: "Kërko leje për ndërtim",
+    icon: Plus,
+    path: "/citizen-dashboard/add-construction-permit-request",
+  },
   {
     key: "permits",
-    label: "Leje Ndërtimi",
+    label: "Lista e lejeve të ndërtimit",
     icon: HouseIcon,
     path: "/citizen-dashboard/construction-permits",
   },
