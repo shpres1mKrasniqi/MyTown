@@ -15,4 +15,14 @@ export const citizenService = {
     api.get(`/citizen/${id}`, {
       withCredentials: true,
     }),
+
+  update: (id, data) =>
+    api.put(`/citizen/${id}`, data, {
+      withCredentials: true,
+    }),
+
+  delete: (id) =>
+    api.delete(`/citizen/${id}`, {
+      withCredentials: true,
+    }),
 };

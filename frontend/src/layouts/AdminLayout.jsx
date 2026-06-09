@@ -38,6 +38,7 @@ export default function AdminLayout() {
   const getActiveView = () => {
     const path = location.pathname.toLowerCase();
     if (path.includes("komuna")) return "komunat";
+    if (path.includes("citizen")) return "citizens";
     if (path.includes("department")) return "manage";
     if (path.includes("issue")) return "issues";
     if (path.includes("propozim")) return "propozime";
@@ -122,6 +123,13 @@ export default function AdminLayout() {
               label="Komunat"
               active={activeView === "komunat"}
               onClick={() => navigate("/MenaxhoKomunat")}
+            />
+
+            <SidebarItem
+              icon={<Users size={20} />}
+              label="Qytetarët"
+              active={activeView === "citizens"}
+              onClick={() => navigate("/MenaxhoCitizens")}
             />
 
             <SidebarItem

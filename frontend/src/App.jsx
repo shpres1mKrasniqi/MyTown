@@ -29,6 +29,9 @@ const MenaxhoPermits = lazy(() => import("./pages/MenaxhoPermits"));
 const MenaxhoKomunat = lazy(() => import("./pages/MenaxhoKomunat"));
 const AddKomuna = lazy(() => import("./pages/AddKomuna"));
 const EditKomuna = lazy(() => import("./pages/EditKomuna"));
+const MenaxhoCitizens = lazy(() => import("./pages/MenaxhoCitizens"));
+const AddCitizen = lazy(() => import("./pages/AddCitizen"));
+const EditCitizen = lazy(() => import("./pages/EditCitizen"));
 const ShikoDepartments = lazy(() => import("./pages/ShikoDepartments"));
 const AddIssueCategory = lazy(() => import("./pages/AddIssueCategory"));
 const CreateCitizen = lazy(() => import("./pages/CreateCitizen"));
@@ -110,6 +113,9 @@ function App() {
           <Route path="/AddKomuna" element={<AddKomuna />} />
           <Route path="/edit-komuna/:id" element={<EditKomuna />} />
           <Route path="/MenaxhoKomunat" element={<MenaxhoKomunat />} />
+          <Route path="/MenaxhoCitizens" element={<MenaxhoCitizens />} />
+          <Route path="/AddCitizen" element={<AddCitizen />} />
+          <Route path="/edit-citizen/:id" element={<EditCitizen />} />
           <Route path="/manage-staff" element={<MenaxhoStaff />} />
           <Route path="/add-staff" element={<AddStaff />} />
           <Route path="/edit-staff/:id" element={<EditStaff />} />
