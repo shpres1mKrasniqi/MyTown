@@ -248,17 +248,17 @@ namespace MyTown.Application.Services
             var result = citizens
                .Skip((pageNumber - 1) * pageSize)
                .Take(pageSize)
-                .Select(c => new CitizenResponseDto
-                {
-                    Id = c.Id,
-                    FirstName = c.User.FirstName,
-                    LastName = c.User.LastName,
-                    Email = c.User.Email,
-                    Address = c.Address,
-                    PhoneNumber = c.PhoneNumber,
-                    KomunaId = c.KomunaId,
-                    KomunaName = c.Komuna.Name,
-                }).ToList();
+              .Select(c => new CitizenResponseDto
+              {
+                  Id = c.Id,
+                  FirstName = c.User != null ? c.User.FirstName : null,
+                  LastName = c.User != null ? c.User.LastName : null,
+                  Email = c.User != null ? c.User.Email : null,
+                  Address = c.Address,
+                  PhoneNumber = c.PhoneNumber,
+                  KomunaId = c.KomunaId,
+                  KomunaName = c.Komuna != null ? c.Komuna.Name : null,
+              }).ToList();
      
 
             return new PaginationResponse<CitizenResponseDto>

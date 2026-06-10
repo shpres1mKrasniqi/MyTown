@@ -45,6 +45,7 @@ export default function MenaxhoCitizens() {
 
     loadKomunas();
   }, []);
+  console.log("Citizen data:", data[0]);
 
   const handleRefresh = () => refetch();
 
@@ -82,13 +83,7 @@ export default function MenaxhoCitizens() {
             <RefreshCw size={20} className={loading ? "animate-spin" : ""} />
           </button>
 
-          <Link
-            to="/AddCitizen"
-            className="flex items-center gap-2 bg-[#010694] hover:bg-[#1a1e8a] text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-all shadow-sm transform hover:scale-105"
-          >
-            <Plus size={18} />
-            Shto Qytetar
-          </Link>
+    
         </div>
       </div>
 

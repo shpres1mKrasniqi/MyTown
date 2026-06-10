@@ -74,42 +74,48 @@ export default function MenaxhoStaff() {
       </div>
 
       {/* ADVANCED SEARCH */}
-      <AdvancedSearchContainer
-        key={refreshKey}
-        fetchFunction={advancedSearchService.searchStaff}
-        initialFilters={{
-          pageNumber: 1,
-          pageSize: 10,
-          firstName: "",
-          lastName: "",
-          email: "",
-          position: "",
-          departmentId: "",
-        }}
-        fields={[
-          { name: "firstName", placeholder: "Emri" },
-          { name: "lastName", placeholder: "Mbiemri" },
-          
-          {
-            name: "departmentId",
-            type: "select",
-            placeholder: "Të gjitha departamentet",
-            options: departments.map((d) => ({
-              value: d.id,
-              label: d.name,
-            })),
-          },
-        ]}
-        columns={[
-          { key: "firstName", label: "Emri" },
-          { key: "lastName", label: "Mbiemri" },
-          { key: "email", label: "Email" },
-          { key: "position", label: "Pozita" },
-          { key: "departmentName", label: "Departamenti" },
-        ]}
-        onRowDelete={handleDelete}
-        onRowEdit={(row) => navigate(`/edit-staff/${row.id}`)}
-      />
+     <AdvancedSearchContainer
+  key={refreshKey}
+  title="Stafi"
+  fetchFunction={advancedSearchService.searchStaff}
+  initialFilters={{
+    pageNumber: 1,
+    pageSize: 10,
+    firstName: "",
+    lastName: "",
+    email: "",
+    position: "",
+    departmentId: "",
+  }}
+  fields={[
+    {
+      name: "firstName",
+      placeholder: "Emri",
+    },
+    {
+      name: "lastName",
+      placeholder: "Mbiemri",
+    },
+    {
+      name: "departmentId",
+      type: "select",
+      placeholder: "Të gjitha departamentet",
+      options: departments.map((d) => ({
+        value: d.id,
+        label: d.name,
+      })),
+    },
+  ]}
+  columns={[
+    { key: "firstName", label: "Emri" },
+    { key: "lastName", label: "Mbiemri" },
+    { key: "email", label: "Email" },
+    { key: "position", label: "Pozita" },
+    { key: "departmentName", label: "Departamenti" },
+  ]}
+  onDelete={(row) => handleDelete(row.id, row.firstName)}
+  onEdit={(row) => navigate(`/edit-staff/${row.id}`)}
+/>
     </div>
   );
 }

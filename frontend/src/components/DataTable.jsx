@@ -1,7 +1,13 @@
 import React from "react";
-import { Calendar, Info, Check, X } from "lucide-react";
+import { Calendar, Info, Check, X, Edit2, Trash2 } from "lucide-react";
 
-export default function DataTable({ columns = [], data = [], onStatusUpdate }) {
+export default function DataTable({
+  columns = [],
+  data = [],
+  onStatusUpdate,
+  onEdit,
+  onDelete,
+}) {
   
   // Badges me stil premium minimalist
   const renderStatusBadge = (status) => {
@@ -75,6 +81,11 @@ export default function DataTable({ columns = [], data = [], onStatusUpdate }) {
                 {col.label}
               </th>
             ))}
+            {(onEdit || onDelete) && (
+  <th className="px-6 py-4.5 text-right">
+    Veprimet
+  </th>
+)}
            
           </tr>
         </thead>
@@ -107,7 +118,31 @@ export default function DataTable({ columns = [], data = [], onStatusUpdate }) {
                   </td>
                 );
               })}
+{(onEdit || onDelete) && (
+  <td className="px-6 py-4.5">
+    <div className="flex justify-end gap-2">
 
+      {onEdit && (
+        <button
+          onClick={() => onEdit(row)}
+          className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+        >
+          <Edit2 size={16} />
+        </button>
+      )}
+
+      {onDelete && (
+        <button
+          onClick={() => onDelete(row)}
+          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+        >
+          <Trash2 size={16} />
+        </button>
+      )}
+
+    </div>
+  </td>
+)}
               
             </tr>
           ))}

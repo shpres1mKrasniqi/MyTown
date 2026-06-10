@@ -3,8 +3,10 @@ import AdvancedSearchContainer from "../components/AdvancedSearchContainer";
 import { advancedSearchService } from "../services/advancedSearchService";
 import { departmentService } from "../services/departmentService";
 import { komunaService } from "../services/komunaService";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
+import { Plus } from "lucide-react";
 
 export default function MenaxhoDepartments() {
   const [municipalities, setMunicipalities] = useState([]);
@@ -32,7 +34,7 @@ export default function MenaxhoDepartments() {
       await departmentService.delete(row.id);
       toast.success("Departamenti u fshi me sukses");
 
-      // refresh handled automatically nga AdvancedSearchContainer
+     
     } catch {
       toast.error("Fshirja dështoi!");
     }
@@ -43,15 +45,23 @@ export default function MenaxhoDepartments() {
 
       {/* HEADER */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold text-slate-900">
-            Drejtoritë
-          </h1>
-          <p className="text-sm text-slate-500">
-            Menaxho dhe kërko departamentet
-          </p>
-        </div>
-      </div>
+  <div>
+    <h1 className="text-2xl font-semibold text-slate-900">
+      Drejtoritë
+    </h1>
+    <p className="text-sm text-slate-500">
+      Menaxho dhe kërko departamentet
+    </p>
+  </div>
+
+  <Link
+    to="/AddDepartment"
+    className="flex items-center gap-2 bg-[#010694] hover:bg-[#1a1e8a] text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-all shadow-sm"
+  >
+    <Plus size={18} />
+    Shto Drejtori
+  </Link>
+</div>
 
       {/* ADVANCED SEARCH */}
       <AdvancedSearchContainer
