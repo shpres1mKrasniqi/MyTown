@@ -40,12 +40,13 @@ namespace MyTown.Infrastructure.Repositories
                     .ThenInclude(ur => ur.Role)
                         .ThenInclude(r => r.RolePermissions)
                             .ThenInclude(rp => rp.Permission)
+                .Where(u => u.IsActive)
                 .FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task<bool> ExistsByEmailAsync(string email)
         {
-            return await _context.Users.AnyAsync(u => u.Email == email);
+            return await _context.Users.AnyAsync(u => u.Email == email && u.IsActive);
         }
 
         public async Task AssignRoleAsync(User user, int roleId)

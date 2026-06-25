@@ -74,6 +74,7 @@ namespace MyTown.Domain.Entities
         {
             IsDeleted = true;
             UpdatedAt = DateTime.UtcNow;
+            User.IsActive= false;
         }
 
         public void CompleteOptionalFields(string? nationality, string? placeOfBirth)

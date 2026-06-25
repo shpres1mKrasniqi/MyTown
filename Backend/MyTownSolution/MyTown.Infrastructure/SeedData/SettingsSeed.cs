@@ -19,7 +19,7 @@ namespace MyTown.Infrastructure.SeedData
                 new Setting
                 {
                     Key = "LOGIN_LOCKOUT_MINUTES",
-                    Value = "10",
+                    Value = "3",
                     Description = "Number of minutes the account remains locked after exceeding failed login attempts"
                 }
             };

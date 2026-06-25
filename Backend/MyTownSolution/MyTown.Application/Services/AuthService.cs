@@ -123,7 +123,7 @@ namespace MyTown.Application.Services
         public async Task<AuthResponse> LoginAsync(LoginRequest request)
         {
             var user = await _userRepository.GetByEmailAsync(request.Email);
-            if (user == null)
+            if (user == null || !user.IsActive)
             {
                 throw new Exception("Kredenciale te pavlefshme");
             }
