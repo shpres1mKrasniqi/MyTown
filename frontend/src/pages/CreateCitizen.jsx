@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { idScanService } from "../services/idScanService";
 import { citizenService } from "../services/citizenService";
 import { komunaService } from "../services/komunaService";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 
 export default function CreateCitizen() {
+  const { t } = useTranslation("common");
+
   const initialForm = {
     firstName: "",
     lastName: "",
@@ -30,9 +34,7 @@ export default function CreateCitizen() {
 
   const showToast = (type, message) => {
     toast.dismiss();
-    toast[type](message, {
-      toastId: "main-toast",
-    });
+    toast[type](message, { toastId: "main-toast" });
   };
 
   useEffect(() => {
@@ -50,15 +52,12 @@ export default function CreateCitizen() {
 
   const handleScan = async () => {
     if (!file) return;
-
     const formData = new FormData();
     formData.append("document", file);
     setLoading(true);
-
     try {
       const res = await idScanService.extract(formData);
       const data = res.data;
-
       setForm((prev) => ({
         ...prev,
         firstName: data.firstName || "",
@@ -68,10 +67,10 @@ export default function CreateCitizen() {
         nationality: data.nationality || "",
         placeOfBirth: data.placeOfBirth || "",
       }));
-      showToast("success", "Dokumenti u skenua me sukses!");
+      showToast("success", t("createCitizen.scanSuccess"));
     } catch (err) {
       console.error(err);
-      showToast("error", "Skenimi dështoi. Provoni përsëri.");
+      showToast("error", t("createCitizen.scanError"));
     } finally {
       setLoading(false);
     }
@@ -79,33 +78,22 @@ export default function CreateCitizen() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    setErrors((prev) => ({
-      ...prev,
-      [name]: "",
-    }));
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-
     try {
       await citizenService.create({
         ...form,
         komunaId: Number(form.komunaId),
       });
-
-      showToast("success", "Llogaria e qytetarit u krijua me sukses!");
+      showToast("success", t("createCitizen.createSuccess"));
       navigate("/");
     } catch (err) {
       const responseErrors = err.response?.data?.errors;
-
       if (responseErrors) {
         const formatted = {};
         Object.keys(responseErrors).forEach((key) => {
@@ -115,64 +103,70 @@ export default function CreateCitizen() {
         setErrors(formatted);
         return;
       }
-
-      showToast("error", "Gabim gjatë krijimit të llogarisë.");
+      showToast("error", t("createCitizen.createError"));
     }
   };
 
   const fields = [
-    { name: "firstName", placeholder: "Emri" },
-    { name: "lastName", placeholder: "Mbiemri" },
-    { name: "personalNumber", placeholder: "Numri Personal" },
-    { name: "dateOfBirth", type: "date", placeholder: "Datëlindja" },
-    { name: "nationality", placeholder: "Shtetësia" },
-    { name: "placeOfBirth", placeholder: "Vendlindja" },
-    { name: "email", placeholder: "Email Adresa", type: "email" },
-    { name: "password", placeholder: "Fjalëkalimi", type: "password" },
-    { name: "phoneNumber", placeholder: "Numri i Telefonit" },
+    { name: "firstName" },
+    { name: "lastName" },
+    { name: "personalNumber" },
+    { name: "dateOfBirth", type: "date" },
+    { name: "nationality" },
+    { name: "placeOfBirth" },
+    { name: "email", type: "email" },
+    { name: "password", type: "password" },
+    { name: "phoneNumber" },
   ];
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-white">
+      {/* Language Switcher - top right */}
+      <div className="absolute top-4 right-6 z-10">
+        <LanguageSwitcher />
+      </div>
+
+      {/* Left side - AI Scan */}
       <div className="w-full lg:w-1/2 bg-gray-100 flex justify-center items-center p-6 sm:p-12">
         <div className="max-w-md w-full text-center">
           <h1 className="text-gray-900 font-bold text-3xl sm:text-4xl mb-3">
-            Regjistrohu si qytetar
+            {t("createCitizen.leftTitle")}
           </h1>
           <p className="text-gray-500 text-sm mb-6 sm:text-sm sm:mb-8">
-            Krijoni llogarinë tuaj në MyTown ose përdorni shërbimin inteligjent
-            AI Scan duke ngarkuar një foto të letërnjoftimit/pasaportës.
+            {t("createCitizen.leftSubtitle")}
           </p>
 
           <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-200">
             <label className="block text-gray-700 text-sm font-semibold mb-3 text-left pl-2">
-              Skano Letërnjoftimin (AI Scan)
+              {t("createCitizen.scanLabel")}
             </label>
             <input
               type="file"
               onChange={(e) => setFile(e.target.files[0])}
               className="text-gray-700 text-sm w-full file:mr-4 file:py-2 file:px-5 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200 cursor-pointer"
             />
-
             <button
               type="button"
               onClick={handleScan}
               disabled={loading || !file}
               className="block w-full bg-gradient-to-br from-purple-800 from-blue-700 to-blue-500 text-white mt-5 py-3 rounded-full font-semibold tracking-wide transition hover:bg-purple-800 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
-              {loading ? "Duke skenuar..." : "Skano Dokumentin"}
+              {loading
+                ? t("createCitizen.scanning")
+                : t("createCitizen.scanButton")}
             </button>
           </div>
         </div>
       </div>
 
+      {/* Right side - form */}
       <div className="flex w-full lg:w-1/2 justify-center items-center bg-gradient-to-br from-purple-800 from-blue-700 to-blue-500 overflow-y-auto py-12">
         <form onSubmit={handleSubmit} className="w-full max-w-md px-8 my-auto">
           <h1 className="text-white font-bold text-3xl mb-2 text-center">
-            Krijo Llogari
+            {t("createCitizen.rightTitle")}
           </h1>
           <p className="text-white/80 text-sm mb-6 text-center">
-            Plotësoni formularin e mëposhtëm me të dhënat tuaja zyrtare.
+            {t("createCitizen.rightSubtitle")}
           </p>
 
           <div className="space-y-4">
@@ -180,7 +174,7 @@ export default function CreateCitizen() {
               <div key={f.name} className="w-full">
                 {f.type === "date" && (
                   <label className="block text-xs font-semibold text-white/70 mb-1 uppercase tracking-wider text-left pl-4">
-                    Datëlindja
+                    {t("createCitizen.fields.dateOfBirth")}
                   </label>
                 )}
                 <input
@@ -188,7 +182,9 @@ export default function CreateCitizen() {
                   name={f.name}
                   value={form[f.name]}
                   onChange={handleChange}
-                  placeholder={f.type === "date" ? "" : f.placeholder}
+                  placeholder={
+                    f.type === "date" ? "" : t(`createCitizen.fields.${f.name}`)
+                  }
                   className={`w-full py-3 px-5 rounded-full bg-white/90 outline-none text-gray-800 placeholder-gray-400 text-sm transition-all ${
                     errors[f.name] ? "ring-2 ring-red-400 bg-white" : ""
                   }`}
@@ -210,8 +206,8 @@ export default function CreateCitizen() {
                   errors.komunaId ? "ring-2 ring-red-400 bg-white" : ""
                 }`}
               >
-                <option value="" className="text-gray-400">
-                  Përzgjidhni Komunën
+                <option value="">
+                  {t("createCitizen.fields.komunaPlaceholder")}
                 </option>
                 {komunat.map((k) => (
                   <option key={k.id} value={k.id} className="text-gray-800">
@@ -231,7 +227,7 @@ export default function CreateCitizen() {
                 name="address"
                 value={form.address}
                 onChange={handleChange}
-                placeholder="Prishtine, Veterrnik, Rruga, Nr"
+                placeholder={t("createCitizen.fields.addressPlaceholder")}
                 className={`w-full py-3 px-5 rounded-full bg-white/90 outline-none text-gray-800 placeholder-gray-400 text-sm transition-all ${
                   errors.address ? "ring-2 ring-red-400 bg-white" : ""
                 }`}
@@ -248,7 +244,7 @@ export default function CreateCitizen() {
             type="submit"
             className="block w-full bg-yellow-400 mt-6 py-3 text-white font-semibold rounded-full hover:bg-yellow-500 transition hover:cursor-pointer text-center"
           >
-            Krijo Profilin
+            {t("createCitizen.submitButton")}
           </button>
 
           <div className="flex justify-center mt-4 text-sm">
@@ -256,7 +252,7 @@ export default function CreateCitizen() {
               to="/login"
               className="text-white/80 hover:text-white font-semibold hover:underline"
             >
-              Keni llogari? Kyçu këtu
+              {t("createCitizen.hasAccount")}
             </Link>
           </div>
         </form>

@@ -1,0 +1,50 @@
+{
+  "landing": {
+    "subtitle": "DIGITAL MUNICIPAL PLATFORM",
+    "title": "A Modern Experience for Your City",
+    "description": "MyTown is a platform that connects citizens with the municipality. Report issues, follow developments, and actively contribute to improving your community.",
+    "login": "Log In",
+    "register": "Create Account"
+  },
+
+  "login": {
+    "title": "Welcome back!",
+    "subtitle": "Sign in to continue",
+    "email": "Email Address",
+    "password": "Password",
+    "submit": "Log In",
+    "forgotPassword": "Forgot your password?",
+    "register": "Register",
+    "errorDefault": "Login failed. Please try again."
+  }
+  , 
+  "createCitizen": {
+    "leftTitle": "Register as a Citizen",
+    "leftSubtitle": "Create your MyTown account or use the intelligent AI Scan service by uploading a photo of your ID card or passport.",
+    "scanLabel": "Scan ID Document (AI Scan)",
+    "scanButton": "Scan Document",
+    "scanning": "Scanning...",
+    "scanSuccess": "Document scanned successfully!",
+    "scanError": "Scan failed. Please try again.",
+    "rightTitle": "Create Account",
+    "rightSubtitle": "Fill in the form below with your official details.",
+    "fields": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "personalNumber": "Personal Number",
+      "dateOfBirth": "Date of Birth",
+      "nationality": "Nationality",
+      "placeOfBirth": "Place of Birth",
+      "email": "Email Address",
+      "password": "Password",
+      "phoneNumber": "Phone Number",
+      "komunaPlaceholder": "Select Municipality",
+      "addressPlaceholder": "Pristina, Veternik, Street, No."
+    },
+    "submitButton": "Create Profile",
+    "hasAccount": "Already have an account? Log in here",
+    "createSuccess": "Citizen account created successfully!",
+    "createError": "Error creating account."
+  }
+}
+

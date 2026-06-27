@@ -1,0 +1,49 @@
+{
+  "landing": {
+    "subtitle": "PLATFORMA DIGJITALE E KOMUNËS",
+    "title": "Përvojë Moderne për Qytetin Tuaj",
+    "description": "MyTown është platformë që lidh qytetarët me komunën. Raportoni probleme, ndiqni zhvillimet dhe kontribuoni aktivisht në përmirësimin e komunitetit tuaj.",
+    "login": "Kyçu",
+    "register": "Krijo llogari"
+  },
+
+"login": {
+    "title": "Mirë se vini!",
+    "subtitle": "Kyquni për të vazhduar",
+    "email": "Adresa Email",
+    "password": "Fjalëkalimi",
+    "submit": "Kyçu",
+    "forgotPassword": "Keni harruar fjalëkalimin?",
+    "register": "Regjistrohu",
+    "errorDefault": "Login dështoi. Ju lutem provoni përsëri."
+  }
+, 
+  "createCitizen": {
+    "leftTitle": "Regjistrohu si qytetar",
+    "leftSubtitle": "Krijoni llogarinë tuaj në MyTown ose përdorni shërbimin inteligjent AI Scan duke ngarkuar një foto të letërnjoftimit/pasaportës.",
+    "scanLabel": "Skano Letërnjoftimin (AI Scan)",
+    "scanButton": "Skano Dokumentin",
+    "scanning": "Duke skenuar...",
+    "scanSuccess": "Dokumenti u skenua me sukses!",
+    "scanError": "Skenimi dështoi. Provoni përsëri.",
+    "rightTitle": "Krijo Llogari",
+    "rightSubtitle": "Plotësoni formularin e mëposhtëm me të dhënat tuaja zyrtare.",
+    "fields": {
+      "firstName": "Emri",
+      "lastName": "Mbiemri",
+      "personalNumber": "Numri Personal",
+      "dateOfBirth": "Datëlindja",
+      "nationality": "Shtetësia",
+      "placeOfBirth": "Vendlindja",
+      "email": "Email Adresa",
+      "password": "Fjalëkalimi",
+      "phoneNumber": "Numri i Telefonit",
+      "komunaPlaceholder": "Përzgjidhni Komunën",
+      "addressPlaceholder": "Prishtine, Veterrnik, Rruga, Nr"
+    },
+    "submitButton": "Krijo Profilin",
+    "hasAccount": "Keni llogari? Kyçu këtu",
+    "createSuccess": "Llogaria e qytetarit u krijua me sukses!",
+    "createError": "Gabim gjatë krijimit të llogarisë."
+  }
+}
